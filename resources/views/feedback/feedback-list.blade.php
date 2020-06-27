@@ -86,8 +86,6 @@
 
                                 <th>Admission No.</th>
 
-                                <th>Previous Roll No.</th>
-
                                 <th>Present Class</th>
 
                                 <th>Contact No.</th>
@@ -96,6 +94,7 @@
 
                                 <th>Comments</th>
 
+                                <th>Is Submit</th>
                                 <th>Is Clicked</th>
                                 <th>Published</th>
 
@@ -122,8 +121,6 @@
 
                             <td><?=$value['admission_no']?> </td>
 
-                            <td><?=$value['roll_no_previous']?> </td>
-
                             <td><?=$value['present_class']?> </td>
 
                             <td><?=$value['contact_no']?> </td>
@@ -132,6 +129,7 @@
 
                             <td><?=$value['comments']?> </td>
 
+                            <td><?=(isset($value->IsSubmit) && $value->IsSubmit==1)?'Submitted':''?> </td>
                             <td><?=(isset($value->IsClicked) && $value->IsClicked==1)?'Clicked':''?> </td>
                             <td><?=(isset($value->isPublished) && $value->isPublished==1)?'Yes':'No'?> </td>
 
