@@ -110,3 +110,11 @@ Route::match(['get', 'post'],'/deletestudentmaster/{id?}', array('uses' => 'Home
 
 Route::match(['get', 'post'],'/sendsms', array('uses' => 'HomeController@sendsms'));
 
+
+Route::match(['get', 'post'],'/quiz/{id?}', array('uses' => 'HomeController@quiz'));
+Route::match(['get', 'post'],'/quizlist/{id?}', array('uses' => 'HomeController@quizlist'));
+Route::match(['get', 'post'],'/deletequiz/{id?}', array('uses' => 'HomeController@deletequiz'));
+
+Route::match(['get', 'post'],'/question/{id?}', array('uses' => 'HomeController@question'));
+Route::match(['get', 'post'],'/questionlist/{id?}', array('uses' => 'HomeController@questionlist'));
+Route::match(['get', 'post'],'/deletequestion/{id?}', array('uses' => 'HomeController@deletequestion'));

@@ -65,3 +65,17 @@ function src_path()
 		$path = "http://admin.pcskhalispur.com/public/upload/";
 	return $path;
 }
+
+function getBitlyAPI($longurl, $login, $apikey) {
+	$url = 'http://api.bitly.com/v3/shorten?login='.$login.'&apiKey='.$apikey.'&longUrl='.$longurl.'&format=json&history=1';
+	//$url = "http://api.bit.ly/shorten?version=2.0.1&longUrl=$longurl&login=$login&apiKey=$apikey&format=json&history=1";
+	$s = curl_init();
+	curl_setopt($s, CURLOPT_URL, $url);
+	curl_setopt($s, CURLOPT_HEADER, false);
+	curl_setopt($s, CURLOPT_RETURNTRANSFER, 1);
+	$result = curl_exec($s);
+	curl_close($s);
+
+	$obj = json_decode($result, true);
+	return $obj;
+}

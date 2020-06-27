@@ -473,6 +473,58 @@
             </ul>
 
         </li>
+		
+		 <li class="">
+
+            <a href="#" class="dropdown-toggle">
+
+                <i class="menu-icon fa fa-list"></i>
+
+                <span class="menu-text"> Quiz </span>
+
+                <b class="arrow fa fa-angle-down"></b>
+
+            </a>
+
+            <b class="arrow"></b>
+
+            <ul class="submenu">
+				
+
+				<li class="">
+                    <a href="{{url('quiz')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Create Quiz
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+				
+				<li class="">
+                    <a href="{{url('quizlist')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Manage Quiz
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+				
+				<li class="">
+                    <a href="{{url('question')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Create Question
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+				
+				<li class="">
+                    <a href="{{url('questionlist')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Manage Question
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+				
+           </ul>
+            </li>
 
 		
 

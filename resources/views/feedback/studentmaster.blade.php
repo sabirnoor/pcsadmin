@@ -193,13 +193,14 @@
 
 
                <div class="col-xs-12">
-
+			   <button type="button" id="save_value" style="display:none;">Send SMS</button>
                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
 
                         <thead>
 
                             <tr>
 
+                                <th><input type="checkbox" class="CheckAll" onchange="checkAll(this)" title="Check All"></th>
                                 <th>Student Name</th>
 
                                 <th>Admission No.</th>
@@ -229,6 +230,7 @@
                                 foreach ($StudentmasterList as $value) {
                             ?>
                             <tr id="<?=$value['id']?>">
+                            <td><input type="checkbox" class="studentId" value="<?=$value['id']?>"></td>
                             <td><?=$value['student_name']?> </td>
                             <td><?=$value['admission_no']?> </td>
                             <td><?=$value['roll_no_previous']?> </td>
@@ -281,7 +283,7 @@
 
     </div>
 </div>
-<input type="hidden" value="0" id="studentId">
+<input type="hidden" value="0" class="studentID" id="studentId">
 <input type="hidden" value="0" id="mobileno">
 @endsection
 
