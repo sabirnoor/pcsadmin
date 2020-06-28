@@ -427,7 +427,7 @@ class HomeController extends Controller
                 'Mother_Name' => $post['Mother_Name'],
                 'Sex' => $post['Sex'],
                 'Roll_No' => $post['Roll_No'],
-                'Address' => $post['Address'],
+                'Address' => $post['Address'], 
 				
                 'admission_no' => $post['admission_no'],
 
