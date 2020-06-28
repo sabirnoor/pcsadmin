@@ -96,12 +96,22 @@
                     </div>
 					
 					
+					
+					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="option5"> Correct Answer* </label>
-                        <div class="col-sm-9">
-                            <input type="number" class="col-xs-10 col-sm-5" id="correct_answer" name="correct_answer" value="<?=isset($details->correct_answer)?$details->correct_answer:''?>" placeholder="Correct Answer" maxlength="1" required>
-                        </div>
-                    </div>
+						<label class="col-sm-3 control-label no-padding-right" for="correct_answer"> Correct Answer* </label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-5" id="correct_answer" name="correct_answer" required>
+								<option value="">Choose Correct Answer </option>
+								
+								<option value="1" <?=(isset($details->correct_answer) && $details->correct_answer=="1")?'selected="selected"':''?>>Option 1</option>								
+								<option value="2" <?=(isset($details->correct_answer) && $details->correct_answer=="2")?'selected="selected"':''?>>Option 2</option>
+								<option value="3" <?=(isset($details->correct_answer) && $details->correct_answer=="3")?'selected="selected"':''?>>Option 3</option>
+								<option value="4" <?=(isset($details->correct_answer) && $details->correct_answer=="4")?'selected="selected"':''?>>Option 4</option>
+								
+							</select>
+						</div>
+					</div>
 					
 						
                     

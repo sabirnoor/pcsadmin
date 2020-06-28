@@ -91,6 +91,7 @@
                                 <th>Max Time</th>
 
                                 <th>Total Questions</th>
+								<th>Published</th>
 
                                 <th>Action</th>
 
@@ -117,9 +118,11 @@
 
                             <td><?=$value['quiz_max_marks']?> </td>
 
-                            <td><?=$value['quiz_max_time']?> </td>
+                            <td><?=$value['quiz_max_time']?> Minutes</td>
 
                             <td><?=$value['quiz_total_question']?> </td>
+						
+							<td><?=(isset($value['isPublished']) && $value['isPublished']==1)?'Yes':'No'?> </td>
                             
 
                                 <td>

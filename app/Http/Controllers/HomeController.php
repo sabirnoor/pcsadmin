@@ -630,12 +630,10 @@ class HomeController extends Controller
                 'class_id' => $post['class_id'],
                 'subject_id' => $post['subject_id'],
                 'quiz_title' => $post['quiz_title'],
-
                 'quiz_max_marks' => $post['quiz_max_marks'],
-
                 'quiz_max_time' => $post['quiz_max_time'],
-
                 'quiz_total_question' => $post['quiz_total_question'],
+				'isPublished' => isset($post['isPublished']) ? 1 : 0,
                 
                 'updated_at' => date('Y-m-d H:i:s')
 
@@ -732,6 +730,7 @@ class HomeController extends Controller
                 'option3' => $post['option3'],
                 'option4' => $post['option4'],
                 'correct_answer' => $post['correct_answer'],
+                'score' => 1,  // default score 
                 'updated_at' => date('Y-m-d H:i:s')
             ); 
 

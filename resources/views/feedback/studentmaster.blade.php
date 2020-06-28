@@ -103,7 +103,7 @@
                     </div>
 					
 					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="quizid"> Select Gender* </label>
+						<label class="col-sm-3 control-label no-padding-right" for="Sex"> Select Gender* </label>
 						<div class="col-sm-9">
 							<select class="col-xs-10 col-sm-5" id="Sex" name="Sex" required>
 								<option value="">Select Gender</option>

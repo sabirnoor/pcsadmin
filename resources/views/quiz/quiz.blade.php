@@ -107,6 +107,15 @@
                         </div>
                     </div>
 					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="isPublished">&nbsp;</label>
+						<div class="checkbox">
+						  &nbsp;&nbsp;
+						  <label><input type="checkbox" name="isPublished" value="1" <?=(isset($details->isPublished) && $details->isPublished==1)?'checked="checked"':''?>>Publish</label>
+						</div>
+					</div>
+					
+					
 						
                     
 					<div class="space-4"></div>
