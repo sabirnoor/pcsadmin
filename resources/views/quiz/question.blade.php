@@ -41,10 +41,10 @@
 									
                     
 					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="quizid"> Select Quiz* </label>
+						<label class="col-sm-3 control-label no-padding-right" for="quizid"> Select Exam* </label>
 						<div class="col-sm-9">
 							<select class="col-xs-10 col-sm-5" id="quizid" name="quizid" required>
-								<option value="">Select Quiz</option>
+								<option value="">Select Exam</option>
 								
 								<?php 
                             if($QuizList){

@@ -93,22 +93,91 @@
                         </div>
 
                     </div>
-
 					
-
+										
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> Date Of Birth* </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="Date_of_Birth" name="Date_of_Birth" autocomplete value="<?=isset($details->Date_of_Birth)?date('d-m-Y',strtotime($details->Date_of_Birth)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 dateofbirth" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="quizid"> Select Gender* </label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-5" id="Sex" name="Sex" required>
+								<option value="">Select Gender</option>
+								
+								<option value="M" <?=(isset($details->Sex) && $details->Sex=="M")?'selected="selected"':''?>>Male</option>
+								
+								<option value="F" <?=(isset($details->Sex) && $details->Sex=="F")?'selected="selected"':''?>>Female</option>
+								
+							</select>
+						</div>
+					</div>
+					
 					<div class="form-group">
 
-                        <label class="col-sm-3 control-label no-padding-right" for="admission_no"> Admission No.* </label>
+                        <label class="col-sm-3 control-label no-padding-right" for="Father_Name"> Father's Name* </label>
 
                         <div class="col-sm-9">
 
-                            <input type="text" class="col-xs-10 col-sm-5" id="admission_no" name="admission_no" value="<?=isset($details->admission_no)?$details->admission_no:''?>" placeholder="Admission No." maxlength="20" required>
+                            <input type="text" class="col-xs-10 col-sm-5" id="Father_Name" name="Father_Name" value="<?=isset($details->Father_Name)?$details->Father_Name:''?>" placeholder="Enter Father's Name" maxlength="25" required>
 
                         </div>
 
                     </div>
-
 					
+					<div class="form-group">
+
+                        <label class="col-sm-3 control-label no-padding-right" for="Mother_Name"> Mother's Name* </label>
+
+                        <div class="col-sm-9">
+
+                            <input type="text" class="col-xs-10 col-sm-5" id="Mother_Name" name="Mother_Name" value="<?=isset($details->Mother_Name)?$details->Mother_Name:''?>" placeholder="Enter Mother's Name" maxlength="25" required>
+
+                        </div>
+
+                    </div>
+					
+										
+					<div class="form-group">
+
+                        <label class="col-sm-3 control-label no-padding-right" for="Address"> Address* </label>
+
+                        <div class="col-sm-9">
+
+                            <input type="text" class="col-xs-10 col-sm-5" id="Address" name="Address" value="<?=isset($details->Address)?$details->Address:''?>" placeholder="Enter Address" maxlength="25" required>
+
+                        </div>
+
+                    </div>
+					
+					
+					
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> Admission Date* </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="Admission_Date" name="Admission_Date" autocomplete value="<?=isset($details->Admission_Date)?date('d-m-Y',strtotime($details->Admission_Date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 dateofbirth" required>
+                        </div>
+                    </div>					
+
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="admission_no"> Admission No.* </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="col-xs-10 col-sm-5" id="admission_no" name="admission_no" value="<?=isset($details->admission_no)?$details->admission_no:''?>" placeholder="Admission No." maxlength="20" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+
+                        <label class="col-sm-3 control-label no-padding-right" for="Roll_No"> Roll No* </label>
+
+                        <div class="col-sm-9">
+                            <input type="number" class="col-xs-10 col-sm-5" id="Roll_No" name="Roll_No" value="<?=isset($details->Roll_No)?$details->Roll_No:''?>" placeholder="Enter Roll No" maxlength="5" required>
+                        </div>
+
+                    </div>					
 
 					<div class="form-group">
 

@@ -9,7 +9,7 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{url('/')}}">Dashboard</a>
             </li>
-            <li class="active">Quiz</li>
+            <li class="active">Exam</li>
         </ul><!-- /.breadcrumb -->
 
 
@@ -79,9 +79,9 @@
 					</div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="quiz_title"> Quiz Title* </label>
+                        <label class="col-sm-3 control-label no-padding-right" for="quiz_title"> Exam Title* </label>
                         <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="quiz_title" name="quiz_title" value="<?=isset($details->quiz_title)?$details->quiz_title:''?>" placeholder="Quiz Title" maxlength="255" required>
+                            <input type="text" class="col-xs-10 col-sm-5" id="quiz_title" name="quiz_title" value="<?=isset($details->quiz_title)?$details->quiz_title:''?>" placeholder="Exam Title" maxlength="255" required>
                         </div>
                     </div>
 					
@@ -95,8 +95,9 @@
 					<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right" for="quiz_max_time">  Max Time* </label>
                         <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="quiz_max_time" name="quiz_max_time" value="<?=isset($details->quiz_max_time)?$details->quiz_max_time:''?>" placeholder="Max Time" maxlength="20" required>
+                            <input type="number" class="col-xs-10 col-sm-5" id="quiz_max_time" name="quiz_max_time" value="<?=isset($details->quiz_max_time)?$details->quiz_max_time:''?>" placeholder="Max Time in minutes" maxlength="3" required>
                         </div>
+						
                     </div>
 					
 					<div class="form-group">

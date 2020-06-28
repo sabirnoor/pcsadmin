@@ -20,7 +20,7 @@
 
             </li>
 
-            <li class="active">Quiz</li>
+            <li class="active">Exam</li>
 
         </ul><!-- /.breadcrumb -->
 
@@ -84,7 +84,7 @@
 
                                 <th>Class</th>
                                 <th>Subject</th>
-                                <th>Quiz Title</th>
+                                <th>Exam Title</th>
 
                                 <th>Max Marks</th>
 

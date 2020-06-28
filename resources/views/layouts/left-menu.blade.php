@@ -480,7 +480,7 @@
 
                 <i class="menu-icon fa fa-list"></i>
 
-                <span class="menu-text"> Quiz </span>
+                <span class="menu-text"> Exam </span>
 
                 <b class="arrow fa fa-angle-down"></b>
 
@@ -494,7 +494,7 @@
 				<li class="">
                     <a href="{{url('quiz')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        Create Quiz
+                        Create Exam
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -502,7 +502,7 @@
 				<li class="">
                     <a href="{{url('quizlist')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        Manage Quiz
+                        Manage Exam
                     </a>
                     <b class="arrow"></b>
                 </li>

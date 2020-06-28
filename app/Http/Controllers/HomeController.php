@@ -421,7 +421,14 @@ class HomeController extends Controller
             $data = array(
 
                 'student_name' => $post['student_name'],
-
+                'Date_of_Birth' => DateFormates($post['Date_of_Birth'],'-'),
+                'Admission_Date' => DateFormates($post['Admission_Date'],'-'),
+                'Father_Name' => $post['Father_Name'],
+                'Mother_Name' => $post['Mother_Name'],
+                'Sex' => $post['Sex'],
+                'Roll_No' => $post['Roll_No'],
+                'Address' => $post['Address'],
+				
                 'admission_no' => $post['admission_no'],
 
                 'roll_no_previous' => $post['roll_no_previous'],

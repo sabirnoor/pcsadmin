@@ -82,7 +82,7 @@
 
                             <tr>
 
-                                <th>Quiz Title</th>
+                                <th>Exam Title</th>
                                 <th>Question Title</th>
 
                                 <th>Option 1</th>
