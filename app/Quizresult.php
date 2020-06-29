@@ -16,7 +16,7 @@ class Quizresult extends Model {
                         ->join('quiz as c2', 'c2.id', '=', 'c1.quizid','LEFT')                        
                         ->join('categories as c3', 'c3.id', '=', 'c2.subject_id','LEFT')                        
                         ->join('student_master as c4', 'c4.id', '=', 'c1.userid','LEFT')                        
-                        //->where('c1.IsDelete', 0)
+                        ->where('c1.IsDelete', 0)
                         ->orderBy('c1.quizid', 'ASC')->get()->toArray();
         
 		
