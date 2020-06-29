@@ -722,7 +722,7 @@ class HomeController extends Controller
         
         if ($request->isMethod('post')) {
 
-            $post = $request->all();
+            $post = $request->all(); 
 
             $data = array(
                 'quizid' => $post['quizid'],
