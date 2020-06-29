@@ -118,3 +118,7 @@ Route::match(['get', 'post'],'/deletequiz/{id?}', array('uses' => 'HomeControlle
 Route::match(['get', 'post'],'/question/{id?}', array('uses' => 'HomeController@question'));
 Route::match(['get', 'post'],'/questionlist/{id?}', array('uses' => 'HomeController@questionlist'));
 Route::match(['get', 'post'],'/deletequestion/{id?}', array('uses' => 'HomeController@deletequestion'));
+
+Route::match(['get', 'post'],'/result/{id?}', array('uses' => 'HomeController@result'));
+Route::match(['get', 'post'],'/resultlist/{id?}', array('uses' => 'HomeController@resultlist'));
+Route::match(['get', 'post'],'/deleteresult/{id?}', array('uses' => 'HomeController@deleteresult'));

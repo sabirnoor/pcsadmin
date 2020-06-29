@@ -29,6 +29,8 @@ use App\Feedback;
 use App\Studentmaster;
 use App\Quiz;
 use App\Question;
+use App\Quizresult;
+use App\Quizanswer;
 
 class HomeController extends Controller
 
@@ -764,7 +766,7 @@ class HomeController extends Controller
     public function questionlist(Request $request, $id = null)
     {
 
-        $QuestionList = Question::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get();
+        //$QuestionList = Question::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get();
         $QuestionList = Question::getquestion();
 		//print_r($QuestionList); exit;
 
@@ -804,4 +806,100 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
+	
+	// Result section
+
+    public function result(Request $request, $id = null)
+    {                
+        
+		$details = Quizresult::where(array('result_id' => $id))->first();
+		
+		$result_data = Quizresult::get_result_data($id); 
+		
+		$quizid = $details->quizid;
+		
+		$quiz_details = Quiz::where(array('id' => $quizid))->first();
+		
+		$correct_answer = 0; $wrong_answer = 0; $user_score = 0;$quiz_full_marks = 0; $percentage = 0;
+		$final_status = '';
+		
+		if($result_data){
+			foreach ($result_data as $value) {
+			$value = (array) $value;
+				if($value['optionchosen']==$value['correct_answer']){
+					$correct_answer++;
+					$user_score += $value['score'];
+				}
+		   }
+        }
+        
+        $quiz_full_marks = $quiz_details['quiz_max_marks'];
+		$quiz_total_question = $quiz_details['quiz_total_question'];
+
+		$wrong_answer = $quiz_total_question-$correct_answer;
+
+		if($quiz_full_marks>0){
+			$percentage = round($user_score*100/$quiz_full_marks);
+		}
+		if($percentage>=40){
+			$final_status = 'Pass';
+		}else{
+			$final_status = 'Fail';
+		}		
+		        
+		$result_params = array(
+                'final_status' => $final_status,
+                'user_score' => $user_score,                
+                'quiz_full_marks' => $quiz_full_marks,                
+                'percentage' => $percentage,                
+                'correct_answer' => $correct_answer,                  
+                'wrong_answer' => $wrong_answer                
+		);
+
+        return view('result/result', compact('id', 'details','result_params'));
+    }
+
+
+    public function resultlist(Request $request, $id = null)
+    {        
+        $QuizresultList = Quizresult::getresultlist();
+		//print_r($QuizresultList); exit;
+
+        return view('result/result-list', compact('QuizresultList', 'id'));
+    }
+
+
+
+    public function deleteresult(Request $request, $id = null)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+
+            $data = array(
+
+                'IsDelete' => 1,
+
+                'DeleteOn' => date('Y-m-d H:i:s')
+
+            );
+
+            $result = Quizresult::where('result_id', $id)->update($data);
+
+            if ($result) {
+
+                echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
+
+                exit;
+            } else {
+
+                echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+
+                exit;
+            }
+        } else {
+
+            die('Oops invalid request!!');
+        }
+    }
+	
 }
