@@ -51,7 +51,7 @@
                                 foreach ($QuizList as $value) {
 									$value = (array) $value;
                             ?>
-								<option value="<?=$value['id']?>" <?=(isset($details->quizid) && $details->quizid==$value['id'])?'selected="selected"':''?>><?=$value['quiz_title']?></option>
+								<option value="<?=$value['id']?>" <?=(isset($details->quiz_id) && $details->quiz_id==$value['id'])?'selected="selected"':''?>><?=$value['quiz_title']?></option>
 								<?php
                                 }
                             }
@@ -99,11 +99,12 @@
                         <thead>
                             <tr>
                                 <th>Quiz</th>
-                                <th>Student Name</th>
+                                <th nowrap>Student Name</th>
+                                <th nowrap>Mobile</th>
                                 <th nowrap>Invitation Link</th>
                                 <th nowrap>OTP Verified</th>
                                 <th nowrap>Date</th>
-                                <th>Action</th>
+                                <th nowrap>Action</th>
                             </tr>
                              </thead>
                         <tbody>
@@ -123,6 +124,7 @@
                                 
                                 <td nowrap><?=$value['quiz_title']?> </td>
                                 <td nowrap><?=$value['student_name']?> </td>
+                                <td nowrap><?=$value['contact_no']?> </td>
                                 <td nowrap><?=$front_url.'exam-invitation/'.$value['invitation_link']?> </td>
                                 <td nowrap><?=($value['isVerified']==1)?'Yes':'No';?> </td>
                                
