@@ -380,9 +380,7 @@
 
                     <b class="arrow"></b>
 
-                </li>
-
-                
+                </li>                
 
                 <li class="">
 
@@ -396,21 +394,13 @@
 
                         </span>
 
-
-
                         <b class="arrow fa fa-angle-down"></b>
 
                     </a>
 
-
-
                     <b class="arrow"></b>
 
-
-
-                    <ul class="submenu">
-
-                        
+                    <ul class="submenu">                        
 
                         <li class="">
 
@@ -422,13 +412,9 @@
 
                             </a>
 
-
-
                             <b class="arrow"></b>
 
                         </li>
-
-
 
                         <li class="">
 
@@ -439,14 +425,9 @@
                                 Sample Paper
 
                             </a>
-
-
-
                             <b class="arrow"></b>
 
                         </li>
-
-
 
                         <li class="">
 
@@ -462,13 +443,9 @@
 
                         </li>
 
-
-
                     </ul>
 
-                </li>
-
-                
+                </li>                
 
             </ul>
 
@@ -488,8 +465,7 @@
 
             <b class="arrow"></b>
 
-            <ul class="submenu">
-				
+            <ul class="submenu">				
 
 				<li class="">
                     <a href="{{url('quiz')}}">
@@ -503,6 +479,14 @@
                     <a href="{{url('quizlist')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
                         Manage Exam
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+				
+				<li class="">
+                    <a href="{{url('resultlist')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Manage Result
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -532,7 +516,7 @@
 
                 <i class="menu-icon fa fa-list"></i>
 
-                <span class="menu-text"> Exam Result </span>
+                <span class="menu-text"> Invitation </span>
 
                 <b class="arrow fa fa-angle-down"></b>
 
@@ -543,9 +527,9 @@
             <ul class="submenu">
 								
 				<li class="">
-                    <a href="{{url('resultlist')}}">
+                    <a href="{{url('invitation')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
-                        Manage Result
+                        Create Invitation
                     </a>
                     <b class="arrow"></b>
                 </li>
@@ -563,21 +547,13 @@
 
                 <span class="menu-text"> FeedBack </span>
 
-
-
                 <b class="arrow fa fa-angle-down"></b>
 
             </a>
 
-
-
             <b class="arrow"></b>
 
-
-
-            <ul class="submenu">
-
-                                
+            <ul class="submenu">                                
 
                 <li class="">
 
@@ -591,9 +567,7 @@
 
                     <b class="arrow"></b>
 
-                </li>
-
-				
+                </li>				
 
 				<li class="">
 
@@ -607,9 +581,7 @@
 
                     <b class="arrow"></b>
 
-                </li>
-
-				
+                </li>				
 
 				<li class="">
 
@@ -624,19 +596,11 @@
                     <b class="arrow"></b>
 
                 </li>
-
-
-
                     </ul>
 
             </li>
 
-                
-
-           
-
-
-
+                           
         <li class="">
 
             <a href="{{url('noticeboard')}}">
@@ -677,12 +641,7 @@
 
             <b class="arrow"></b>
 
-        </li>
-
-        
-
-        
-
+        </li>                
          <li class="">
 
             <a href="#" class="dropdown-toggle">
@@ -691,17 +650,10 @@
 
                 <span class="menu-text"> Gallery Manage </span>
 
-
-
                 <b class="arrow fa fa-angle-down"></b>
 
             </a>
-
-
-
             <b class="arrow"></b>
-
-
 
             <ul class="submenu">
 

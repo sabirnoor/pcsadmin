@@ -170,6 +170,14 @@ $action = Request::segment(1);
 					changeYear: true,
 					maxDate:0
 				});
+				
+				$( ".quizdate" ).datepicker({
+					showOtherMonths: true,
+					selectOtherMonths: true,
+					dateFormat: 'dd-mm-yy',
+					changeMonth: true,
+					changeYear: true					
+				});
 
             });
 			
