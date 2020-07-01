@@ -92,6 +92,8 @@
 
                                 <th>Total Questions</th>
 								<th>Published</th>
+								<th>Starts On</th>
+								<th>Ends On</th>
 
                                 <th>Action</th>
 
@@ -106,7 +108,10 @@
 
                                 foreach ($QuizList as $value) {
 								$value = (array) $value;
-                                 
+								
+                               $quiz_start_date=isset($value['quiz_start_date'])?date('d-m-Y',strtotime($value['quiz_start_date'])):''; 
+							   
+                               $quiz_end_date=isset($value['quiz_end_date'])?date('d-m-Y',strtotime($value['quiz_end_date'])):'';  
 
                             ?>
 
@@ -118,12 +123,14 @@
 
                             <td><?=$value['quiz_max_marks']?> </td>
 
-                            <td><?=$value['quiz_max_time']?> Minutes</td>
+                            <td><?=$value['quiz_max_time']?></td>
 
-                            <td><?=$value['quiz_total_question']?> </td>
+                            <td><?=$value['quiz_total_question']?> </td>                           
 						
 							<td><?=(isset($value['isPublished']) && $value['isPublished']==1)?'Yes':'No'?> </td>
-                            
+                             
+							 <td><?=$quiz_start_date.' '.$value['quiz_start_time']?> </td>
+							 <td><?=$quiz_end_date.' '.$value['quiz_end_time']?> </td>
 
                                 <td>
 

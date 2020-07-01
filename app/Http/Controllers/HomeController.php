@@ -626,8 +626,10 @@ class HomeController extends Controller
         if ($request->isMethod('post')) {
 
             $post = $request->all();
-
-            $data = array(
+ 
+            $quiz_start_time = $post['start_time_hour'].':'.$post['start_time_min'].':00';
+            $quiz_end_time = $post['end_time_hour'].':'.$post['end_time_min'].':00';
+			$data = array(
 
                 'class_id' => $post['class_id'],
                 'subject_id' => $post['subject_id'],
@@ -635,6 +637,10 @@ class HomeController extends Controller
                 'quiz_max_marks' => $post['quiz_max_marks'],
                 'quiz_max_time' => $post['quiz_max_time'],
                 'quiz_total_question' => $post['quiz_total_question'],
+                'quiz_start_date' => DateFormates($post['quiz_start_date'],'-'),
+				'quiz_start_time' => $quiz_start_time,
+                'quiz_end_date' => DateFormates($post['quiz_end_date'],'-'),
+				'quiz_end_time' => $quiz_end_time,
 				'isPublished' => isset($post['isPublished']) ? 1 : 0,
                 
                 'updated_at' => date('Y-m-d H:i:s')

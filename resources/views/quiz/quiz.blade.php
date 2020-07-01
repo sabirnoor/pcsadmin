@@ -95,7 +95,7 @@
 					<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right" for="quiz_max_time">  Max Time* </label>
                         <div class="col-sm-9">
-                            <input type="number" class="col-xs-10 col-sm-5" id="quiz_max_time" name="quiz_max_time" value="<?=isset($details->quiz_max_time)?$details->quiz_max_time:''?>" placeholder="Max Time in minutes" maxlength="3" required>
+                            <input type="text" class="col-xs-10 col-sm-5" id="quiz_max_time" name="quiz_max_time" value="<?=isset($details->quiz_max_time)?$details->quiz_max_time:''?>" placeholder="eg. 2 hours" maxlength="20" required>
                         </div>
 						
                     </div>
@@ -106,6 +106,85 @@
                             <input type="text" class="col-xs-10 col-sm-5" id="quiz_total_question" name="quiz_total_question" value="<?=isset($details->quiz_total_question)?$details->quiz_total_question:''?>" placeholder="Total Questions" maxlength="3" required>
                         </div>
                     </div>
+					
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> Start Date* </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="quiz_start_date" name="quiz_start_date" autocomplete value="<?=isset($details->quiz_start_date)?date('d-m-Y',strtotime($details->quiz_start_date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 dateofbirth" required>
+                        </div>
+                    </div>
+					<?php 
+					$start_time_arr = array();
+					if(isset($details->quiz_start_time)){
+						$start_time_arr = explode(':',$details->quiz_start_time);
+					}
+					
+					$end_time_arr = array();
+					if(isset($details->quiz_end_time)){
+						$end_time_arr = explode(':',$details->quiz_end_time);
+					}
+					?>
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> Start Time* </label>
+                        <div class="col-sm-3">
+                            <select class="" id="start_time_hour" name="start_time_hour" required>
+								<option value="">Hour</option>
+								<?php 								
+								for($i=1;$i<24;$i++){?>
+								<option value="<?php echo str_pad($i,2,"0",STR_PAD_LEFT);?>" <?=(isset($start_time_arr[0]) && $start_time_arr[0]==$i)?'selected="selected"':''?>><?php echo str_pad($i,2,"0",STR_PAD_LEFT);?></option>
+								<?php } ?>
+								
+							</select> 
+                        </div>
+						 
+						 <div class="col-sm-3">
+                            <select class="" id="start_time_min" name="start_time_min" required>
+								<option value="">Minute</option>
+								<?php 								
+								for($i=0;$i<60;$i++){?>
+								<option value="<?php echo str_pad($i,2,"0",STR_PAD_LEFT);?>" <?=(isset($start_time_arr[1]) && $start_time_arr[1]==$i)?'selected="selected"':''?>><?php echo str_pad($i,2,"0",STR_PAD_LEFT);?></option>
+								<?php } ?>
+								
+							</select>
+                        </div>
+						
+                    </div>
+					
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> End Date* </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="quiz_end_date" name="quiz_end_date" autocomplete value="<?=isset($details->quiz_end_date)?date('d-m-Y',strtotime($details->quiz_end_date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 dateofbirth" required>
+                        </div>
+                    </div>
+					
+					<div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> End Time* </label>
+                        <div class="col-sm-3">
+                            <select class="" id="end_time_hour" name="end_time_hour" required>
+								<option value="">Hour</option>
+								<?php 								
+								for($i=1;$i<24;$i++){?>
+								<option value="<?php echo str_pad($i,2,"0",STR_PAD_LEFT);?>" <?=(isset($end_time_arr[0]) && $end_time_arr[0]==$i)?'selected="selected"':''?>><?php echo str_pad($i,2,"0",STR_PAD_LEFT);?></option>
+								<?php } ?>
+								
+							</select>
+                        </div>
+						 
+						 <div class="col-sm-3">
+                            <select class="" id="end_time_min" name="end_time_min" required>
+								<option value="">Minute</option>
+								<?php 								
+								for($i=0;$i<60;$i++){?>
+								<option value="<?php echo str_pad($i,2,"0",STR_PAD_LEFT);?>" <?=(isset($end_time_arr[1]) && $end_time_arr[1]==$i)?'selected="selected"':''?>><?php echo str_pad($i,2,"0",STR_PAD_LEFT);?></option>
+								<?php } ?>
+								
+							</select>
+                        </div>
+						
+                    </div>
+					
+					
+
 					
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="isPublished">&nbsp;</label>
