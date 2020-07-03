@@ -929,7 +929,7 @@ class HomeController extends Controller
 
                 $uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
                 $invitelink =  $uniqueid.$randno; 
-				$otp = rand(1000,9999);
+				$otp = rand(100000,999999);
 				
 				$data['invitation_link'] = $invitelink;
 				$data['otp'] = $otp;				
