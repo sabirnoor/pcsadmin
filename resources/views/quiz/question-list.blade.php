@@ -3,7 +3,15 @@
 
 
 @section('content')
-
+<style>
+.scrolldetails {
+	width:auto;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 100px !important;           
+	padding-bottom: 1px;
+}
+</style>
 <?php //echo '<pre>';print_r($UploadflashList);die; ?>
 
 <div class="main-content-inner">
@@ -111,7 +119,7 @@
                             <tr id="<?=$value['id']?>">
 
                             <td><?=$value['quiz_title']?> </td>
-                            <td><?=$value['question_title']?> </td>
+                            <td><div class="scrolldetails"><?=$value['question_title']?></div> </td>
 							
                             <td><?=$value['option1']?> </td>
 

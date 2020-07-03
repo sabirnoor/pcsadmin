@@ -16,7 +16,9 @@ class Question extends Model {
                         ->join('quiz as c2', 'c2.id', '=', 'c1.quizid','LEFT')                        
                         ->where('c1.IsDelete', 0)
                         //->groupBy('c2.cid')
+                        ->orderBy('c2.quiz_title', 'ASC')
                         ->orderBy('c1.question_title', 'ASC')->get()->toArray();
+                        //->orderBy(array('c2.quiz_title'=>'ASC', 'c1.question_title'=>'ASC'))->get()->toArray();
         
 		
         return $data;

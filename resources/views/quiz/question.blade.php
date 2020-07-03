@@ -64,7 +64,7 @@
                         <label class="col-sm-3 control-label no-padding-right" for="question_title"> Question Title* </label>
                         <div class="col-sm-9">                            
 							
-							<textarea name="question_title" id="editor1" rows="" cols="46" required><?=isset($details->question_title)?$details->question_title:''?></textarea>
+							<textarea name="question_title" id="editor1" rows="" cols="10" required><?=isset($details->question_title)?$details->question_title:''?></textarea>
                         </div>
                     </div>
 					
