@@ -61,21 +61,34 @@
 					</div>
 					
 					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="classFilter"> Select Class* </label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-5" id="classFilter" name="classFilter" required>
+								<option value="">Select Class</option>
+								
+								<?php 
+						
+								if($allClassList){
+									foreach ($allClassList as $value) {
+									 $value = (array) $value;
+								?>
+				 
+								<option value="<?=$value['present_class']?>"><?=$value['present_class']?></option>
+								<?php
+                                }
+                            }
+                           ?>
+							</select>
+						</div>
+					</div>
+					
+					<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="student_master_id"> Select Student* </label>
 					<div class="col-sm-9">
-						<select class="col-xs-10 col-sm-5" id="student_master_id" name="student_master_id" required>
+						<select class="col-xs-10 col-sm-5" id="student_master_id" name="student_master_id[]" multiple required>
 							<option value="">Select Student</option>
 							
-							<?php 
-						if($StudentmasterList){
-							foreach ($StudentmasterList as $value) {
-								
-						?>
-							<option value="<?=$value['id']?>" <?=(isset($details->student_master_id) && $details->student_master_id==$value['id'])?'selected="selected"':''?>><?=$value['student_name']?>(<?=$value['present_class']?>)</option>
-							<?php
-							}
-						}
-					   ?>
+							
 						</select>
 					</div>
 				</div>
@@ -98,7 +111,7 @@
                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Quiz</th>
+                                <th>Exam</th>
                                 <th nowrap>Student Name</th>
                                 <th nowrap>Mobile</th>
                                 <th nowrap>Invitation Link</th>
@@ -130,7 +143,7 @@
                                
                                 <td nowrap><?=date('d-M-Y',strtotime($value['invitation_created']))?></td>
                                 <td>
-                                    <a href="<?=url('invitation/'.$value['id'])?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
+									
                                     <a href="#" id="<?=$value['id']?>" title="Delete" class="deleteinvitation"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
                                 </td>
 							</tr>

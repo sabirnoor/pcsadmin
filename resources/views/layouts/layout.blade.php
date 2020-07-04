@@ -80,6 +80,9 @@ $action = Request::segment(1);
         <?php if($action == 'ourmotto' || $action == 'ourmotto' || $action == 'events' || $action == 'aboutus' || $action == 'newspaper' || $action == 'newsevents' || $action == 'director_desk' || $action == 'academics' || $action == 'contact_us' || $action == 'question'){ ?>
         <script src="{{ asset('public/ckeditor/ckeditor.js') }}"/></script>
         <?php } ?>
+		<script>
+            var site_url = "{!! url('/') !!}";
+        </script>
         <!-- inline scripts related to this page -->
         <script type="text/javascript">
             jQuery(function ($) {
