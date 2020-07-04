@@ -933,7 +933,7 @@ class HomeController extends Controller
 				
 				$data['invitation_link'] = $invitelink;
 				$data['otp'] = $otp;				
-                $data['isVerified'] = 0;                
+                $data['isVerified'] = 1;  //default 1 for the time being              
                 $data['IsDelete'] = 0;
 				$data['created_at'] = date('Y-m-d H:i:s');
 
