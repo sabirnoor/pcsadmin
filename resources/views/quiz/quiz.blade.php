@@ -110,7 +110,7 @@
 					<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right" for="title"> Start Date* </label>
                         <div class="col-sm-9">
-                            <input type="text" id="quiz_start_date" name="quiz_start_date" autocomplete value="<?=isset($details->quiz_start_date)?date('d-m-Y',strtotime($details->quiz_start_date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 dateofbirth" required>
+                            <input type="text" id="quiz_start_date" name="quiz_start_date"  value="<?=isset($details->quiz_start_date)?date('d-m-Y',strtotime($details->quiz_start_date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 quizdate" required>
                         </div>
                     </div>
 					<?php 
@@ -153,7 +153,7 @@
 					<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right" for="title"> End Date* </label>
                         <div class="col-sm-9">
-                            <input type="text" id="quiz_end_date" name="quiz_end_date" autocomplete value="<?=isset($details->quiz_end_date)?date('d-m-Y',strtotime($details->quiz_end_date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 dateofbirth" required>
+                            <input type="text" id="quiz_end_date" name="quiz_end_date" value="<?=isset($details->quiz_end_date)?date('d-m-Y',strtotime($details->quiz_end_date)):''?>" placeholder="Pick Date" class="col-xs-10 col-sm-5 quizdate" required>
                         </div>
                     </div>
 					

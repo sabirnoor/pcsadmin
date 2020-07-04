@@ -12,10 +12,13 @@ class Question extends Model {
 	
 	 public static function getquestion(){
         $data = DB::table('question as c1')
-                        ->select('c1.id','c1.question_title','c1.option1', 'c1.option2', 'c1.option3', 'c1.option4', 'c1.correct_answer', 'c2.quiz_title as quiz_title')
+                        ->select('c1.id','c1.question_title','c1.option1', 'c1.option2', 'c1.option3', 'c1.option4', 'c1.correct_answer',  'c2.quiz_title as quiz_title')
                         ->join('quiz as c2', 'c2.id', '=', 'c1.quizid','LEFT')                        
                         ->where('c1.IsDelete', 0)
-                        ->orderBy('c1.quizid', 'ASC')->get()->toArray();
+                        //->groupBy('c2.cid')
+                        ->orderBy('c2.quiz_title', 'ASC')
+                        ->orderBy('c1.question_title', 'ASC')->get()->toArray();
+                        //->orderBy(array('c2.quiz_title'=>'ASC', 'c1.question_title'=>'ASC'))->get()->toArray();
         
 		
         return $data;

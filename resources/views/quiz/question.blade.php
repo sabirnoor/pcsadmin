@@ -62,8 +62,9 @@
 					
 					<div class="form-group">
                         <label class="col-sm-3 control-label no-padding-right" for="question_title"> Question Title* </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="question_title" name="question_title" value="<?=isset($details->question_title)?$details->question_title:''?>" placeholder="Question Title" maxlength="255" required>
+                        <div class="col-sm-9">                            
+							
+							<textarea name="question_title" id="editor1" rows="" cols="10" required><?=isset($details->question_title)?$details->question_title:''?></textarea>
                         </div>
                     </div>
 					

@@ -31,6 +31,7 @@ use App\Quiz;
 use App\Question;
 use App\Quizresult;
 use App\Quizanswer;
+use App\Quizinvitation;
 
 class HomeController extends Controller
 
@@ -904,6 +905,110 @@ class HomeController extends Controller
             }
         } else {
 
+            die('Oops invalid request!!');
+        }
+    }
+	
+	// Quizinvitation section
+    public function invitation(Request $request, $id = null)
+
+    {
+       
+        if ($request->isMethod('post')) {
+
+            $post = $request->all(); 
+			
+			if(isset($post['student_master_id']) && !empty($post['student_master_id'])){
+				foreach($post['student_master_id'] as $value){
+
+            $data = array(
+                'quiz_id' => $post['quizid'],
+                'student_master_id' => $value,                
+                'updated_at' => date('Y-m-d H:i:s')
+            ); 
+            //echo '<pre>';print_r($data);die;
+
+            if (empty($id)) {
+
+                $uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
+                $invitelink =  $uniqueid.$randno; 
+				$otp = rand(100000,999999);
+				
+				$data['invitation_link'] = $invitelink;
+				$data['otp'] = $otp;				
+                $data['isVerified'] = 1;  //default 1 for the time being              
+                $data['IsDelete'] = 0;
+				$data['created_at'] = date('Y-m-d H:i:s');
+
+                $insert = Quizinvitation::insert($data);
+
+                
+            } else {
+
+                $update = Quizinvitation::where('id', $id)->update($data);
+                
+            }
+						
+			}
+			if($insert){
+				return redirect('invitation')->with('msgsuccess', 'Save successfully');
+			}
+			if($update){
+				return redirect('invitation')->with('msgsuccess', 'Update successfully');
+			}
+			}
+        
+		}
+
+        $QuizList = Quiz::getquiz();
+        $QuizinvitationList = Quizinvitation::getquizinvitation();
+		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
+		$details = Quizinvitation::where(array('id' => $id))->first();
+		
+		$allClassList = Studentmaster::getAllClass();
+		
+		//print_r($StudentmasterList);exit;
+        return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details','QuizList','StudentmasterList','allClassList'));
+    }
+	
+	public function getfilteredstudents(Request $request) {
+        //echo 1; exit;
+        if ($request->isXmlHttpRequest()) {
+            if ($request->isMethod('post')) {
+                $class_name = $request->student_class;
+                $students = Studentmaster::getfilteredstudents($class_name);
+
+                if ($students) {
+                    echo json_encode(array('success' => true, 'data' => $students, 'message' => 'successfully'));
+                    exit;
+                } else {
+                    echo json_encode(array('success' => false, 'data' => '', 'message' => 'Unable to load. please try again later!'));
+                    exit;
+                }
+            }
+        }
+    }
+
+    public function deleteinvitation(Request $request, $id = null)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+
+            $data = array(
+                'IsDelete' => 1,
+                'DeleteOn' => date('Y-m-d H:i:s')
+            );
+
+            $result = Quizinvitation::where('id', $id)->update($data);
+
+            if ($result) {
+                echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
+                exit;
+            } else {
+                echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+                exit;
+            }
+        } else {
             die('Oops invalid request!!');
         }
     }
