@@ -23,6 +23,8 @@ $action = Request::segment(1);
 
         <link rel="stylesheet" href="{{ asset('public/assets/css/ace-skins.min.css') }}" />
         <link rel="stylesheet" href="{{ asset('public/assets/css/ace-rtl.min.css') }}" />
+        <!-- select2 css-->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/css/select2.min.css" />
         <script src="{{ asset('public/assets/js/ace-extra.min.js') }}"></script>
 
 
@@ -77,6 +79,10 @@ $action = Request::segment(1);
         <!-- ace scripts -->
         <script src="{{ asset('public/assets/js/ace-elements.min.js') }}"></script>
         <script src="{{ asset('public/assets/js/ace.min.js') }}"></script>
+		
+		<!-- Select2 -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-beta.1/js/select2.min.js"></script>
+
         <?php if($action == 'ourmotto' || $action == 'ourmotto' || $action == 'events' || $action == 'aboutus' || $action == 'newspaper' || $action == 'newsevents' || $action == 'director_desk' || $action == 'academics' || $action == 'contact_us' || $action == 'question'){ ?>
         <script src="{{ asset('public/ckeditor/ckeditor.js') }}"/></script>
         <?php } ?>
