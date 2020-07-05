@@ -919,22 +919,26 @@ class HomeController extends Controller
             $post = $request->all(); 
 			
 			if(isset($post['student_master_id']) && !empty($post['student_master_id'])){
+                $quiz_details = Quiz::select('quiz_start_date','quiz_start_time')->where(array('id' => $post['quizid'],'IsDelete' => 0))->first();
 				foreach($post['student_master_id'] as $value){
 
             $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'],'student_master_id' => $value,'IsDelete' => 0))->first();
 			
 			
+			$student_details = Studentmaster::select('present_class','student_name','contact_no')->where(array('id' => $value,'IsDelete' => 0))->first();
 			$data = array(
                 'quiz_id' => $post['quizid'],
                 'student_master_id' => $value,                
                 'updated_at' => date('Y-m-d H:i:s')
             ); 
-            //echo '<pre>';print_r($data);die;
-
+            $startDate = date('dS F',strtotime($quiz_details->quiz_start_date));
+            $startTime = date('h:i a',strtotime($quiz_details->quiz_start_time));
+            $message = 'Dear students analyse your skill with on line unit test going to start from '.$startDate.' from '.$startTime.'.just one click.......... and start the test';
+            
             if(!isset($quiz_invitation_details->id)){ //Do not insert record if quiz already assigned
-
-                $uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
-                $invitelink =  $uniqueid.$randno; 
+                $invitelink =  base_convert(rand(1000,99999),10,36);
+                //$uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
+                //$invitelink =  $uniqueid.$randno; 
 				$otp = rand(100000,999999);
 				
 				$data['invitation_link'] = $invitelink;
@@ -944,6 +948,21 @@ class HomeController extends Controller
 				$data['created_at'] = date('Y-m-d H:i:s');
 
                 $insert = Quizinvitation::insert($data);
+
+                $quizmessage = $message.' '.'http://www.pcskhalispur.com/din/'. $invitelink;
+                $mobileno = $student_details->contact_no;
+                $msg = str_replace(' ', '%20', $quizmessage);
+                
+                $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+                
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $curl_response = curl_exec($ch);
+                //print_r($curl_response);
+                curl_close($ch);
+                $result = json_decode($curl_response, true);
 
                 
             } 

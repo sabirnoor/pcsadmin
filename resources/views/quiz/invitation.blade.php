@@ -138,7 +138,7 @@
                                 <td nowrap><?=$value['quiz_title']?> </td>
                                 <td nowrap><?=$value['student_name']?> </td>
                                 <td nowrap><?=$value['contact_no']?> </td>
-                                <td nowrap><?=$front_url.'invitation/'.$value['invitation_link']?> </td>
+                                <td nowrap><?=$front_url.'din/'.$value['invitation_link']?> </td>
                                 <td nowrap><?=($value['isVerified']==1)?'Yes':'No';?> </td>
                                
                                 <td nowrap><?=date('d-M-Y',strtotime($value['invitation_created']))?></td>
