@@ -85,7 +85,7 @@
 					<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="student_master_id"> Select Student* </label>
 					<div class="col-sm-9">
-						<select class="col-xs-10 col-sm-5" id="student_master_id" name="student_master_id[]" multiple required>
+						<select class="col-xs-10 col-sm-5 select2" id="student_master_id" name="student_master_id[]" multiple required>
 							<option value="">Select Student</option>
 							
 							
@@ -138,7 +138,7 @@
                                 <td nowrap><?=$value['quiz_title']?> </td>
                                 <td nowrap><?=$value['student_name']?> </td>
                                 <td nowrap><?=$value['contact_no']?> </td>
-                                <td nowrap><?=$front_url.'exam-invitation/'.$value['invitation_link']?> </td>
+                                <td nowrap><?=$front_url.'invitation/'.$value['invitation_link']?> </td>
                                 <td nowrap><?=($value['isVerified']==1)?'Yes':'No';?> </td>
                                
                                 <td nowrap><?=date('d-M-Y',strtotime($value['invitation_created']))?></td>
@@ -166,4 +166,7 @@
     </div><!-- /.page-content -->
 </div>
 
+<script>
+
+</script>
 @endsection

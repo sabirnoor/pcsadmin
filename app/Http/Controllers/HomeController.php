@@ -921,14 +921,17 @@ class HomeController extends Controller
 			if(isset($post['student_master_id']) && !empty($post['student_master_id'])){
 				foreach($post['student_master_id'] as $value){
 
-            $data = array(
+            $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'],'student_master_id' => $value,'IsDelete' => 0))->first();
+			
+			
+			$data = array(
                 'quiz_id' => $post['quizid'],
                 'student_master_id' => $value,                
                 'updated_at' => date('Y-m-d H:i:s')
             ); 
             //echo '<pre>';print_r($data);die;
 
-            if (empty($id)) {
+            if(!isset($quiz_invitation_details->id)){ //Do not insert record if quiz already assigned
 
                 $uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
                 $invitelink =  $uniqueid.$randno; 
@@ -943,20 +946,16 @@ class HomeController extends Controller
                 $insert = Quizinvitation::insert($data);
 
                 
-            } else {
-
-                $update = Quizinvitation::where('id', $id)->update($data);
-                
-            }
+            } 
 						
-			}
-			if($insert){
+			}//end foreach
+			
+			if(isset($insert)){
 				return redirect('invitation')->with('msgsuccess', 'Save successfully');
 			}
-			if($update){
-				return redirect('invitation')->with('msgsuccess', 'Update successfully');
-			}
-			}
+			
+			
+			}//endif
         
 		}
 
