@@ -959,7 +959,7 @@ class HomeController extends Controller
                         $data['created_at'] = date('Y-m-d H:i:s');
 
                         $insert = Quizinvitation::insert($data);
-
+                        //echo $quizmessage;die;
                         $mobileno = $student_details->contact_no;
                         $msg = str_replace(' ', '%20', $quizmessage);
 
@@ -970,7 +970,6 @@ class HomeController extends Controller
                         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_response = curl_exec($ch);
-                        //print_r($curl_response);
                         curl_close($ch);
                         $result = json_decode($curl_response, true);
                     }
