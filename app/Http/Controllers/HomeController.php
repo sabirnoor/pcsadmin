@@ -424,14 +424,14 @@ class HomeController extends Controller
             $data = array(
 
                 'student_name' => $post['student_name'],
-                'Date_of_Birth' => DateFormates($post['Date_of_Birth'],'-'),
-                'Admission_Date' => DateFormates($post['Admission_Date'],'-'),
+                'Date_of_Birth' => DateFormates($post['Date_of_Birth'], '-'),
+                'Admission_Date' => DateFormates($post['Admission_Date'], '-'),
                 'Father_Name' => $post['Father_Name'],
                 'Mother_Name' => $post['Mother_Name'],
                 'Sex' => $post['Sex'],
                 'Roll_No' => $post['Roll_No'],
-                'Address' => $post['Address'], 
-				
+                'Address' => $post['Address'],
+
                 'admission_no' => $post['admission_no'],
 
                 'roll_no_previous' => $post['roll_no_previous'],
@@ -511,59 +511,60 @@ class HomeController extends Controller
         if ($request->isXmlHttpRequest()) {
             $post = $request->all();
             //echo url('/');die;
-			if(isset($post['studentId']) && !empty($post['studentId'])){
-				foreach($post['studentId'] as $value){
-					$shortCode =  base_convert(rand(1000,99999),10,36);
-					$result = Studentmaster::where('id', $value)->first();
-					
-					if ($result) {
-						$data = array(
-							'student_master_id' => $value,
-							'shortCode' => $shortCode,
-							'student_name' => $result->student_name,
-							'admission_no' => $result->admission_no,
-							'roll_no_previous' => $result->roll_no_previous,
-							'present_class' => $result->present_class,
-							'contact_no' => $result->contact_no,
-							'whatsapp_no' => $result->whatsapp_no,
-							'feedbackmessage' => $post['feedbackmessage'],
-							'comments' => '',
-							'technical_issue' => '',
-							'suggestion' => '',
-							'isPublished' => 0,
-							'IsDelete' => 0,
-							'created_at' => date('Y-m-d H:i:s'),
-							'updated_at' => date('Y-m-d H:i:s')
-						);
-						$insertId = Feedback::insertGetId($data);
-						if($insertId){
-							$feedbackmessage = $post['feedbackmessage'].' '.'http://www.pcskhalispur.com/di2/'. $shortCode;
-							$mobileno = $result->contact_no;//$post['mobileno'];
-							$msg = str_replace(' ', '%20', $feedbackmessage);
-							
-							$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
-							
-							$ch = curl_init();
-							curl_setopt($ch, CURLOPT_URL, $url);
-							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-							$curl_response = curl_exec($ch);
-							//print_r($curl_response);
-							curl_close($ch);
-							$result = json_decode($curl_response, true);
-						}
-					}
-				}
-				if (isset($result['status']) && $result['status'] == 1) {
+            if (isset($post['studentId']) && !empty($post['studentId'])) {
+                foreach ($post['studentId'] as $value) {
+                    $shortCode =  base_convert(rand(1000, 99999), 10, 36);
+                    $result = Studentmaster::where('id', $value)->first();
+
+                    if ($result) {
+                        $data = array(
+                            'student_master_id' => $value,
+                            'shortCode' => $shortCode,
+                            'student_name' => $result->student_name,
+                            'admission_no' => $result->admission_no,
+                            'roll_no_previous' => $result->roll_no_previous,
+                            'present_class' => $result->present_class,
+                            'contact_no' => $result->contact_no,
+                            'whatsapp_no' => $result->whatsapp_no,
+                            'feedbackmessage' => $post['feedbackmessage'],
+                            'comments' => '',
+                            'technical_issue' => '',
+                            'suggestion' => '',
+                            'isPublished' => 0,
+                            'IsDelete' => 0,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s')
+                        );
+                        $insertId = Feedback::insertGetId($data);
+                        if ($insertId) {
+                            $feedbackmessage = $post['feedbackmessage'] . ' ' . 'http://www.pcskhalispur.com/di2/' . $shortCode;
+                            $mobileno = $result->contact_no; //$post['mobileno'];
+                            $msg = str_replace(' ', '%20', $feedbackmessage);
+
+                            $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, $url);
+                            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                            $curl_response = curl_exec($ch);
+                            //print_r($curl_response);
+                            curl_close($ch);
+                            $result = json_decode($curl_response, true);
+                        }
+                    }
+                }
+                if (isset($result['status']) && $result['status'] == 1) {
                     echo json_encode(array('success' => true, 'message' => 'Message Sent Successfully'));
                     exit;
                 } else {
                     echo json_encode(array('success' => false, 'message' => 'Oops something went wrong! try again.'));
                     exit;
                 }
-			}
-			pr($post);die;
-            $shortCode =  base_convert(rand(1000,99999),10,36);
+            }
+            pr($post);
+            die;
+            $shortCode =  base_convert(rand(1000, 99999), 10, 36);
             $result = Studentmaster::where('id', $post['studentId'])->first();
             if ($result) {
                 $data = array(
@@ -586,13 +587,13 @@ class HomeController extends Controller
                 );
                 $insertId = Feedback::insertGetId($data);
             }
-            if($insertId){
-                $feedbackmessage = $post['feedbackmessage'].' '.'http://www.pcskhalispur.com/di2/'. $shortCode;
-                $mobileno = $result->contact_no;//$post['mobileno'];
+            if ($insertId) {
+                $feedbackmessage = $post['feedbackmessage'] . ' ' . 'http://www.pcskhalispur.com/di2/' . $shortCode;
+                $mobileno = $result->contact_no; //$post['mobileno'];
                 $msg = str_replace(' ', '%20', $feedbackmessage);
-                
+
                 $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
-                
+
                 $ch = curl_init();
                 curl_setopt($ch, CURLOPT_URL, $url);
                 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -608,29 +609,29 @@ class HomeController extends Controller
                     echo json_encode(array('success' => false, 'message' => 'Oops something went wrong! try again.'));
                     exit;
                 }
-            }else{
+            } else {
                 echo json_encode(array('success' => false, 'message' => 'Record not found.'));
                 exit;
             }
             //static url
-            
+
         } else {
             die('Oops invalid request!!');
         }
     }
-	
-	// Quiz section
+
+    // Quiz section
 
     public function quiz(Request $request, $id = null)
     {
-        
+
         if ($request->isMethod('post')) {
 
             $post = $request->all();
- 
-            $quiz_start_time = $post['start_time_hour'].':'.$post['start_time_min'].':00';
-            $quiz_end_time = $post['end_time_hour'].':'.$post['end_time_min'].':00';
-			$data = array(
+
+            $quiz_start_time = $post['start_time_hour'] . ':' . $post['start_time_min'] . ':00';
+            $quiz_end_time = $post['end_time_hour'] . ':' . $post['end_time_min'] . ':00';
+            $data = array(
 
                 'class_id' => $post['class_id'],
                 'subject_id' => $post['subject_id'],
@@ -638,12 +639,12 @@ class HomeController extends Controller
                 'quiz_max_marks' => $post['quiz_max_marks'],
                 'quiz_max_time' => $post['quiz_max_time'],
                 'quiz_total_question' => $post['quiz_total_question'],
-                'quiz_start_date' => DateFormates($post['quiz_start_date'],'-'),
-				'quiz_start_time' => $quiz_start_time,
-                'quiz_end_date' => DateFormates($post['quiz_end_date'],'-'),
-				'quiz_end_time' => $quiz_end_time,
-				'isPublished' => isset($post['isPublished']) ? 1 : 0,
-                
+                'quiz_start_date' => DateFormates($post['quiz_start_date'], '-'),
+                'quiz_start_time' => $quiz_start_time,
+                'quiz_end_date' => DateFormates($post['quiz_end_date'], '-'),
+                'quiz_end_time' => $quiz_end_time,
+                'isPublished' => isset($post['isPublished']) ? 1 : 0,
+
                 'updated_at' => date('Y-m-d H:i:s')
 
             );
@@ -668,13 +669,13 @@ class HomeController extends Controller
         }
 
         $details = Quiz::where(array('id' => $id))->first();
-		
-		$ClassList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'classsyllabus'))->orderBy('id', 'ASC')->get();
-		
-		$SubjectList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'subjects'))->orderBy('id', 'ASC')->get(); 
-		
 
-        return view('quiz/quiz', compact('id', 'details','ClassList','SubjectList'));
+        $ClassList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'classsyllabus'))->orderBy('id', 'ASC')->get();
+
+        $SubjectList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'subjects'))->orderBy('id', 'ASC')->get();
+
+
+        return view('quiz/quiz', compact('id', 'details', 'ClassList', 'SubjectList'));
     }
 
 
@@ -682,7 +683,7 @@ class HomeController extends Controller
     public function quizlist(Request $request, $id = null)
     {
 
-        
+
         $QuizList = Quiz::getquiz();
 
         return view('quiz/quiz-list', compact('QuizList', 'id'));
@@ -721,15 +722,15 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
-	
-	// Question section
+
+    // Question section
 
     public function question(Request $request, $id = null)
     {
-        
+
         if ($request->isMethod('post')) {
 
-            $post = $request->all(); 
+            $post = $request->all();
 
             $data = array(
                 'quizid' => $post['quizid'],
@@ -741,7 +742,7 @@ class HomeController extends Controller
                 'correct_answer' => $post['correct_answer'],
                 'score' => 1,  // default score 
                 'updated_at' => date('Y-m-d H:i:s')
-            ); 
+            );
 
             //echo '<pre>';print_r($data);die;
 
@@ -763,9 +764,9 @@ class HomeController extends Controller
         }
 
         $QuizList = Quiz::getquiz();
-		$details = Question::where(array('id' => $id))->first();
+        $details = Question::where(array('id' => $id))->first();
 
-        return view('quiz/question', compact('QuestionList', 'id', 'details','QuizList'));
+        return view('quiz/question', compact('QuestionList', 'id', 'details', 'QuizList'));
     }
 
 
@@ -775,7 +776,7 @@ class HomeController extends Controller
 
         //$QuestionList = Question::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get();
         $QuestionList = Question::getquestion();
-		//print_r($QuestionList); exit;
+        //print_r($QuestionList); exit;
 
         return view('quiz/question-list', compact('QuestionList', 'id', 'details'));
     }
@@ -813,64 +814,68 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
-	
-	// Result section
+
+    // Result section
 
     public function result(Request $request, $id = null)
-    {                
-        
-		$details = Quizresult::where(array('result_id' => $id))->first();
-		
-		$result_data = Quizresult::get_result_data($id); 
-		
-		$quizid = $details->quizid;
-		
-		$quiz_details = Quiz::where(array('id' => $quizid))->first();
-		
-		$correct_answer = 0; $wrong_answer = 0; $user_score = 0;$quiz_full_marks = 0; $percentage = 0;
-		$final_status = '';
-		
-		if($result_data){
-			foreach ($result_data as $value) {
-			$value = (array) $value;
-				if($value['optionchosen']==$value['correct_answer']){
-					$correct_answer++;
-					$user_score += $value['score'];
-				}
-		   }
+    {
+
+        $details = Quizresult::where(array('result_id' => $id))->first();
+
+        $result_data = Quizresult::get_result_data($id);
+
+        $quizid = $details->quizid;
+
+        $quiz_details = Quiz::where(array('id' => $quizid))->first();
+
+        $correct_answer = 0;
+        $wrong_answer = 0;
+        $user_score = 0;
+        $quiz_full_marks = 0;
+        $percentage = 0;
+        $final_status = '';
+
+        if ($result_data) {
+            foreach ($result_data as $value) {
+                $value = (array) $value;
+                if ($value['optionchosen'] == $value['correct_answer']) {
+                    $correct_answer++;
+                    $user_score += $value['score'];
+                }
+            }
         }
-        
+
         $quiz_full_marks = $quiz_details['quiz_max_marks'];
-		$quiz_total_question = $quiz_details['quiz_total_question'];
+        $quiz_total_question = $quiz_details['quiz_total_question'];
 
-		$wrong_answer = $quiz_total_question-$correct_answer;
+        $wrong_answer = $quiz_total_question - $correct_answer;
 
-		if($quiz_full_marks>0){
-			$percentage = round($user_score*100/$quiz_full_marks);
-		}
-		if($percentage>=40){
-			$final_status = 'Pass';
-		}else{
-			$final_status = 'Fail';
-		}		
-		        
-		$result_params = array(
-                'final_status' => $final_status,
-                'user_score' => $user_score,                
-                'quiz_full_marks' => $quiz_full_marks,                
-                'percentage' => $percentage,                
-                'correct_answer' => $correct_answer,                  
-                'wrong_answer' => $wrong_answer                
-		);
+        if ($quiz_full_marks > 0) {
+            $percentage = round($user_score * 100 / $quiz_full_marks);
+        }
+        if ($percentage >= 40) {
+            $final_status = 'Pass';
+        } else {
+            $final_status = 'Fail';
+        }
 
-        return view('result/result', compact('id', 'details','result_params'));
+        $result_params = array(
+            'final_status' => $final_status,
+            'user_score' => $user_score,
+            'quiz_full_marks' => $quiz_full_marks,
+            'percentage' => $percentage,
+            'correct_answer' => $correct_answer,
+            'wrong_answer' => $wrong_answer
+        );
+
+        return view('result/result', compact('id', 'details', 'result_params'));
     }
 
 
     public function resultlist(Request $request, $id = null)
-    {        
+    {
         $QuizresultList = Quizresult::getresultlist();
-		//print_r($QuizresultList); exit;
+        //print_r($QuizresultList); exit;
 
         return view('result/result-list', compact('QuizresultList', 'id'));
     }
@@ -908,89 +913,90 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
-	
-	// Quizinvitation section
+
+    // Quizinvitation section
     public function invitation(Request $request, $id = null)
 
     {
-       
+
         if ($request->isMethod('post')) {
 
-            $post = $request->all(); 
-			
-			if(isset($post['student_master_id']) && !empty($post['student_master_id'])){
-                $quiz_details = Quiz::select('quiz_start_date','quiz_start_time')->where(array('id' => $post['quizid'],'IsDelete' => 0))->first();
-				foreach($post['student_master_id'] as $value){
+            $post = $request->all();
+            if (is_localhost()) {
+                $front_url = "http://localhost/pcskhalipur/";
+            } else {
+                $front_url = "http://pcskhalispur.com/";
+            }
+            if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
+                $quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
+                foreach ($post['student_master_id'] as $value) {
 
-            $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'],'student_master_id' => $value,'IsDelete' => 0))->first();
-			
-			
-			$student_details = Studentmaster::select('present_class','student_name','contact_no')->where(array('id' => $value,'IsDelete' => 0))->first();
-			$data = array(
-                'quiz_id' => $post['quizid'],
-                'student_master_id' => $value,                
-                'updated_at' => date('Y-m-d H:i:s')
-            ); 
-            $startDate = date('dS F',strtotime($quiz_details->quiz_start_date));
-            $startTime = date('h:i a',strtotime($quiz_details->quiz_start_time));
-            $message = 'Dear students analyse your skill with on line unit test going to start from '.$startDate.' from '.$startTime.'.just one click.......... and start the test';
-            
-            if(!isset($quiz_invitation_details->id)){ //Do not insert record if quiz already assigned
-                $invitelink =  base_convert(rand(1000,99999),10,36);
-                //$uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
-                //$invitelink =  $uniqueid.$randno; 
-				$otp = rand(100000,999999);
-				
-				$data['invitation_link'] = $invitelink;
-				$data['otp'] = $otp;				
-                $data['isVerified'] = 1;  //default 1 for the time being              
-                $data['IsDelete'] = 0;
-				$data['created_at'] = date('Y-m-d H:i:s');
+                    $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
 
-                $insert = Quizinvitation::insert($data);
 
-                $quizmessage = $message.' '.'http://www.pcskhalispur.com/din/'. $invitelink;
-                $mobileno = $student_details->contact_no;
-                $msg = str_replace(' ', '%20', $quizmessage);
-                
-                $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
-                
-                $ch = curl_init();
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $curl_response = curl_exec($ch);
-                //print_r($curl_response);
-                curl_close($ch);
-                $result = json_decode($curl_response, true);
+                    $student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $value, 'IsDelete' => 0))->first();
+                    $data = array(
+                        'quiz_id' => $post['quizid'],
+                        'student_master_id' => $value,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    );
+                    $invitelink =  base_convert(rand(1000, 99999), 10, 36);
+                    $startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
+                    $startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
+                    $message = 'Dear students analyse your skill with on line unit test going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+                    $MsgLink = $front_url . 'din/' . $invitelink;
+                    $quizmessage = $message . ' ' . $MsgLink . ' to start the test';
+                    if (!isset($quiz_invitation_details->id)) { //Do not insert record if quiz already assigned
 
-                
-            } 
-						
-			}//end foreach
-			
-			if(isset($insert)){
-				return redirect('invitation')->with('msgsuccess', 'Save successfully');
-			}
-			
-			
-			}//endif
-        
-		}
+                        //$uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
+                        //$invitelink =  $uniqueid.$randno; 
+                        $otp = rand(100000, 999999);
+
+                        $data['invitation_link'] = $invitelink;
+                        $data['otp'] = $otp;
+                        $data['isVerified'] = 1;  //default 1 for the time being              
+                        $data['IsDelete'] = 0;
+                        $data['created_at'] = date('Y-m-d H:i:s');
+
+                        $insert = Quizinvitation::insert($data);
+
+                        $mobileno = $student_details->contact_no;
+                        $msg = str_replace(' ', '%20', $quizmessage);
+
+                        $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_response = curl_exec($ch);
+                        //print_r($curl_response);
+                        curl_close($ch);
+                        $result = json_decode($curl_response, true);
+                    }
+                } //end foreach
+
+                if (isset($insert)) {
+                    return redirect('invitation')->with('msgsuccess', 'Save successfully');
+                }
+            } //endif
+
+        }
 
         $QuizList = Quiz::getquiz();
         $QuizinvitationList = Quizinvitation::getquizinvitation();
-		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
-		$details = Quizinvitation::where(array('id' => $id))->first();
-		
-		$allClassList = Studentmaster::getAllClass();
-		
-		//print_r($StudentmasterList);exit;
-        return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details','QuizList','StudentmasterList','allClassList'));
+        $StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
+        $details = Quizinvitation::where(array('id' => $id))->first();
+
+        $allClassList = Studentmaster::getAllClass();
+
+        //print_r($StudentmasterList);exit;
+        return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList'));
     }
-	
-	
-	public function getfilteredstudents(Request $request) {
+
+
+    public function getfilteredstudents(Request $request)
+    {
         //echo 1; exit;
         if ($request->isXmlHttpRequest()) {
             if ($request->isMethod('post')) {
@@ -1031,5 +1037,4 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
-	
 }
