@@ -970,6 +970,7 @@ class HomeController extends Controller
         return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details','QuizList','StudentmasterList','allClassList'));
     }
 	
+	
 	public function getfilteredstudents(Request $request) {
         //echo 1; exit;
         if ($request->isXmlHttpRequest()) {

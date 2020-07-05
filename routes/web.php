@@ -125,5 +125,6 @@ Route::match(['get', 'post'],'/resultlist/{id?}', array('uses' => 'HomeControlle
 Route::match(['get', 'post'],'/deleteresult/{id?}', array('uses' => 'HomeController@deleteresult'));
 
 Route::match(['get', 'post'],'/invitation/{id?}', array('uses' => 'HomeController@invitation'));
+Route::match(['get', 'post'],'/deleteinvitation/{id?}', array('uses' => 'HomeController@deleteinvitation'));
 
 Route::match(['get', 'post'],'/get-filtered-students', array('uses' => 'HomeController@getfilteredstudents'));
