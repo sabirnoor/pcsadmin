@@ -34,8 +34,9 @@
                 </div>
                 <hr>
                 @endif
-                
-                <form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" id="invitation" method="post" role="form" action="{{url('invitation/'.$id)}}">
+                <div class="loader_data"></div>
+				
+                <form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" id="invitation" method="post" role="form" id="inviteForm" action="">{{-- {{url('invitation/'.$id)}}--}}
                     {{csrf_field()}}
 					<input type="hidden" name="edit" value="<?=isset($id)?$id:0?>">
 									
@@ -98,14 +99,22 @@
 					<div class="space-4"></div>
                     <div class="clearfix form-actions">
                         <div class="col-md-offset-10 col-md-2">
-                            <button class="btn btn-info" type="submit">
+                           <!-- <button class="btn btn-info" type="submit">
                                 <i class="ace-icon fa fa-check bigger-110"></i>
                                 Submit
+                            </button>-->
+							<button class="btn btn-info submitInvite">
+                                <i class="ace-icon"></i>
+                                Submit Invite
                             </button>
+							
 
                         </div>
                     </div>
+					
                 </form>
+				
+				
 				
 				<div class="col-xs-12">
                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">

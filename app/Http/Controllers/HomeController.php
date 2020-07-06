@@ -914,14 +914,93 @@ class HomeController extends Controller
         }
     }
 
-    // Quizinvitation section
-    public function invitation(Request $request, $id = null)
+    // Quizinvitation section Old
+    public function invitation_old(Request $request, $id = null)
 
     {
 
         if ($request->isMethod('post')) {
 
             $post = $request->all();
+            if (is_localhost()) {
+                $front_url = "http://localhost/pcskhalipur/";
+            } else {
+                $front_url = "http://pcskhalispur.com/";
+            }
+            if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
+                $quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
+                foreach ($post['student_master_id'] as $value) {
+				  if(isset($value) && $value<>''){
+                    $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
+
+
+                    $student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $value, 'IsDelete' => 0))->first();
+                    $data = array(
+                        'quiz_id' => $post['quizid'],
+                        'student_master_id' => $value,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    );
+                    $invitelink =  base_convert(rand(1000, 99999), 10, 36);
+                    $startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
+                    $startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
+                    $message = 'Dear students analyse your skill with on line unit test going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+                    $MsgLink = $front_url . 'din/' . $invitelink;
+                    $quizmessage = $message . ' ' . $MsgLink . ' to start the test';
+                    if (!isset($quiz_invitation_details->id)) { //Do not insert record if quiz already assigned
+
+                        //$uniqueid =  strtolower(uniqid());  $randno = rand(100,999); 
+                        //$invitelink =  $uniqueid.$randno; 
+                        $otp = rand(100000, 999999);
+
+                        $data['invitation_link'] = $invitelink;
+                        $data['otp'] = $otp;
+                        $data['isVerified'] = 1;  //default 1 for the time being              
+                        $data['IsDelete'] = 0;
+                        $data['created_at'] = date('Y-m-d H:i:s');
+
+                        $insert = Quizinvitation::insert($data);
+                        //echo $quizmessage;die;
+                        $mobileno = $student_details->contact_no;
+                        $msg = str_replace(' ', '%20', $quizmessage);
+
+                        /*$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+
+                        $ch = curl_init();
+                        curl_setopt($ch, CURLOPT_URL, $url);
+                        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                        $curl_response = curl_exec($ch);
+                        curl_close($ch);
+                        $result = json_decode($curl_response, true);*/
+                    }
+                }
+				} //end foreach
+
+                if (isset($insert)) {
+                    return redirect('invitation')->with('msgsuccess', 'Save successfully');
+                }
+            } //endif
+
+        }
+
+        $QuizList = Quiz::getquiz();
+        $QuizinvitationList = Quizinvitation::getquizinvitation();
+        $StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
+        $details = Quizinvitation::where(array('id' => $id))->first();
+
+        $allClassList = Studentmaster::getAllClass();
+
+        //print_r($StudentmasterList);exit;
+        return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList'));
+    }
+	
+	public function invitation(Request $request, $id = null)
+
+    {
+
+        if ($request->isXmlHttpRequest()) {
+
+            $post = $request->all(); 
             if (is_localhost()) {
                 $front_url = "http://localhost/pcskhalipur/";
             } else {
@@ -976,9 +1055,13 @@ class HomeController extends Controller
                 }
 				} //end foreach
 
-                if (isset($insert)) {
-                    return redirect('invitation')->with('msgsuccess', 'Save successfully');
-                }
+				if (isset($insert)) {
+					echo json_encode(array('success' => true, 'url' => url('invitation'), 'message' => 'Saved Successfully.'));
+					exit;
+				} else {
+					echo json_encode(array('success' => false, 'url' => url('invitation'), 'message' => 'Unable to save data.'));
+					exit;
+				}
             } //endif
 
         }
