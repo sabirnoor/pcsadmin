@@ -930,7 +930,7 @@ class HomeController extends Controller
             if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
                 $quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
                 foreach ($post['student_master_id'] as $value) {
-
+				  if(isset($value) && $value<>''){
                     $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
 
 
@@ -973,7 +973,8 @@ class HomeController extends Controller
                         curl_close($ch);
                         $result = json_decode($curl_response, true);
                     }
-                } //end foreach
+                }
+				} //end foreach
 
                 if (isset($insert)) {
                     return redirect('invitation')->with('msgsuccess', 'Save successfully');
