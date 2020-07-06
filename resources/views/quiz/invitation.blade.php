@@ -34,8 +34,7 @@
                 </div>
                 <hr>
                 @endif
-                <div class="loader_data"></div>
-				
+                
                 <form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" id="invitation" method="post" role="form" id="inviteForm" action="">{{-- {{url('invitation/'.$id)}}--}}
                     {{csrf_field()}}
 					<input type="hidden" name="edit" value="<?=isset($id)?$id:0?>">
@@ -93,6 +92,13 @@
 						</select>
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<label class="col-sm-3 control-label no-padding-right" for=""></label>
+					<div class="col-sm-9">
+						<div class="loader_data" style="color:#f00"></div>
+					</div>
+				</div>
 					
 						
                     
@@ -105,7 +111,7 @@
                             </button>-->
 							<button class="btn btn-info submitInvite">
                                 <i class="ace-icon"></i>
-                                Submit Invite
+                                Submit
                             </button>
 							
 
