@@ -123,14 +123,17 @@
 				
 				
 				<div class="col-xs-12">
+                    <button type="button" id="save_value" class="sendInvitation" style="display:none;">Send SMS</button>
                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" class="CheckAll" onchange="checkAll(this)" title="Check All"></th>
                                 <th>Exam</th>
                                 <th nowrap>Student Name</th>
                                 <th nowrap>Mobile</th>
                                 <th nowrap>Invitation Link</th>
                                 <th nowrap>OTP Verified</th>
+                                <th nowrap>SMS Sent</th>
                                 <th nowrap>Date</th>
                                 <th nowrap>Action</th>
                             </tr>
@@ -150,11 +153,13 @@
                             ?>
                             <tr id="<?=$value['id']?>">
                                 
+                                <td nowrap><input type="checkbox" class="studentId" value="<?=$value['id']?>"> </td>
                                 <td nowrap><?=$value['quiz_title']?> </td>
                                 <td nowrap><?=$value['student_name']?> </td>
                                 <td nowrap><?=$value['contact_no']?> </td>
                                 <td nowrap><?=$front_url.'din/'.$value['invitation_link']?> </td>
                                 <td nowrap><?=($value['isVerified']==1)?'Yes':'No';?> </td>
+                                <td nowrap><?=($value['sms_sent']==1)?'Yes':'No';?> </td>
                                
                                 <td nowrap><?=date('d-M-Y',strtotime($value['invitation_created']))?></td>
                                 <td>
