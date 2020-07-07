@@ -834,26 +834,30 @@ class HomeController extends Controller
         $quiz_full_marks = 0;
         $percentage = 0;
         $final_status = '';
+		$question_attempted = 0;
 
         if ($result_data) {
             foreach ($result_data as $value) {
                 $value = (array) $value;
-                if ($value['optionchosen'] == $value['correct_answer']) {
-                    $correct_answer++;
-                    $user_score += $value['score'];
-                }
+                if(isset($value['optionchosen'])){
+					if ($value['optionchosen'] == $value['correct_answer']) {
+						$correct_answer++;
+						$user_score += $value['score'];
+					}
+					$question_attempted++;
+				}
             }
         }
 
-        $quiz_full_marks = $quiz_details['quiz_max_marks'];
-        $quiz_total_question = $quiz_details['quiz_total_question'];
+        $quiz_total_question = Question::where(array('quizid' => $quizid,'IsDelete' => 0))->get()->count();
+		$quiz_full_marks = $quiz_total_question * 1; // each question has 1 mark        
 
-        $wrong_answer = $quiz_total_question - $correct_answer;
+        $wrong_answer = $question_attempted-$correct_answer;
 
         if ($quiz_full_marks > 0) {
-            $percentage = round($user_score * 100 / $quiz_full_marks);
+            $percentage = round(($user_score*100/$quiz_full_marks),2);
         }
-        if ($percentage >= 40) {
+        if ($percentage >= 33) {
             $final_status = 'Pass';
         } else {
             $final_status = 'Fail';
@@ -863,6 +867,8 @@ class HomeController extends Controller
             'final_status' => $final_status,
             'user_score' => $user_score,
             'quiz_full_marks' => $quiz_full_marks,
+			'quiz_total_question' => $quiz_total_question,                
+            'question_attempted' => $question_attempted, 
             'percentage' => $percentage,
             'correct_answer' => $correct_answer,
             'wrong_answer' => $wrong_answer
