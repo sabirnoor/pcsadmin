@@ -962,7 +962,7 @@ class HomeController extends Controller
                         $mobileno = $student_details->contact_no;
                         $msg = str_replace(' ', '%20', $quizmessage);
 
-                        $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+                        /*$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
 
                         $ch = curl_init();
                         curl_setopt($ch, CURLOPT_URL, $url);
@@ -970,7 +970,7 @@ class HomeController extends Controller
                         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                         $curl_response = curl_exec($ch);
                         curl_close($ch);
-                        $result = json_decode($curl_response, true);
+                        $result = json_decode($curl_response, true);*/
                     }
                 }
 				} //end foreach

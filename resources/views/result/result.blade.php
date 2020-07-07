@@ -65,6 +65,11 @@
 								</tr>
 								
 								<tr class="footableOdd">								
+									<td class="text-right">Question Attempted:</td>
+									<td>55<?php //echo $result_params['quiz_full_marks']; ?></td>
+								</tr>
+								
+								<tr class="footableOdd">								
 									<td class="text-right">Correct Answers:</td>
 									<td><?php echo $result_params['correct_answer']; ?></td>
 								</tr>
