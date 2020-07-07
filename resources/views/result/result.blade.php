@@ -66,7 +66,7 @@
 								
 								<tr class="footableOdd">								
 									<td class="text-right">Question Attempted:</td>
-									<td>55<?php //echo $result_params['quiz_full_marks']; ?></td>
+									<td><?php //echo $result_params['quiz_full_marks']; ?></td>
 								</tr>
 								
 								<tr class="footableOdd">								
