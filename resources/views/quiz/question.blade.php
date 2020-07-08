@@ -41,8 +41,8 @@
 									
                     
 					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="quizid"> Select Exam* </label>
-						<div class="col-sm-9">
+						<label class="col-sm-2 control-label no-padding-right" for="quizid"> Select Exam* </label>
+						<div class="col-sm-10">
 							<select class="col-xs-10 col-sm-5" id="quizid" name="quizid" required>
 								<option value="">Select Exam</option>
 								
@@ -61,38 +61,38 @@
 					</div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="question_title"> Question Title* </label>
-                        <div class="col-sm-9">                            
+                        <label class="col-sm-2 control-label no-padding-right" for="question_title"> Question Title* </label>
+                        <div class="col-sm-10">                            
 							
 							<textarea name="question_title" id="editor1" rows="" cols="10" required><?=isset($details->question_title)?$details->question_title:''?></textarea>
                         </div>
                     </div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="option1"> Option 1* </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="option1" name="option1" value="<?=isset($details->option1)?$details->option1:''?>" placeholder=" Option 1" maxlength="100" required>
+                        <label class="col-sm-2 control-label no-padding-right" for="option1"> Option 1* </label>
+                        <div class="col-sm-10">
+                            <textarea name="option1" id="option1" rows="" cols="10" required><?=isset($details->option1)?$details->option1:''?></textarea>							
                         </div>
                     </div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="option2">  Option 2* </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="option2" name="option2" value="<?=isset($details->option2)?$details->option2:''?>" placeholder="Option 2" maxlength="100" required>
+                        <label class="col-sm-2 control-label no-padding-right" for="option2">  Option 2* </label>
+                        <div class="col-sm-10">
+                            <textarea name="option2" id="option2" rows="" cols="10" required><?=isset($details->option2)?$details->option2:''?></textarea>
                         </div>
                     </div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="option3"> Option 3* </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="option3" name="option3" value="<?=isset($details->option3)?$details->option3:''?>" placeholder="Option 3" maxlength="100" required>
+                        <label class="col-sm-2 control-label no-padding-right" for="option3"> Option 3* </label>
+                        <div class="col-sm-10">
+                            <textarea name="option3" id="option3" rows="" cols="10" required><?=isset($details->option3)?$details->option3:''?></textarea>
                         </div>
                     </div>
 					
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="option4"> Option 4* </label>
-                        <div class="col-sm-9">
-                            <input type="text" class="col-xs-10 col-sm-5" id="option4" name="option4" value="<?=isset($details->option4)?$details->option4:''?>" placeholder="Option 4" maxlength="100" required>
+                        <label class="col-sm-2 control-label no-padding-right" for="option4"> Option 4* </label>
+                        <div class="col-sm-10">
+                            <textarea name="option4" id="option4" rows="" cols="10" required><?=isset($details->option4)?$details->option4:''?></textarea>
                         </div>
                     </div>
 					
@@ -100,8 +100,8 @@
 					
 					
 					<div class="form-group">
-						<label class="col-sm-3 control-label no-padding-right" for="correct_answer"> Correct Answer* </label>
-						<div class="col-sm-9">
+						<label class="col-sm-2 control-label no-padding-right" for="correct_answer"> Correct Answer* </label>
+						<div class="col-sm-10">
 							<select class="col-xs-10 col-sm-5" id="correct_answer" name="correct_answer" required>
 								<option value="">Choose Correct Answer </option>
 								

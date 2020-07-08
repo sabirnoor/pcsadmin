@@ -205,9 +205,33 @@ $action = Request::segment(1);
         <script>
             // Replace the <textarea id="editor1"> with a CKEditor
             // instance, using default configuration.
-            CKEDITOR.replace( 'editor1' );
-            //CKEDITOR.replace( 'question_title' );
-			
+            
+			//CKEDITOR.replace( 'editor1' );
+			//CKEDITOR.add        
+			//CKEDITOR.replace( 'option1' );
+			//CKEDITOR.add        
+            
+			  CKEDITOR.replace('editor1', {
+				  width: '100%',
+				  height: 100
+			  });
+			  
+			  CKEDITOR.replace('option1', {
+				  width: '100%',
+				  height: 100
+			  });
+			  CKEDITOR.replace('option2', {
+				  width: '100%',
+				  height: 100
+			  });
+			  CKEDITOR.replace('option3', {
+				  width: '100%',
+				  height: 100
+			  });
+			  CKEDITOR.replace('option4', {
+				  width: '100%',
+				  height: 100
+			  });
         </script>
         <?php } ?>
     </body>
