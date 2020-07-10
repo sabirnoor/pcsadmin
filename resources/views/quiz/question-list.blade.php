@@ -135,7 +135,6 @@
 
                                     <a href="<?=url('question/'.$value['id'])?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
 
-                                    <a href="#" id="<?=$value['id']?>" title="Delete" class="deletequestion"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
 
                                 </td>
 

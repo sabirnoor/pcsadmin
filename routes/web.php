@@ -115,6 +115,7 @@ Route::match(['get', 'post'],'/sendinvitation', array('uses' => 'HomeController@
 Route::match(['get', 'post'],'/quiz/{id?}', array('uses' => 'HomeController@quiz'));
 Route::match(['get', 'post'],'/quizlist/{id?}', array('uses' => 'HomeController@quizlist'));
 Route::match(['get', 'post'],'/deletequiz/{id?}', array('uses' => 'HomeController@deletequiz'));
+Route::match(['get', 'post'],'/archivequiz/{id?}', array('uses' => 'HomeController@archivequiz'));
 
 
 Route::match(['get', 'post'],'/question/{id?}', array('uses' => 'HomeController@question'));

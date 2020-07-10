@@ -722,6 +722,38 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
+	
+	public function archivequiz(Request $request, $id = null)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+
+            $data = array(
+
+                'isArchived' => 1,
+
+                'updated_at' => date('Y-m-d H:i:s')
+
+            );
+
+            $result = Quiz::where('id', $id)->update($data);
+
+            if ($result) {
+
+                echo json_encode(array('success' => true, 'message' => 'Archived Successfully'));
+
+                exit;
+            } else {
+
+                echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+
+                exit;
+            }
+        } else {
+
+            die('Oops invalid request!!');
+        }
+    }
 
     // Question section
 

@@ -132,11 +132,13 @@
 							 <td><?=$quiz_start_date.' '.$value['quiz_start_time']?> </td>
 							 <td><?=$quiz_end_date.' '.$value['quiz_end_time']?> </td>
 
-                                <td>
+                                <td nowrap>
 
                                     <a href="<?=url('quiz/'.$value['id'])?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
 
                                     <a href="#" id="<?=$value['id']?>" title="Delete" class="deletequiz"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
+                                    
+									<a href="#" id="<?=$value['id']?>" title="Archive" class="archivequiz"> <i class="ace-icon fa fa-archive fa-2x icon-only"></i></a> 
 
                                 </td>
 
