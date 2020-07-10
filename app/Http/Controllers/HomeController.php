@@ -754,6 +754,16 @@ class HomeController extends Controller
             die('Oops invalid request!!');
         }
     }
+	
+	//Get all questions of a quiz
+	public function quizquestions(Request $request, $id)
+    {
+        $quizdetails = Quiz::where(array('id' => $id))->first();
+		$QuizquestionsList = Question::getquizquestions($id);
+        //print_r($QuizquestionsList); exit;
+
+        return view('quiz/quiz-question-list', compact('quizdetails','QuizquestionsList', 'id'));
+    }
 
     // Question section
 
