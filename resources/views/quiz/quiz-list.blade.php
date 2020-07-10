@@ -140,7 +140,7 @@
                                     
 									<a href="#" id="<?=$value['id']?>" title="Archive" class="archivequiz"> <i class="ace-icon fa fa-archive fa-2x icon-only"></i></a> 
 									
-									<a href="<?=url('quizquestions/'.$value['id'])?>" id="<?=$value['id']?>" title="View Questions"> <i class="ace-icon fa fa-eye fa-2x icon-only"></i></a> 
+									<a href="<?=url('quizquestions/'.$value['id'])?>" id="<?=$value['id']?>" title="View Questions" target="_blank"> <i class="ace-icon fa fa-eye fa-2x icon-only"></i></a> 
 
                                 </td>
 
