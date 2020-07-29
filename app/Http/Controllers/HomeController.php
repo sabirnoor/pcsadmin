@@ -393,7 +393,6 @@ class HomeController extends Controller
             $post = $request->all();
 
             $data = array(
-
                 'student_name' => $post['student_name'],
                 'Date_of_Birth' => DateFormates( $post['Date_of_Birth'], '-' ),
                 'Admission_Date' => DateFormates( $post['Admission_Date'], '-' ),
@@ -690,6 +689,48 @@ class HomeController extends Controller
             die( 'Oops invalid request!!' );
         }
     }
+	
+	public function archivequiz(Request $request, $id = null)
+    {
+
+        if ($request->isXmlHttpRequest()) {
+
+            $data = array(
+
+                'isArchived' => 1,
+
+                'updated_at' => date('Y-m-d H:i:s')
+
+            );
+
+            $result = Quiz::where('id', $id)->update($data);
+
+            if ($result) {
+
+                echo json_encode(array('success' => true, 'message' => 'Archived Successfully'));
+
+                exit;
+            } else {
+
+                echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+
+                exit;
+            }
+        } else {
+
+            die('Oops invalid request!!');
+        }
+    }
+	
+	//Get all questions of a quiz
+	public function quizquestions(Request $request, $id)
+    {
+        $quizdetails = Quiz::where(array('id' => $id))->first();
+		$QuizquestionsList = Question::getquizquestions($id);
+        //print_r($QuizquestionsList); exit;
+
+        return view('quiz/quiz-question-list', compact('quizdetails','QuizquestionsList', 'id'));
+    }
 
     // Question section
 
@@ -801,7 +842,9 @@ class HomeController extends Controller
         $quiz_full_marks = 0;
         $percentage = 0;
         $final_status = '';
+		$question_attempted = 0;
 
+<<<<<<< HEAD
         if ( $result_data ) {
             foreach ( $result_data as $value ) {
                 $value = ( array ) $value;
@@ -809,18 +852,37 @@ class HomeController extends Controller
                     $correct_answer++;
                     $user_score += $value['score'];
                 }
+=======
+        if ($result_data) {
+            foreach ($result_data as $value) {
+                $value = (array) $value;
+                if(isset($value['optionchosen'])){
+					if ($value['optionchosen'] == $value['correct_answer']) {
+						$correct_answer++;
+						$user_score += $value['score'];
+					}
+					$question_attempted++;
+				}
+>>>>>>> 35a0ca63f8e653105ced0e87a117778ee2bcb586
             }
         }
 
-        $quiz_full_marks = $quiz_details['quiz_max_marks'];
-        $quiz_total_question = $quiz_details['quiz_total_question'];
+        $quiz_total_question = Question::where(array('quizid' => $quizid,'IsDelete' => 0))->get()->count();
+		$quiz_full_marks = $quiz_total_question * 1; // each question has 1 mark        
 
-        $wrong_answer = $quiz_total_question - $correct_answer;
+        $wrong_answer = $question_attempted-$correct_answer;
 
+<<<<<<< HEAD
         if ( $quiz_full_marks > 0 ) {
             $percentage = round( $user_score * 100 / $quiz_full_marks );
         }
         if ( $percentage >= 40 ) {
+=======
+        if ($quiz_full_marks > 0) {
+            $percentage = round(($user_score*100/$quiz_full_marks),2);
+        }
+        if ($percentage >= 33) {
+>>>>>>> 35a0ca63f8e653105ced0e87a117778ee2bcb586
             $final_status = 'Pass';
         } else {
             $final_status = 'Fail';
@@ -830,6 +892,8 @@ class HomeController extends Controller
             'final_status' => $final_status,
             'user_score' => $user_score,
             'quiz_full_marks' => $quiz_full_marks,
+			'quiz_total_question' => $quiz_total_question,                
+            'question_attempted' => $question_attempted, 
             'percentage' => $percentage,
             'correct_answer' => $correct_answer,
             'wrong_answer' => $wrong_answer
@@ -940,11 +1004,12 @@ class HomeController extends Controller
             } else {
                 $front_url = 'http://pcskhalispur.com/';
             }
-            if ( isset( $post['student_master_id'] ) && !empty( $post['student_master_id'] ) ) {
-                $quiz_details = Quiz::select( 'quiz_start_date', 'quiz_start_time' )->where( array( 'id' => $post['quizid'], 'IsDelete' => 0 ) )->first();
-                foreach ( $post['student_master_id'] as $value ) {
-                    if ( isset( $value ) && $value <> '' ) {
-                        $quiz_invitation_details = Quizinvitation::where( array( 'quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0 ) )->first();
+            if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
+                $quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
+                foreach ($post['student_master_id'] as $value) {
+
+                    if (isset($value) && $value <> '') {
+                        $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
 
                         $student_details = Studentmaster::select( 'present_class', 'student_name', 'contact_no' )->where( array( 'id' => $value, 'IsDelete' => 0 ) )->first();
                         $data = array(
@@ -998,6 +1063,7 @@ class HomeController extends Controller
                                 Quizinvitation::where( 'id', $insert )->update( $dataupdate );
                             }
                         }
+
                     }
                 }
                 //end foreach

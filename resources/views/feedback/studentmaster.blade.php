@@ -79,8 +79,8 @@
 					<input type="hidden" name="edit" value="<?=isset($id)?$id:0?>">
 
                     <!--<input type="hidden" name="page_name" value="academics">-->
-
-                    
+					
+					
 
 					<div class="form-group">
 
@@ -184,14 +184,12 @@
                         <label class="col-sm-3 control-label no-padding-right" for="roll_no_previous"> Previous Roll No.* </label>
 
                         <div class="col-sm-9">
-
+						
                             <input type="text" class="col-xs-10 col-sm-5" id="roll_no_previous" name="roll_no_previous" value="<?=isset($details->roll_no_previous)?$details->roll_no_previous:''?>" placeholder="Previous Roll No." maxlength="20" required>
 
                         </div>
 
-                    </div>
-
-					
+                    </div>					
 
 					<div class="form-group">
 
@@ -293,10 +291,10 @@
                         <tbody>
 
                             <?php 
-
+$c=0;
                             if($StudentmasterList){
 
-                                foreach ($StudentmasterList as $value) {
+                                foreach ($StudentmasterList as $value) { $c++; if($c==2){break;}
                             ?>
                             <tr id="<?=$value['id']?>">
                             <td><input type="checkbox" class="studentId" value="<?=$value['id']?>"></td>

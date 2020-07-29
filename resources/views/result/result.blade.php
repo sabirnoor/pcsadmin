@@ -61,7 +61,12 @@
 								
 								<tr class="footableOdd">								
 									<td class="text-right">Total Questions:</td>
-									<td><?php echo $result_params['quiz_full_marks']; ?></td>
+									<td><?php echo $result_params['quiz_total_question']; ?></td>
+								</tr>
+								
+								<tr class="footableOdd">								
+									<td class="text-right">Question Attempted:</td>
+									<td><?php echo $result_params['question_attempted']; ?></td>
 								</tr>
 								
 								<tr class="footableOdd">								
