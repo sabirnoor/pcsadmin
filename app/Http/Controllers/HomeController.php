@@ -422,7 +422,6 @@ class HomeController extends Controller
             $post = $request->all();
 
             $data = array(
-
                 'student_name' => $post['student_name'],
                 'Date_of_Birth' => DateFormates($post['Date_of_Birth'], '-'),
                 'Admission_Date' => DateFormates($post['Admission_Date'], '-'),
