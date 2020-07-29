@@ -844,15 +844,6 @@ class HomeController extends Controller
         $final_status = '';
 		$question_attempted = 0;
 
-<<<<<<< HEAD
-        if ( $result_data ) {
-            foreach ( $result_data as $value ) {
-                $value = ( array ) $value;
-                if ( $value['optionchosen'] == $value['correct_answer'] ) {
-                    $correct_answer++;
-                    $user_score += $value['score'];
-                }
-=======
         if ($result_data) {
             foreach ($result_data as $value) {
                 $value = (array) $value;
@@ -863,7 +854,6 @@ class HomeController extends Controller
 					}
 					$question_attempted++;
 				}
->>>>>>> 35a0ca63f8e653105ced0e87a117778ee2bcb586
             }
         }
 
@@ -872,17 +862,10 @@ class HomeController extends Controller
 
         $wrong_answer = $question_attempted-$correct_answer;
 
-<<<<<<< HEAD
-        if ( $quiz_full_marks > 0 ) {
-            $percentage = round( $user_score * 100 / $quiz_full_marks );
-        }
-        if ( $percentage >= 40 ) {
-=======
         if ($quiz_full_marks > 0) {
             $percentage = round(($user_score*100/$quiz_full_marks),2);
         }
         if ($percentage >= 33) {
->>>>>>> 35a0ca63f8e653105ced0e87a117778ee2bcb586
             $final_status = 'Pass';
         } else {
             $final_status = 'Fail';
