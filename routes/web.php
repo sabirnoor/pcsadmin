@@ -103,6 +103,7 @@ Route::match(['get', 'post'],'/deletefeedback/{id?}', array('uses' => 'HomeContr
 
 
 Route::match(['get', 'post'],'/studentmaster/{id?}', array('uses' => 'HomeController@studentmaster'));
+Route::match(['get', 'post'],'/studentmasterview/{id?}', array('uses' => 'HomeController@studentmasterview'));
 
 Route::match(['get', 'post'],'/deletestudentmaster/{id?}', array('uses' => 'HomeController@deletestudentmaster'));
 

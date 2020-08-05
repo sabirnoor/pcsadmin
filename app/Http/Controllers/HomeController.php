@@ -62,8 +62,8 @@ class HomeController extends Controller
  {
 
         //echo '<pre>';
-        print_r( Auth::user() );
-        die;
+        //print_r( Auth::user() );
+        //die;
 
         return view( 'home' );
     }
@@ -440,6 +440,18 @@ class HomeController extends Controller
         $details = Studentmaster::where( array( 'id' => $id ) )->first();
 
         return view( 'feedback/studentmaster', compact( 'StudentmasterList', 'id', 'details' ) );
+    }
+	
+   public function studentmasterview( Request $request, $id = null )
+   {
+       
+        $details = Studentmaster::where( array( 'id' => $id ) )->first();
+		
+		 $subjectList = Categories::where( array( 'IsDelete' => 0, 'entity_type' => 'subjects' ) )->orderBy( 'id', 'ASC' )->get()->toArray();
+		 
+		 //print_r($subjectList); exit;
+
+        return view( 'feedback/studentmasterview', compact( 'id', 'details', 'subjectList' ) );
     }
 
     public function deletestudentmaster( Request $request, $id = null )
