@@ -417,8 +417,8 @@ class HomeController extends Controller
             );
 
             //echo '<pre>';
-            print_r( $data );
-            die;
+           // print_r( $data );
+            //die;
 
             if ( empty( $id ) ) {
 
