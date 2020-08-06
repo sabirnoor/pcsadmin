@@ -307,9 +307,9 @@ $c=0;
                             <td><?=$value['whatsapp_no']?> </td>
                             <td><a href="javascript:void();" class="id-btn-dialog1" data-mobile="<?=$value['contact_no']?>" data-id="<?=$value['id']?>">Send SMS</a></td>
                                 <td>
-                                    <a href="<?=url('studentmasterview/'.$value['id'])?>"><i class="ace-icon fa fa-eye fa-2x icon-only"></i></a> 
+                                    <a href="<?=url('studentmasterview/'.$value['id'])?>" target="_blank"><i class="ace-icon fa fa-eye fa-2x icon-only"></i></a> 
 									
-									<a href="<?=url('studentmaster/'.$value['id'])?>" target="_blank"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
+									<a href="<?=url('studentmaster/'.$value['id'])?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
 									
                                     <a href="#" id="<?=$value['id']?>" title="Delete" class="deletestudentmaster"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
                                 </td>
