@@ -72,16 +72,14 @@ class HomeController extends Controller
  {
 
         //echo '<pre>';
-        print_r( Auth::user() );
-        die;
+        //print_r( Auth::user() );        
 
         return view( 'home' );
     }
 
     public function ourmotto( Request $request )
  {
-        die( 'hh' );
-
+       
         $details = Staticcontent::where( array( 'page_name' => 'ourmotto' ) )->first();
 
         if ( $request->isMethod( 'post' ) ) {
@@ -157,9 +155,7 @@ class HomeController extends Controller
                 return redirect( 'profile' )->with( 'msgerror', 'Invalid current password!' );
             }
 
-            echo '<pre>';
-            print_r( $post );
-            die;
+           
         }
 
         return view( 'profile' );
@@ -189,10 +185,7 @@ class HomeController extends Controller
                 'updated_at' => date( 'Y-m-d H:i:s' )
 
             );
-
-            //echo '<pre>';
-            print_r( $data );
-            die;
+            
 
             if ( empty( $id ) ) {
 
@@ -315,10 +308,7 @@ class HomeController extends Controller
 
             );
 
-            //echo '<pre>';
-            print_r( $data );
-            die;
-
+           
             if ( empty( $id ) ) {
 
                 $data['created_at'] = date( 'Y-m-d H:i:s' );
@@ -416,9 +406,7 @@ class HomeController extends Controller
 
             );
 
-            //echo '<pre>';
-           // print_r( $data );
-            //die;
+            
 
             if ( empty( $id ) ) {
 
@@ -449,7 +437,6 @@ class HomeController extends Controller
 		
 		 $subjectList = Categories::where( array( 'IsDelete' => 0, 'entity_type' => 'subjects' ) )->orderBy( 'id', 'ASC' )->get()->toArray();
 		 
-		 //print_r($subjectList); exit;
 
         return view( 'feedback/studentmasterview', compact( 'id', 'details', 'subjectList' ) );
     }
@@ -490,8 +477,7 @@ class HomeController extends Controller
  {
         if ( $request->isXmlHttpRequest() ) {
             $post = $request->all();
-            //echo url( '/' );
-            die;
+           
             if ( isset( $post['studentId'] ) && !empty( $post['studentId'] ) ) {
                 foreach ( $post['studentId'] as $value ) {
                     $shortCode =  base_convert( rand( 1000, 99999 ), 10, 36 );
@@ -544,8 +530,7 @@ class HomeController extends Controller
                     exit;
                 }
             }
-            pr( $post );
-            die;
+           
             $shortCode =  base_convert( rand( 1000, 99999 ), 10, 36 );
             $result = Studentmaster::where( 'id', $post['studentId'] )->first();
             if ( $result ) {
@@ -632,10 +617,7 @@ class HomeController extends Controller
 
             );
 
-            //echo '<pre>';
-            print_r( $data );
-            die;
-
+           
             if ( empty( $id ) ) {
 
                 $data['created_at'] = date( 'Y-m-d H:i:s' );
@@ -739,8 +721,7 @@ class HomeController extends Controller
     {
         $quizdetails = Quiz::where(array('id' => $id))->first();
 		$QuizquestionsList = Question::getquizquestions($id);
-        //print_r($QuizquestionsList); exit;
-
+       
         return view('quiz/quiz-question-list', compact('quizdetails','QuizquestionsList', 'id'));
     }
 
@@ -765,10 +746,7 @@ class HomeController extends Controller
                 'updated_at' => date( 'Y-m-d H:i:s' )
             );
 
-            //echo '<pre>';
-            print_r( $data );
-            die;
-
+           
             if ( empty( $id ) ) {
 
                 $data['created_at'] = date( 'Y-m-d H:i:s' );
@@ -798,7 +776,7 @@ class HomeController extends Controller
         //$QuestionList = Question::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get();
         $QuestionList = Question::getquestion();
         //print_r( $QuestionList );
-        exit;
+        
 
         return view( 'quiz/question-list', compact( 'QuestionList', 'id', 'details' ) );
     }
@@ -900,9 +878,7 @@ class HomeController extends Controller
     public function resultlist( Request $request, $id = null )
  {
         $QuizresultList = Quizresult::getresultlist();
-        //print_r( $QuizresultList );
-        exit;
-
+        
         return view( 'result/result-list', compact( 'QuizresultList', 'id' ) );
     }
 
@@ -1037,7 +1013,7 @@ class HomeController extends Controller
 
                             $insert = Quizinvitation::insertGetId( $data );
                             //echo $quizmessage;
-                            die;
+                            
                             $mobileno = $student_details->contact_no;
                             $msg = str_replace( ' ', '%20', $quizmessage );
 
@@ -1082,15 +1058,13 @@ class HomeController extends Controller
 
         $allClassList = Studentmaster::getAllClass();
 
-        //print_r( $StudentmasterList );
-        exit;
+        
         return view( 'quiz/invitation', compact( 'QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList' ) );
     }
 
     public function getfilteredstudents( Request $request )
  {
-        //echo 1;
-        exit;
+        
         if ( $request->isXmlHttpRequest() ) {
             if ( $request->isMethod( 'post' ) ) {
                 $class_name = $request->student_class;
