@@ -85,11 +85,13 @@
 					<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="student_master_id"> Select Student* </label>
 					<div class="col-sm-9">
-						<select class="col-xs-10 col-sm-5 select2_kkk" id="student_master_id" name="student_master_id[]" multiple required>
-							<option value="" disabled>Select Student</option>
+						<select class="col-xs-10 col-sm-5 select2" id="student_master_id" name="student_master_id[]" multiple required>
+							<!--<option value="" disabled>Select Student</option>-->
 							
 							
 						</select>
+						<a href="javascript:void(0)" id="select_all"><span>Select All</span></a>
+						<a href="javascript:void(0)" id="deselect_all"><span>Reset</span></a>
 					</div>
 				</div>
 				

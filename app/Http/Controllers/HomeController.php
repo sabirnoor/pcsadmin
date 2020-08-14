@@ -1104,4 +1104,33 @@ class HomeController extends Controller
             die( 'Oops invalid request!!' );
         }
     }
+	
+	 public function answersheet( Request $request, $id = null )
+ {
+
+        $details = Quizresult::where( array( 'result_id' => $id ) )->first();
+
+        $result_data = Quizresult::get_result_data( $id );
+
+        $quizid = $details->quizid;
+
+        $quiz_details = Quiz::where( array( 'id' => $quizid ) )->first();
+		
+		$QuizquestionsList = Question::getquizquestions($quizid);
+
+		//print_r($QuizquestionsList); exit;
+		
+		if ($result_data) {
+            foreach ($result_data as $value) {
+                $value = (array) $value;
+				$user_result_data_arr[$value['questionid']] = $value;
+            }
+        }
+		//print_r($user_result_data_arr); exit;
+
+        $quiz_total_question = Question::where(array('quizid' => $quizid,'IsDelete' => 0))->get()->count();
+		             
+        return view( 'result/answer-sheet', compact( 'id', 'details', 'quiz_details', 'QuizquestionsList', 'user_result_data_arr') );
+    }
+	
 }

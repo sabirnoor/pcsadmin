@@ -108,14 +108,12 @@
                             <td><?=$value['student_name']?> </td>
 							
                            
-                            
-
                                 <td>
-
-                                    <a href="<?=url('result/'.$value['result_id'])?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
+                                    <a href="<?=url('result/'.$value['result_id'])?>" title="Result" target="_blank"><i class="ace-icon fa fa-eye fa-2x icon-only"></i></a> 
+                                    
+									<a href="<?=url('answersheet/'.$value['result_id'])?>" title="Answer Sheet" target="_blank"><i class="ace-icon fa fa-clipboard fa-2x icon-only"></i></a> 
 
                                     <a href="#" id="<?=$value['result_id']?>" title="Delete" class="deleteresult"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
-
                                 </td>
 
 							</tr>
@@ -139,10 +137,6 @@
 
 
                 <div class="hr hr32 hr-dotted"></div>
-
-
-
-
 
 
 
