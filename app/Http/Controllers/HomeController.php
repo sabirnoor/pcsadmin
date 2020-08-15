@@ -410,8 +410,9 @@ class HomeController extends Controller
 
             if ( empty( $id ) ) {
 
-                $data['created_at'] = date( 'Y-m-d H:i:s' );
-
+                $data['admission_ref_no'] = ''; //in add mode only
+				
+				$data['created_at'] = date( 'Y-m-d H:i:s' );
                 $data['IsDelete'] = 0;
 
                 $insert = Studentmaster::insert( $data );
