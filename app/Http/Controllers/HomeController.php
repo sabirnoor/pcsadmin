@@ -931,7 +931,7 @@ class HomeController extends Controller
                 $student_details = Studentmaster::select( 'present_class', 'student_name', 'contact_no' )->where( array( 'id' => $details['student_master_id'], 'IsDelete' => 0 ) )->first();
                 $startDate = date( 'dS F', strtotime( $quiz_details->quiz_start_date ) );
                 $startTime = date( 'h:i a', strtotime( $quiz_details->quiz_start_time ) );
-                $message = 'Dear students analyse your skill with on line unit test going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+                $message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
                 $MsgLink = $front_url . 'din/' . $details['invitation_link'];
                 $quizmessage = $message . ' ' . $MsgLink . ' to start the test';
                 $dataupdate = array(
@@ -992,7 +992,7 @@ class HomeController extends Controller
                         $invitelink =  base_convert( rand( 1000, 99999 ), 10, 36 );
                         $startDate = date( 'dS F', strtotime( $quiz_details->quiz_start_date ) );
                         $startTime = date( 'h:i a', strtotime( $quiz_details->quiz_start_time ) );
-                        $message = 'Dear students analyse your skill with on line unit test going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+                        $message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
                         $MsgLink = $front_url . 'din/' . $invitelink;
                         $quizmessage = $message . ' ' . $MsgLink . ' to start the test';
                         if ( !isset( $quiz_invitation_details->id ) ) {
