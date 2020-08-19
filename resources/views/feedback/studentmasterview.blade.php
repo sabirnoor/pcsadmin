@@ -323,7 +323,9 @@
                          <?php
 						 if(isset($selected_subjects_arr)){
 							 foreach($selected_subjects_arr as $val){
-								 echo $subject_arr[$val].', ';
+								 if(isset($subject_arr[$val])){
+								  echo $subject_arr[$val].', ';
+								 }
 							 }
 						 }
 						 
