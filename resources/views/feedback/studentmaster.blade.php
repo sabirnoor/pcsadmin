@@ -153,6 +153,20 @@
 
                     </div>
 					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="branch"> Branch* </label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-5" id="branch" name="branch" required>
+								<option value="">Select Branch</option>
+								
+								<option value="PCS" <?=(isset($details->branch) && $details->branch=="PCS")?'selected="selected"':''?>>PCS</option>
+								
+								<option value="GYANDEEP" <?=(isset($details->branch) && $details->branch=="GYANDEEP")?'selected="selected"':''?>>GYANDEEP</option>
+								
+							</select>
+						</div>
+					</div>
+					
 					
 					
 					<div class="form-group">
