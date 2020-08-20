@@ -86,6 +86,10 @@
                                 <th>Subject</th>
                                
                                 <th>Student Name</th>                             
+                                <th>Date</th>                             
+                                <th>Result Id</th>                             
+                                <th>User Id</th>                             
+                                <th>Quiz Id</th>                             
 
                                 <th>Action</th>
 
@@ -106,6 +110,10 @@
                             <td><?=$value['quiz_title']?> </td>
                             <td><?=$value['subject_name']?> </td>
                             <td><?=$value['student_name']?> </td>
+                            <td><?=$value['created_at']?> </td>
+                            <td><?=$value['result_id']?> </td>
+                            <td><?=$value['userid']?> </td>
+                            <td><?=$value['quizid']?> </td>
 							
                            
                                 <td>

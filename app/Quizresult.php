@@ -12,12 +12,13 @@ class Quizresult extends Model {
 	
 	 public static function getresultlist(){
         $data = DB::table('quiz_result as c1')
-                        ->select('c1.result_id','c2.quiz_title as quiz_title','c3.name as subject_name','c4.student_name')
+                        ->select('c1.result_id','c1.userid','c1.quizid','c1.created_at','c2.quiz_title as quiz_title','c3.name as subject_name','c4.student_name')
                         ->join('quiz as c2', 'c2.id', '=', 'c1.quizid','LEFT')                        
                         ->join('categories as c3', 'c3.id', '=', 'c2.subject_id','LEFT')                        
                         ->join('student_master as c4', 'c4.id', '=', 'c1.userid','LEFT')                        
                         ->where('c1.IsDelete', 0)
-                        ->orderBy('c1.quizid', 'ASC')->get()->toArray();
+                        ->orderBy('c1.userid', 'ASC')
+						->orderBy('c1.quizid', 'ASC')->get()->toArray();
         
 		
         return $data;
