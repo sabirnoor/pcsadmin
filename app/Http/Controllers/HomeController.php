@@ -28,6 +28,7 @@ use App\Question;
 use App\Quizresult;
 use App\Quizanswer;
 use App\Quizinvitation;
+use App\Quizgroup;
 
 class HomeController extends Controller
  {
@@ -1137,5 +1138,58 @@ class HomeController extends Controller
 		             
         return view( 'result/answer-sheet', compact( 'id', 'details', 'quiz_details', 'QuizquestionsList', 'user_result_data_arr') );
     }
+	
+	public function resultquizgroup( Request $request, $id = null )
+   {
+
+        $QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray(); 
+
+        return view( 'result/quiz-group-list', compact( 'QuizGroupList', 'id' ) );
+    }
+	public function resultlistbygroup( Request $request, $id = null )
+   {
+
+        $QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray();
+        $StudentmasterList = Studentmaster::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get()->toArray();
+		
+        return view( 'result/resultlist-by-group', compact( 'StudentmasterList', 'id' ) );
+    }
+   
+   public static function find_quiz_score($user_id,$quizgroup_id,$subject_id)
+   {
+	    
+		 $data = DB::table('quiz_result as qr')
+                        ->select('qr.result_id')
+                        ->join('quiz as q', 'qr.quizid', '=', 'q.id','LEFT')                        
+                        ->where('qr.userid', $user_id)     
+                        ->where('q.quizgroup_id', $quizgroup_id) 
+                        ->where('q.subject_id', $subject_id) 
+                        ->get()->toArray();
+				//print_r($data);exit;
+				
+		$user_score = 0;
+		
+		if(isset($data[0]->result_id)){			
+		
+		$result_id = $data[0]->result_id;
+		$result_data = Quizresult::get_result_data( $result_id );
+	
+	    
+			if ($result_data) {
+				foreach ($result_data as $value) {
+					$value = (array) $value;
+					if(isset($value['optionchosen'])){
+						if ($value['optionchosen'] == $value['correct_answer']) {
+							
+							$user_score += $value['score'];
+						}
+						
+					}
+				}
+			}
+		}
+		return $user_score;
+   }
+	
 	
 }

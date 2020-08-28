@@ -132,3 +132,6 @@ Route::match(['get', 'post'],'/invitation/{id?}', array('uses' => 'HomeControlle
 Route::match(['get', 'post'],'/deleteinvitation/{id?}', array('uses' => 'HomeController@deleteinvitation'));
 
 Route::match(['get', 'post'],'/get-filtered-students', array('uses' => 'HomeController@getfilteredstudents'));
+
+Route::match(['get', 'post'],'/resultquizgroup/{id?}', array('uses' => 'HomeController@resultquizgroup'));
+Route::match(['get', 'post'],'/resultlistbygroup/{id?}', array('uses' => 'HomeController@resultlistbygroup'));
