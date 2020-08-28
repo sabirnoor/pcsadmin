@@ -990,7 +990,10 @@ class HomeController extends Controller
                             'student_master_id' => $value,
                             'updated_at' => date( 'Y-m-d H:i:s' )
                         );
-                        $invitelink =  base_convert( rand( 1000, 99999 ), 10, 36 );
+                        $random_no =  base_convert( rand( 100000, 999999 ), 10, 36 );
+                        $random_no2 =  base_convert( rand( 100000, 999999 ), 10, 36 );
+                        $invitelink =  $random_no.$random_no2;
+						
                         $startDate = date( 'dS F', strtotime( $quiz_details->quiz_start_date ) );
                         $startTime = date( 'h:i a', strtotime( $quiz_details->quiz_start_time ) );
                         $message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
