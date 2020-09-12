@@ -14,7 +14,7 @@
 
 
 
-    
+
 
 
 
@@ -268,7 +268,7 @@
 
         </li>
 
-        
+
 
         <li class="">
 
@@ -366,7 +366,7 @@
 
                 </li>
 
-				
+
 
 				<li class="">
 
@@ -380,7 +380,7 @@
 
                     <b class="arrow"></b>
 
-                </li>                
+                </li>
 
                 <li class="">
 
@@ -400,7 +400,7 @@
 
                     <b class="arrow"></b>
 
-                    <ul class="submenu">                        
+                    <ul class="submenu">
 
                         <li class="">
 
@@ -445,12 +445,12 @@
 
                     </ul>
 
-                </li>                
+                </li>
 
             </ul>
 
         </li>
-		
+
 		 <li class="">
 
             <a href="#" class="dropdown-toggle">
@@ -465,7 +465,7 @@
 
             <b class="arrow"></b>
 
-            <ul class="submenu">				
+            <ul class="submenu">
 
 				<li class="">
                     <a href="{{url('quiz')}}">
@@ -474,7 +474,7 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-				
+
 				<li class="">
                     <a href="{{url('quizlist')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -482,9 +482,9 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-				
-				
-				
+
+
+
 				<li class="">
                     <a href="{{url('question')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -492,7 +492,7 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-				
+
 				<li class="">
                     <a href="{{url('questionlist')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -500,10 +500,10 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-				
+
            </ul>
             </li>
-			
+
 			<li class="">
 
             <a href="#" class="dropdown-toggle">
@@ -519,7 +519,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-				
+
 				<li class="">
                     <a href="{{url('resultlist')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -527,19 +527,19 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-				
+
 				<li class="">
                     <a href="{{url('resultquizgroup')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
                         Manage Result By Group
                     </a>
                     <b class="arrow"></b>
-                </li>			
-				
-				
+                </li>
+
+
            </ul>
             </li>
-			
+
 			<li class="">
 
             <a href="#" class="dropdown-toggle">
@@ -555,7 +555,7 @@
             <b class="arrow"></b>
 
             <ul class="submenu">
-								
+
 				<li class="">
                     <a href="{{url('invitation')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -563,11 +563,18 @@
                     </a>
                     <b class="arrow"></b>
                 </li>
-				
+                <li class="">
+                    <a href="{{url('schedulessms')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Schedule SMS
+                    </a>
+                    <b class="arrow"></b>
+                </li>
+
            </ul>
             </li>
 
-		
+
 
 		   <li class="">
 
@@ -583,7 +590,7 @@
 
             <b class="arrow"></b>
 
-            <ul class="submenu">                                
+            <ul class="submenu">
 
                 <li class="">
 
@@ -597,7 +604,7 @@
 
                     <b class="arrow"></b>
 
-                </li>				
+                </li>
 
 				<li class="">
 
@@ -611,7 +618,7 @@
 
                     <b class="arrow"></b>
 
-                </li>				
+                </li>
 
 				<li class="">
 
@@ -630,7 +637,7 @@
 
             </li>
 
-                           
+
         <li class="">
 
             <a href="{{url('noticeboard')}}">
@@ -671,7 +678,7 @@
 
             <b class="arrow"></b>
 
-        </li>                
+        </li>
          <li class="">
 
             <a href="#" class="dropdown-toggle">
@@ -719,13 +726,13 @@
 
                 </li>
 
-                
+
 
             </ul>
 
         </li>
 
-        
+
 
         <li class="">
 
@@ -745,7 +752,7 @@
 
 
 
-       
+
 
 
 

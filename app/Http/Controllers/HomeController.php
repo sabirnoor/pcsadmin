@@ -2,1194 +2,1234 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Hash;
-
-use Auth;
-
-use DB;
-
-use App\Staticcontent;
-
 use App\Categories;
-
+use App\Feedback;
+use App\Question;
+use App\Quiz;
+use App\Quizgroup;
+use App\Quizinvitation;
+use App\Quizresult;
+use App\Staticcontent;
+use App\Studentmaster;
 use App\uploadgallery;
-
+use App\User;
+use Auth;
+use DB;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Validator;
 
-use App\User;
+class HomeController extends Controller {
 
-use App\Feedback;
+	/**
 
-use App\Studentmaster;
-use App\Quiz;
-use App\Question;
-use App\Quizresult;
-use App\Quizanswer;
-use App\Quizinvitation;
-use App\Quizgroup;
+	 * Create a new controller instance.
 
-class HomeController extends Controller
- {
+	 *
 
-    /**
+	 * @return void
 
-    * Create a new controller instance.
+	 */
 
-    *
+	public function __construct() {
 
-    * @return void
+		$this->middleware('auth');
+	}
 
-    */
+	/**
 
-    public function __construct()
- {
+	 * Show the application dashboard.
 
-        $this->middleware( 'auth' );
-    }
+	 *
 
-    /**
+	 * @return \Illuminate\Http\Response
 
-    * Show the application dashboard.
+	 */
 
-    *
+	public function index() {
 
-    * @return \Illuminate\Http\Response
+		//echo '<pre>';
+		//print_r( Auth::user() );
+		//die;
 
-    */
+		return view('home');
+	}
 
-    public function index()
- {
+	public function dashboard() {
 
-        //echo '<pre>';
-        //print_r( Auth::user() );
-        //die;
+		//echo '<pre>';
+		//print_r( Auth::user() );
 
-        return view( 'home' );
-    }
+		return view('home');
+	}
 
-    public function dashboard()
- {
+	public function ourmotto(Request $request) {
 
-        //echo '<pre>';
-        //print_r( Auth::user() );        
+		$details = Staticcontent::where(array('page_name' => 'ourmotto'))->first();
 
-        return view( 'home' );
-    }
+		if ($request->isMethod('post')) {
 
-    public function ourmotto( Request $request )
- {
-       
-        $details = Staticcontent::where( array( 'page_name' => 'ourmotto' ) )->first();
+			$post = $request->all();
 
-        if ( $request->isMethod( 'post' ) ) {
+			$data = array(
 
-            $post = $request->all();
+				'page_name' => $post['page_name'],
 
-            $data = array(
+				'contents' => $post['contents'],
 
-                'page_name' => $post['page_name'],
+				'created_at' => date('Y-m-d H:i:s'),
 
-                'contents' => $post['contents'],
+				'updated_at' => date('Y-m-d H:i:s'),
 
-                'created_at' => date( 'Y-m-d H:i:s' ),
+			);
 
-                'updated_at' => date( 'Y-m-d H:i:s' )
+			if (empty($details)) {
 
-            );
+				$insert = Staticcontent::insert($data);
+			} else {
 
-            if ( empty( $details ) ) {
+				$insert = Staticcontent::where('page_name', $post['page_name'])->update($data);
+			}
 
-                $insert = Staticcontent::insert( $data );
-            } else {
+			if ($insert) {
 
-                $insert = Staticcontent::where( 'page_name', $post['page_name'] )->update( $data );
-            }
+				return redirect('ourmotto')->with('msgsuccess', 'Save successfully');
+			}
+		}
 
-            if ( $insert ) {
+		return view('staticpages/ourmotto', compact('details'));
+	}
 
-                return redirect( 'ourmotto' )->with( 'msgsuccess', 'Save successfully' );
-            }
-        }
+	public function profile(Request $request) {
 
-        return view( 'staticpages/ourmotto', compact( 'details' ) );
-    }
+		if ($request->isMethod('post')) {
 
-    public function profile( Request $request )
- {
+			$user = Auth::user();
 
-        if ( $request->isMethod( 'post' ) ) {
+			$post = $request->all();
 
-            $user = Auth::user();
+			$newPassword = $post['password'];
 
-            $post = $request->all();
+			$validator = Validator::make($post, [
 
-            $newPassword = $post['password'];
+				'password' => 'required|string|min:6|confirmed',
 
-            $validator = Validator::make( $post, [
+				'password_confirmation' => 'required|string|min:6|same:password',
 
-                'password' => 'required|string|min:6|confirmed',
+			]);
 
-                'password_confirmation' => 'required|string|min:6|same:password'
+			if ($validator->fails()) {
 
-            ] );
+				return redirect('profile')->with('msgerror', 'Fill-out the form correctly. Try again!');
+			}
 
-            if ( $validator->fails() ) {
+			if (Hash::check($post['cpassword'], $user->password)) {
 
-                return redirect( 'profile' )->with( 'msgerror', 'Fill-out the form correctly. Try again!' );
-            }
+				$user_id = $user->id;
 
-            if ( Hash::check( $post['cpassword'], $user->password ) ) {
+				$obj_user = User::find($user_id)->first();
 
-                $user_id = $user->id;
+				$obj_user->password = Hash::make($newPassword);
 
-                $obj_user = User::find( $user_id )->first();
+				$obj_user->save();
 
-                $obj_user->password = Hash::make( $newPassword );
+				return redirect('profile')->with('msgsuccess', 'Password Change successfully');
+			} else {
 
-                $obj_user->save();
+				return redirect('profile')->with('msgerror', 'Invalid current password!');
+			}
 
-                return redirect( 'profile' )->with( 'msgsuccess', 'Password Change successfully' );
-            } else {
+		}
 
-                return redirect( 'profile' )->with( 'msgerror', 'Invalid current password!' );
-            }
+		return view('profile');
+	}
 
-           
-        }
+	// Category section
 
-        return view( 'profile' );
-    }
+	public function gallerycategory(Request $request, $id = null) {
 
-    // Category section
+		$CategoriesList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'gallerycategory'))->orderBy('created_at', 'DESC')->get();
 
-    public function gallerycategory( Request $request, $id = null )
- {
+		if ($request->isMethod('post')) {
 
-        $CategoriesList = Categories::where( array( 'IsDelete' => 0, 'entity_type' => 'gallerycategory' ) )->orderBy( 'created_at', 'DESC' )->get();
+			$post = $request->all();
 
-        if ( $request->isMethod( 'post' ) ) {
+			$data = array(
 
-            $post = $request->all();
+				'name' => $post['title'],
 
-            $data = array(
+				'entity_type' => 'gallerycategory',
 
-                'name' => $post['title'],
+				'IsDelete' => 0,
 
-                'entity_type' => 'gallerycategory',
+				'created_at' => date('Y-m-d H:i:s'),
 
-                'IsDelete' => 0,
+				'updated_at' => date('Y-m-d H:i:s'),
 
-                'created_at' => date( 'Y-m-d H:i:s' ),
+			);
 
-                'updated_at' => date( 'Y-m-d H:i:s' )
+			if (empty($id)) {
 
-            );
-            
+				$insert = Categories::insert($data);
 
-            if ( empty( $id ) ) {
+				return redirect('gallerycategory')->with('msgsuccess', 'Save successfully');
+			} else {
 
-                $insert = Categories::insert( $data );
+				$insert = Categories::where('id', $id)->update($data);
 
-                return redirect( 'gallerycategory' )->with( 'msgsuccess', 'Save successfully' );
-            } else {
+				return redirect('gallerycategory')->with('msgsuccess', 'Update successfully');
+			}
+		}
 
-                $insert = Categories::where( 'id', $id )->update( $data );
+		$details = Categories::where(array('id' => $id))->first();
 
-                return redirect( 'gallerycategory' )->with( 'msgsuccess', 'Update successfully' );
-            }
-        }
+		return view('category/gallerycategory', compact('CategoriesList', 'id', 'details'));
+	}
 
-        $details = Categories::where( array( 'id' => $id ) )->first();
+	public function deletegallcat(Request $request, $id = null) {
 
-        return view( 'category/gallerycategory', compact( 'CategoriesList', 'id', 'details' ) );
-    }
+		if ($request->isXmlHttpRequest()) {
 
-    public function deletegallcat( Request $request, $id = null )
- {
+			$data = array(
 
-        if ( $request->isXmlHttpRequest() ) {
+				'IsDelete' => 1,
 
-            $data = array(
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-                'IsDelete' => 1,
+			);
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+			$result = Categories::where('id', $id)->update($data);
 
-            );
+			if ($result) {
 
-            $result = Categories::where( 'id', $id )->update( $data );
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-            if ( $result ) {
+				exit;
+			} else {
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-                exit;
-            } else {
+				exit;
+			}
+		} else {
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+			die('Oops invalid request!!');
+		}
+	}
 
-                exit;
-            }
-        } else {
+	public function deletegalleryimage(Request $request, $id = null) {
 
-            die( 'Oops invalid request!!' );
-        }
-    }
+		if ($request->isXmlHttpRequest()) {
 
-    public function deletegalleryimage( Request $request, $id = null )
- {
+			$data = array(
 
-        if ( $request->isXmlHttpRequest() ) {
+				'IsDelete' => 1,
 
-            $data = array(
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-                'IsDelete' => 1,
+			);
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+			$result = uploadgallery::where('id', $id)->update($data);
 
-            );
+			if ($result) {
 
-            $result = uploadgallery::where( 'id', $id )->update( $data );
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-            if ( $result ) {
+				exit;
+			} else {
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-                exit;
-            } else {
+				exit;
+			}
+		} else {
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+			die('Oops invalid request!!');
+		}
+	}
 
-                exit;
-            }
-        } else {
+	// Feedback section
 
-            die( 'Oops invalid request!!' );
-        }
-    }
+	public function feedback(Request $request, $id = null) {
 
-    // Feedback section
+		$FeedbackList = Feedback::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get();
 
-    public function feedback( Request $request, $id = null )
- {
+		if ($request->isMethod('post')) {
 
-        $FeedbackList = Feedback::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get();
+			$post = $request->all();
 
-        if ( $request->isMethod( 'post' ) ) {
+			$data = array(
 
-            $post = $request->all();
+				'student_master_id' => $post['student_master_id'],
 
-            $data = array(
+				'student_name' => $post['student_name'],
 
-                'student_master_id' => $post['student_master_id'],
+				'admission_no' => $post['admission_no'],
 
-                'student_name' => $post['student_name'],
+				'roll_no_previous' => $post['roll_no_previous'],
 
-                'admission_no' => $post['admission_no'],
+				'present_class' => $post['present_class'],
 
-                'roll_no_previous' => $post['roll_no_previous'],
+				'contact_no' => $post['contact_no'],
 
-                'present_class' => $post['present_class'],
+				'whatsapp_no' => $post['whatsapp_no'],
 
-                'contact_no' => $post['contact_no'],
+				'comments' => $post['comments'],
 
-                'whatsapp_no' => $post['whatsapp_no'],
+				'technical_issue' => isset($post['technical_issue']) ? $post['technical_issue'] : '',
 
-                'comments' => $post['comments'],
+				'suggestion' => isset($post['suggestion']) ? $post['suggestion'] : '',
 
-                'technical_issue' => isset( $post['technical_issue'] ) ? $post['technical_issue'] : '',
+				'isPublished' => isset($post['isPublished']) ? 1 : 0,
 
-                'suggestion' => isset( $post['suggestion'] ) ? $post['suggestion'] : '',
+				'updated_at' => date('Y-m-d H:i:s'),
 
-                'isPublished' => isset( $post['isPublished'] ) ? 1 : 0,
+			);
 
-                'updated_at' => date( 'Y-m-d H:i:s' )
+			if (empty($id)) {
 
-            );
+				$data['created_at'] = date('Y-m-d H:i:s');
 
-           
-            if ( empty( $id ) ) {
+				$data['IsDelete'] = 0;
 
-                $data['created_at'] = date( 'Y-m-d H:i:s' );
+				$insert = Feedback::insert($data);
 
-                $data['IsDelete'] = 0;
+				return redirect('feedbacklist')->with('msgsuccess', 'Save successfully');
+			} else {
 
-                $insert = Feedback::insert( $data );
+				$insert = Feedback::where('id', $id)->update($data);
 
-                return redirect( 'feedbacklist' )->with( 'msgsuccess', 'Save successfully' );
-            } else {
+				return redirect('feedbacklist')->with('msgsuccess', 'Update successfully');
+			}
+		}
 
-                $insert = Feedback::where( 'id', $id )->update( $data );
+		$details = Feedback::where(array('id' => $id))->first();
 
-                return redirect( 'feedbacklist' )->with( 'msgsuccess', 'Update successfully' );
-            }
-        }
+		return view('feedback/feedback', compact('FeedbackList', 'id', 'details'));
+	}
 
-        $details = Feedback::where( array( 'id' => $id ) )->first();
+	public function feedbacklist(Request $request, $id = null) {
 
-        return view( 'feedback/feedback', compact( 'FeedbackList', 'id', 'details' ) );
-    }
+		$FeedbackList = Feedback::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get();
 
-    public function feedbacklist( Request $request, $id = null )
- {
+		return view('feedback/feedback-list', compact('FeedbackList', 'id', 'details'));
+	}
 
-        $FeedbackList = Feedback::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get();
+	public function deletefeedback(Request $request, $id = null) {
 
-        return view( 'feedback/feedback-list', compact( 'FeedbackList', 'id', 'details' ) );
-    }
+		if ($request->isXmlHttpRequest()) {
 
-    public function deletefeedback( Request $request, $id = null )
- {
+			$data = array(
 
-        if ( $request->isXmlHttpRequest() ) {
+				'IsDelete' => 1,
 
-            $data = array(
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-                'IsDelete' => 1,
+			);
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+			$result = Feedback::where('id', $id)->update($data);
 
-            );
+			if ($result) {
 
-            $result = Feedback::where( 'id', $id )->update( $data );
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-            if ( $result ) {
+				exit;
+			} else {
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-                exit;
-            } else {
+				exit;
+			}
+		} else {
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+			die('Oops invalid request!!');
+		}
+	}
 
-                exit;
-            }
-        } else {
+	// Studentmaster section
 
-            die( 'Oops invalid request!!' );
-        }
-    }
+	public function studentmaster(Request $request, $id = null) {
 
-    // Studentmaster section
+		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get();
 
-    public function studentmaster( Request $request, $id = null )
- {
+		if ($request->isMethod('post')) {
 
-        $StudentmasterList = Studentmaster::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get();
+			$post = $request->all();
 
-        if ( $request->isMethod( 'post' ) ) {
+			$data = array(
+				'student_name' => $post['student_name'],
+				'Date_of_Birth' => DateFormates($post['Date_of_Birth'], '-'),
+				'Admission_Date' => DateFormates($post['Admission_Date'], '-'),
+				'Father_Name' => $post['Father_Name'],
+				'Mother_Name' => $post['Mother_Name'],
+				'Sex' => $post['Sex'],
+				'Roll_No' => $post['Roll_No'],
+				'Address' => $post['Address'],
+				'branch' => $post['branch'],
 
-            $post = $request->all();
+				'admission_no' => $post['admission_no'],
 
-            $data = array(
-                'student_name' => $post['student_name'],
-                'Date_of_Birth' => DateFormates( $post['Date_of_Birth'], '-' ),
-                'Admission_Date' => DateFormates( $post['Admission_Date'], '-' ),
-                'Father_Name' => $post['Father_Name'],
-                'Mother_Name' => $post['Mother_Name'],
-                'Sex' => $post['Sex'],
-                'Roll_No' => $post['Roll_No'],
-                'Address' => $post['Address'],
-                'branch' => $post['branch'],
+				'roll_no_previous' => $post['roll_no_previous'],
 
-                'admission_no' => $post['admission_no'],
+				'present_class' => $post['present_class'],
 
-                'roll_no_previous' => $post['roll_no_previous'],
+				'contact_no' => $post['contact_no'],
 
-                'present_class' => $post['present_class'],
+				'whatsapp_no' => $post['whatsapp_no'],
 
-                'contact_no' => $post['contact_no'],
+				'updated_at' => date('Y-m-d H:i:s'),
 
-                'whatsapp_no' => $post['whatsapp_no'],
+			);
 
-                'updated_at' => date( 'Y-m-d H:i:s' )
+			if (empty($id)) {
 
-            );
+				$data['admission_ref_no'] = ''; //in add mode only
 
-            
+				$data['created_at'] = date('Y-m-d H:i:s');
+				$data['IsDelete'] = 0;
 
-            if ( empty( $id ) ) {
+				$insert = Studentmaster::insert($data);
 
-                $data['admission_ref_no'] = ''; //in add mode only
-				
-				$data['created_at'] = date( 'Y-m-d H:i:s' );
-                $data['IsDelete'] = 0;
+				return redirect('studentmaster')->with('msgsuccess', 'Save successfully');
+			} else {
 
-                $insert = Studentmaster::insert( $data );
+				$insert = Studentmaster::where('id', $id)->update($data);
 
-                return redirect( 'studentmaster' )->with( 'msgsuccess', 'Save successfully' );
-            } else {
+				return redirect('studentmaster')->with('msgsuccess', 'Update successfully');
+			}
+		}
 
-                $insert = Studentmaster::where( 'id', $id )->update( $data );
+		$details = Studentmaster::where(array('id' => $id))->first();
 
-                return redirect( 'studentmaster' )->with( 'msgsuccess', 'Update successfully' );
-            }
-        }
+		return view('feedback/studentmaster', compact('StudentmasterList', 'id', 'details'));
+	}
 
-        $details = Studentmaster::where( array( 'id' => $id ) )->first();
+	public function studentmasterview(Request $request, $id = null) {
 
-        return view( 'feedback/studentmaster', compact( 'StudentmasterList', 'id', 'details' ) );
-    }
-	
-   public function studentmasterview( Request $request, $id = null )
-   {
-       
-        $details = Studentmaster::where( array( 'id' => $id ) )->first();
-		
-		 $subjectList = Categories::where( array( 'IsDelete' => 0, 'entity_type' => 'subjects' ) )->orderBy( 'id', 'ASC' )->get()->toArray();
-		 
+		$details = Studentmaster::where(array('id' => $id))->first();
 
-        return view( 'feedback/studentmasterview', compact( 'id', 'details', 'subjectList' ) );
-    }
+		$subjectList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'subjects'))->orderBy('id', 'ASC')->get()->toArray();
 
-    public function deletestudentmaster( Request $request, $id = null )
- {
+		return view('feedback/studentmasterview', compact('id', 'details', 'subjectList'));
+	}
 
-        if ( $request->isXmlHttpRequest() ) {
+	public function deletestudentmaster(Request $request, $id = null) {
 
-            $data = array(
+		if ($request->isXmlHttpRequest()) {
 
-                'IsDelete' => 1,
+			$data = array(
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+				'IsDelete' => 1,
 
-            );
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-            $result = Studentmaster::where( 'id', $id )->update( $data );
+			);
 
-            if ( $result ) {
+			$result = Studentmaster::where('id', $id)->update($data);
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+			if ($result) {
 
-                exit;
-            } else {
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+				exit;
+			} else {
 
-                exit;
-            }
-        } else {
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-            die( 'Oops invalid request!!' );
-        }
-    }
+				exit;
+			}
+		} else {
 
-    public function sendsms( Request $request )
- {
-        if ( $request->isXmlHttpRequest() ) {
-            $post = $request->all();
-           
-            if ( isset( $post['studentId'] ) && !empty( $post['studentId'] ) ) {
-                foreach ( $post['studentId'] as $value ) {
-                    $shortCode =  base_convert( rand( 1000, 99999 ), 10, 36 );
-                    $result = Studentmaster::where( 'id', $value )->first();
+			die('Oops invalid request!!');
+		}
+	}
 
-                    if ( $result ) {
-                        $data = array(
-                            'student_master_id' => $value,
-                            'shortCode' => $shortCode,
-                            'student_name' => $result->student_name,
-                            'admission_no' => $result->admission_no,
-                            'roll_no_previous' => $result->roll_no_previous,
-                            'present_class' => $result->present_class,
-                            'contact_no' => $result->contact_no,
-                            'whatsapp_no' => $result->whatsapp_no,
-                            'feedbackmessage' => $post['feedbackmessage'],
-                            'comments' => '',
-                            'technical_issue' => '',
-                            'suggestion' => '',
-                            'isPublished' => 0,
-                            'IsDelete' => 0,
-                            'created_at' => date( 'Y-m-d H:i:s' ),
-                            'updated_at' => date( 'Y-m-d H:i:s' )
-                        );
-                        $insertId = Feedback::insertGetId( $data );
-                        if ( $insertId ) {
-                            $feedbackmessage = $post['feedbackmessage'] . ' ' . 'http://www.pcskhalispur.com/di2/' . $shortCode;
-                            $mobileno = $result->contact_no;
-                            //$post['mobileno'];
-                            $msg = str_replace( ' ', '%20', $feedbackmessage );
+	public function sendsms(Request $request) {
+		if ($request->isXmlHttpRequest()) {
+			$post = $request->all();
 
-                            $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+			if (isset($post['studentId']) && !empty($post['studentId'])) {
+				foreach ($post['studentId'] as $value) {
+					$shortCode = base_convert(rand(1000, 99999), 10, 36);
+					$result = Studentmaster::where('id', $value)->first();
 
-                            $ch = curl_init();
-                            curl_setopt( $ch, CURLOPT_URL, $url );
-                            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-                            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-                            $curl_response = curl_exec( $ch );
-                            //print_r( $curl_response );
-                            curl_close( $ch );
-                            $result = json_decode( $curl_response, true );
-                        }
-                    }
-                }
-                if ( isset( $result['status'] ) && $result['status'] == 1 ) {
-                    echo json_encode( array( 'success' => true, 'message' => 'Message Sent Successfully' ) );
-                    exit;
-                } else {
-                    echo json_encode( array( 'success' => false, 'message' => 'Oops something went wrong! try again.' ) );
-                    exit;
-                }
-            }
-           
-            $shortCode =  base_convert( rand( 1000, 99999 ), 10, 36 );
-            $result = Studentmaster::where( 'id', $post['studentId'] )->first();
-            if ( $result ) {
-                $data = array(
-                    'student_master_id' => $post['studentId'],
-                    'shortCode' => $shortCode,
-                    'student_name' => $result->student_name,
-                    'admission_no' => $result->admission_no,
-                    'roll_no_previous' => $result->roll_no_previous,
-                    'present_class' => $result->present_class,
-                    'contact_no' => $result->contact_no,
-                    'whatsapp_no' => $result->whatsapp_no,
-                    'feedbackmessage' => $post['feedbackmessage'],
-                    'comments' => '',
-                    'technical_issue' => '',
-                    'suggestion' => '',
-                    'isPublished' => 0,
-                    'IsDelete' => 0,
-                    'created_at' => date( 'Y-m-d H:i:s' ),
-                    'updated_at' => date( 'Y-m-d H:i:s' )
-                );
-                $insertId = Feedback::insertGetId( $data );
-            }
-            if ( $insertId ) {
-                $feedbackmessage = $post['feedbackmessage'] . ' ' . 'http://www.pcskhalispur.com/di2/' . $shortCode;
-                $mobileno = $result->contact_no;
-                //$post['mobileno'];
-                $msg = str_replace( ' ', '%20', $feedbackmessage );
+					if ($result) {
+						$data = array(
+							'student_master_id' => $value,
+							'shortCode' => $shortCode,
+							'student_name' => $result->student_name,
+							'admission_no' => $result->admission_no,
+							'roll_no_previous' => $result->roll_no_previous,
+							'present_class' => $result->present_class,
+							'contact_no' => $result->contact_no,
+							'whatsapp_no' => $result->whatsapp_no,
+							'feedbackmessage' => $post['feedbackmessage'],
+							'comments' => '',
+							'technical_issue' => '',
+							'suggestion' => '',
+							'isPublished' => 0,
+							'IsDelete' => 0,
+							'created_at' => date('Y-m-d H:i:s'),
+							'updated_at' => date('Y-m-d H:i:s'),
+						);
+						$insertId = Feedback::insertGetId($data);
+						if ($insertId) {
+							$feedbackmessage = $post['feedbackmessage'] . ' ' . 'http://www.pcskhalispur.com/di2/' . $shortCode;
+							$mobileno = $result->contact_no;
+							//$post['mobileno'];
+							$msg = str_replace(' ', '%20', $feedbackmessage);
 
-                $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+							$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
 
-                $ch = curl_init();
-                curl_setopt( $ch, CURLOPT_URL, $url );
-                curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-                curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-                $curl_response = curl_exec( $ch );
-                //print_r( $curl_response );
-                curl_close( $ch );
-                $result = json_decode( $curl_response, true );
-                if ( isset( $result['status'] ) && $result['status'] == 1 ) {
-                    echo json_encode( array( 'success' => true, 'message' => 'Message Sent Successfully' ) );
-                    exit;
-                } else {
-                    echo json_encode( array( 'success' => false, 'message' => 'Oops something went wrong! try again.' ) );
-                    exit;
-                }
-            } else {
-                echo json_encode( array( 'success' => false, 'message' => 'Record not found.' ) );
-                exit;
-            }
-            //static url
+							$ch = curl_init();
+							curl_setopt($ch, CURLOPT_URL, $url);
+							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							$curl_response = curl_exec($ch);
+							//print_r( $curl_response );
+							curl_close($ch);
+							$result = json_decode($curl_response, true);
+						}
+					}
+				}
+				if (isset($result['status']) && $result['status'] == 1) {
+					echo json_encode(array('success' => true, 'message' => 'Message Sent Successfully'));
+					exit;
+				} else {
+					echo json_encode(array('success' => false, 'message' => 'Oops something went wrong! try again.'));
+					exit;
+				}
+			}
 
-        } else {
-            die( 'Oops invalid request!!' );
-        }
-    }
+			$shortCode = base_convert(rand(1000, 99999), 10, 36);
+			$result = Studentmaster::where('id', $post['studentId'])->first();
+			if ($result) {
+				$data = array(
+					'student_master_id' => $post['studentId'],
+					'shortCode' => $shortCode,
+					'student_name' => $result->student_name,
+					'admission_no' => $result->admission_no,
+					'roll_no_previous' => $result->roll_no_previous,
+					'present_class' => $result->present_class,
+					'contact_no' => $result->contact_no,
+					'whatsapp_no' => $result->whatsapp_no,
+					'feedbackmessage' => $post['feedbackmessage'],
+					'comments' => '',
+					'technical_issue' => '',
+					'suggestion' => '',
+					'isPublished' => 0,
+					'IsDelete' => 0,
+					'created_at' => date('Y-m-d H:i:s'),
+					'updated_at' => date('Y-m-d H:i:s'),
+				);
+				$insertId = Feedback::insertGetId($data);
+			}
+			if ($insertId) {
+				$feedbackmessage = $post['feedbackmessage'] . ' ' . 'http://www.pcskhalispur.com/di2/' . $shortCode;
+				$mobileno = $result->contact_no;
+				//$post['mobileno'];
+				$msg = str_replace(' ', '%20', $feedbackmessage);
 
-    // Quiz section
+				$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
 
-    public function quiz( Request $request, $id = null )
- {
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$curl_response = curl_exec($ch);
+				//print_r( $curl_response );
+				curl_close($ch);
+				$result = json_decode($curl_response, true);
+				if (isset($result['status']) && $result['status'] == 1) {
+					echo json_encode(array('success' => true, 'message' => 'Message Sent Successfully'));
+					exit;
+				} else {
+					echo json_encode(array('success' => false, 'message' => 'Oops something went wrong! try again.'));
+					exit;
+				}
+			} else {
+				echo json_encode(array('success' => false, 'message' => 'Record not found.'));
+				exit;
+			}
+			//static url
 
-        if ( $request->isMethod( 'post' ) ) {
+		} else {
+			die('Oops invalid request!!');
+		}
+	}
 
-            $post = $request->all();
+	// Quiz section
 
-            $quiz_start_time = $post['start_time_hour'] . ':' . $post['start_time_min'] . ':00';
-            $quiz_end_time = $post['end_time_hour'] . ':' . $post['end_time_min'] . ':00';
-            $data = array(
+	public function quiz(Request $request, $id = null) {
 
-                'class_id' => $post['class_id'],
-                'subject_id' => $post['subject_id'],
-                'quiz_title' => $post['quiz_title'],
-                'quiz_max_marks' => $post['quiz_max_marks'],
-                'quiz_max_time' => $post['quiz_max_time'],
-                'quiz_total_question' => $post['quiz_total_question'],
-                'quiz_start_date' => DateFormates( $post['quiz_start_date'], '-' ),
-                'quiz_start_time' => $quiz_start_time,
-                'quiz_end_date' => DateFormates( $post['quiz_end_date'], '-' ),
-                'quiz_end_time' => $quiz_end_time,
-                'isPublished' => isset( $post['isPublished'] ) ? 1 : 0,
+		if ($request->isMethod('post')) {
 
-                'updated_at' => date( 'Y-m-d H:i:s' )
+			$post = $request->all();
 
-            );
+			$quiz_start_time = $post['start_time_hour'] . ':' . $post['start_time_min'] . ':00';
+			$quiz_end_time = $post['end_time_hour'] . ':' . $post['end_time_min'] . ':00';
+			$data = array(
 
-           
-            if ( empty( $id ) ) {
+				'class_id' => $post['class_id'],
+				'subject_id' => $post['subject_id'],
+				'quiz_title' => $post['quiz_title'],
+				'quiz_max_marks' => $post['quiz_max_marks'],
+				'quiz_max_time' => $post['quiz_max_time'],
+				'quiz_total_question' => $post['quiz_total_question'],
+				'quiz_start_date' => DateFormates($post['quiz_start_date'], '-'),
+				'quiz_start_time' => $quiz_start_time,
+				'quiz_end_date' => DateFormates($post['quiz_end_date'], '-'),
+				'quiz_end_time' => $quiz_end_time,
+				'isPublished' => isset($post['isPublished']) ? 1 : 0,
 
-                $data['created_at'] = date( 'Y-m-d H:i:s' );
+				'updated_at' => date('Y-m-d H:i:s'),
 
-                $data['IsDelete'] = 0;
+			);
 
-                $insert = Quiz::insert( $data );
+			if (empty($id)) {
 
-                return redirect( 'quizlist' )->with( 'msgsuccess', 'Save successfully' );
-            } else {
+				$data['created_at'] = date('Y-m-d H:i:s');
 
-                $insert = Quiz::where( 'id', $id )->update( $data );
+				$data['IsDelete'] = 0;
 
-                return redirect( 'quizlist' )->with( 'msgsuccess', 'Update successfully' );
-            }
-        }
+				$insert = Quiz::insert($data);
 
-        $details = Quiz::where( array( 'id' => $id ) )->first();
+				return redirect('quizlist')->with('msgsuccess', 'Save successfully');
+			} else {
 
-        $ClassList = Categories::where( array( 'IsDelete' => 0, 'entity_type' => 'classsyllabus' ) )->orderBy( 'id', 'ASC' )->get();
+				$insert = Quiz::where('id', $id)->update($data);
 
-        $SubjectList = Categories::where( array( 'IsDelete' => 0, 'entity_type' => 'subjects' ) )->orderBy( 'id', 'ASC' )->get();
+				return redirect('quizlist')->with('msgsuccess', 'Update successfully');
+			}
+		}
 
-        return view( 'quiz/quiz', compact( 'id', 'details', 'ClassList', 'SubjectList' ) );
-    }
+		$details = Quiz::where(array('id' => $id))->first();
 
-    public function quizlist( Request $request, $id = null )
- {
+		$ClassList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'classsyllabus'))->orderBy('id', 'ASC')->get();
 
-        $QuizList = Quiz::getquiz();
+		$SubjectList = Categories::where(array('IsDelete' => 0, 'entity_type' => 'subjects'))->orderBy('id', 'ASC')->get();
 
-        return view( 'quiz/quiz-list', compact( 'QuizList', 'id' ) );
-    }
+		return view('quiz/quiz', compact('id', 'details', 'ClassList', 'SubjectList'));
+	}
 
-    public function deletequiz( Request $request, $id = null )
- {
+	public function quizlist(Request $request, $id = null) {
 
-        if ( $request->isXmlHttpRequest() ) {
+		$QuizList = Quiz::getquiz();
 
-            $data = array(
+		return view('quiz/quiz-list', compact('QuizList', 'id'));
+	}
 
-                'IsDelete' => 1,
+	public function deletequiz(Request $request, $id = null) {
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+		if ($request->isXmlHttpRequest()) {
 
-            );
+			$data = array(
 
-            $result = Quiz::where( 'id', $id )->update( $data );
+				'IsDelete' => 1,
 
-            if ( $result ) {
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+			);
 
-                exit;
-            } else {
+			$result = Quiz::where('id', $id)->update($data);
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+			if ($result) {
 
-                exit;
-            }
-        } else {
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-            die( 'Oops invalid request!!' );
-        }
-    }
-	
-	public function archivequiz(Request $request, $id = null)
-    {
+				exit;
+			} else {
 
-        if ($request->isXmlHttpRequest()) {
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-            $data = array(
+				exit;
+			}
+		} else {
 
-                'isArchived' => 1,
+			die('Oops invalid request!!');
+		}
+	}
 
-                'updated_at' => date('Y-m-d H:i:s')
+	public function archivequiz(Request $request, $id = null) {
 
-            );
+		if ($request->isXmlHttpRequest()) {
 
-            $result = Quiz::where('id', $id)->update($data);
+			$data = array(
 
-            if ($result) {
+				'isArchived' => 1,
 
-                echo json_encode(array('success' => true, 'message' => 'Archived Successfully'));
+				'updated_at' => date('Y-m-d H:i:s'),
 
-                exit;
-            } else {
+			);
 
-                echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+			$result = Quiz::where('id', $id)->update($data);
 
-                exit;
-            }
-        } else {
+			if ($result) {
 
-            die('Oops invalid request!!');
-        }
-    }
-	
+				echo json_encode(array('success' => true, 'message' => 'Archived Successfully'));
+
+				exit;
+			} else {
+
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+
+				exit;
+			}
+		} else {
+
+			die('Oops invalid request!!');
+		}
+	}
+
 	//Get all questions of a quiz
-	public function quizquestions(Request $request, $id)
-    {
-        $quizdetails = Quiz::where(array('id' => $id))->first();
+	public function quizquestions(Request $request, $id) {
+		$quizdetails = Quiz::where(array('id' => $id))->first();
 		$QuizquestionsList = Question::getquizquestions($id);
-       
-        return view('quiz/quiz-question-list', compact('quizdetails','QuizquestionsList', 'id'));
-    }
 
-    // Question section
+		return view('quiz/quiz-question-list', compact('quizdetails', 'QuizquestionsList', 'id'));
+	}
 
-    public function question( Request $request, $id = null )
- {
+	// Question section
 
-        if ( $request->isMethod( 'post' ) ) {
+	public function question(Request $request, $id = null) {
 
-            $post = $request->all();
+		if ($request->isMethod('post')) {
 
-            $data = array(
-                'quizid' => $post['quizid'],
-                'question_title' => $post['question_title'],
-                'option1' => $post['option1'],
-                'option2' => $post['option2'],
-                'option3' => $post['option3'],
-                'option4' => $post['option4'],
-                'correct_answer' => $post['correct_answer'],
-                'score' => 1,  // default score
-                'updated_at' => date( 'Y-m-d H:i:s' )
-            );
+			$post = $request->all();
 
-           
-            if ( empty( $id ) ) {
+			$data = array(
+				'quizid' => $post['quizid'],
+				'question_title' => $post['question_title'],
+				'option1' => $post['option1'],
+				'option2' => $post['option2'],
+				'option3' => $post['option3'],
+				'option4' => $post['option4'],
+				'correct_answer' => $post['correct_answer'],
+				'score' => 1, // default score
+				'updated_at' => date('Y-m-d H:i:s'),
+			);
 
-                $data['created_at'] = date( 'Y-m-d H:i:s' );
+			if (empty($id)) {
 
-                $data['IsDelete'] = 0;
+				$data['created_at'] = date('Y-m-d H:i:s');
 
-                $insert = Question::insert( $data );
+				$data['IsDelete'] = 0;
 
-                return redirect( 'questionlist' )->with( 'msgsuccess', 'Save successfully' );
-            } else {
+				$insert = Question::insert($data);
 
-                $insert = Question::where( 'id', $id )->update( $data );
+				return redirect('questionlist')->with('msgsuccess', 'Save successfully');
+			} else {
 
-                return redirect( 'questionlist' )->with( 'msgsuccess', 'Update successfully' );
-            }
-        }
+				$insert = Question::where('id', $id)->update($data);
 
-        $QuizList = Quiz::getquiz();
-        $details = Question::where( array( 'id' => $id ) )->first();
+				return redirect('questionlist')->with('msgsuccess', 'Update successfully');
+			}
+		}
 
-        return view( 'quiz/question', compact( 'QuestionList', 'id', 'details', 'QuizList' ) );
-    }
+		$QuizList = Quiz::getquiz();
+		$details = Question::where(array('id' => $id))->first();
 
-    public function questionlist( Request $request, $id = null )
- {
+		return view('quiz/question', compact('QuestionList', 'id', 'details', 'QuizList'));
+	}
 
-        //$QuestionList = Question::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get();
-        $QuestionList = Question::getquestion();
-        //print_r( $QuestionList );
-        
+	public function questionlist(Request $request, $id = null) {
 
-        return view( 'quiz/question-list', compact( 'QuestionList', 'id', 'details' ) );
-    }
+		//$QuestionList = Question::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get();
+		$QuestionList = Question::getquestion();
+		//print_r( $QuestionList );
 
-    public function deletequestion( Request $request, $id = null )
- {
+		return view('quiz/question-list', compact('QuestionList', 'id', 'details'));
+	}
 
-        if ( $request->isXmlHttpRequest() ) {
+	public function deletequestion(Request $request, $id = null) {
 
-            $data = array(
+		if ($request->isXmlHttpRequest()) {
 
-                'IsDelete' => 1,
+			$data = array(
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+				'IsDelete' => 1,
 
-            );
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-            $result = Question::where( 'id', $id )->update( $data );
+			);
 
-            if ( $result ) {
+			$result = Question::where('id', $id)->update($data);
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+			if ($result) {
 
-                exit;
-            } else {
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+				exit;
+			} else {
 
-                exit;
-            }
-        } else {
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-            die( 'Oops invalid request!!' );
-        }
-    }
+				exit;
+			}
+		} else {
 
-    // Result section
+			die('Oops invalid request!!');
+		}
+	}
 
-    public function result( Request $request, $id = null )
- {
+	// Result section
 
-        $details = Quizresult::where( array( 'result_id' => $id ) )->first();
+	public function result(Request $request, $id = null) {
 
-        $result_data = Quizresult::get_result_data( $id );
+		$details = Quizresult::where(array('result_id' => $id))->first();
 
-        $quizid = $details->quizid;
+		$result_data = Quizresult::get_result_data($id);
 
-        $quiz_details = Quiz::where( array( 'id' => $quizid ) )->first();
+		$quizid = $details->quizid;
 
-        $correct_answer = 0;
-        $wrong_answer = 0;
-        $user_score = 0;
-        $quiz_full_marks = 0;
-        $percentage = 0;
-        $final_status = '';
+		$quiz_details = Quiz::where(array('id' => $quizid))->first();
+
+		$correct_answer = 0;
+		$wrong_answer = 0;
+		$user_score = 0;
+		$quiz_full_marks = 0;
+		$percentage = 0;
+		$final_status = '';
 		$question_attempted = 0;
 
-        if ($result_data) {
-            foreach ($result_data as $value) {
-                $value = (array) $value;
-                if(isset($value['optionchosen'])){
+		if ($result_data) {
+			foreach ($result_data as $value) {
+				$value = (array) $value;
+				if (isset($value['optionchosen'])) {
 					if ($value['optionchosen'] == $value['correct_answer']) {
 						$correct_answer++;
 						$user_score += $value['score'];
 					}
 					$question_attempted++;
 				}
-            }
-        }
+			}
+		}
 
-        $quiz_total_question = Question::where(array('quizid' => $quizid,'IsDelete' => 0))->get()->count();
-		$quiz_full_marks = $quiz_total_question * 1; // each question has 1 mark        
+		$quiz_total_question = Question::where(array('quizid' => $quizid, 'IsDelete' => 0))->get()->count();
+		$quiz_full_marks = $quiz_total_question * 1; // each question has 1 mark
 
-        $wrong_answer = $question_attempted-$correct_answer;
+		$wrong_answer = $question_attempted - $correct_answer;
 
-        if ($quiz_full_marks > 0) {
-            $percentage = round(($user_score*100/$quiz_full_marks),2);
-        }
-        if ($percentage >= 33) {
-            $final_status = 'Pass';
-        } else {
-            $final_status = 'Fail';
-        }
+		if ($quiz_full_marks > 0) {
+			$percentage = round(($user_score * 100 / $quiz_full_marks), 2);
+		}
+		if ($percentage >= 33) {
+			$final_status = 'Pass';
+		} else {
+			$final_status = 'Fail';
+		}
 
-        $result_params = array(
-            'final_status' => $final_status,
-            'user_score' => $user_score,
-            'quiz_full_marks' => $quiz_full_marks,
-			'quiz_total_question' => $quiz_total_question,                
-            'question_attempted' => $question_attempted, 
-            'percentage' => $percentage,
-            'correct_answer' => $correct_answer,
-            'wrong_answer' => $wrong_answer
-        );
+		$result_params = array(
+			'final_status' => $final_status,
+			'user_score' => $user_score,
+			'quiz_full_marks' => $quiz_full_marks,
+			'quiz_total_question' => $quiz_total_question,
+			'question_attempted' => $question_attempted,
+			'percentage' => $percentage,
+			'correct_answer' => $correct_answer,
+			'wrong_answer' => $wrong_answer,
+		);
 
-        return view( 'result/result', compact( 'id', 'details', 'result_params' ) );
-    }
+		return view('result/result', compact('id', 'details', 'result_params'));
+	}
 
-    public function resultlist( Request $request, $id = null )
- {
-        $QuizresultList = Quizresult::getresultlist();
-        
-        return view( 'result/result-list', compact( 'QuizresultList', 'id' ) );
-    }
+	public function resultlist(Request $request, $id = null) {
+		$QuizresultList = Quizresult::getresultlist();
 
-    public function deleteresult( Request $request, $id = null )
- {
+		return view('result/result-list', compact('QuizresultList', 'id'));
+	}
 
-        if ( $request->isXmlHttpRequest() ) {
+	public function deleteresult(Request $request, $id = null) {
 
-            $data = array(
+		if ($request->isXmlHttpRequest()) {
 
-                'IsDelete' => 1,
+			$data = array(
 
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
+				'IsDelete' => 1,
 
-            );
+				'DeleteOn' => date('Y-m-d H:i:s'),
 
-            $result = Quizresult::where( 'result_id', $id )->update( $data );
+			);
 
-            if ( $result ) {
+			$result = Quizresult::where('result_id', $id)->update($data);
 
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
+			if ($result) {
 
-                exit;
-            } else {
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
 
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
+				exit;
+			} else {
 
-                exit;
-            }
-        } else {
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
 
-            die( 'Oops invalid request!!' );
-        }
-    }
+				exit;
+			}
+		} else {
 
-    public function sendinvitation( Request $request, $id = null )
- {
-        $post = $request->all();
-        if ( is_localhost() ) {
-            $front_url = 'http://localhost/pcskhalipur/';
-        } else {
-            $front_url = 'http://pcskhalispur.com/';
-        }
+			die('Oops invalid request!!');
+		}
+	}
 
-        if ( $post['invId'] ) {
-            foreach ( $post['invId'] as $value ) {
-                $details = Quizinvitation::where( array( 'id' => $value ) )->first()->toArray();
-                $quiz_details = Quiz::select( 'quiz_start_date', 'quiz_start_time' )->where( array( 'id' => $details['quiz_id'], 'IsDelete' => 0 ) )->first();
-                $student_details = Studentmaster::select( 'present_class', 'student_name', 'contact_no' )->where( array( 'id' => $details['student_master_id'], 'IsDelete' => 0 ) )->first();
-                $startDate = date( 'dS F', strtotime( $quiz_details->quiz_start_date ) );
-                $startTime = date( 'h:i a', strtotime( $quiz_details->quiz_start_time ) );
-                $message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
-                $MsgLink = $front_url . 'din/' . $details['invitation_link'];
-                $quizmessage = $message . ' ' . $MsgLink . ' to start the test';
-                $dataupdate = array(
-                    'sms_sent' => 1,
-                    'updated_at' => date( 'Y-m-d H:i:s' )
-                );
+	public function sendinvitation(Request $request, $id = null) {
+		$post = $request->all();
+		if (is_localhost()) {
+			$front_url = 'http://localhost/pcskhalipur/';
+		} else {
+			$front_url = 'http://pcskhalispur.com/';
+		}
 
-                $mobileno = $student_details->contact_no;
-                $msg = str_replace( ' ', '%20', $quizmessage );
+		if ($post['invId']) {
+			foreach ($post['invId'] as $value) {
+				$details = Quizinvitation::where(array('id' => $value))->first()->toArray();
+				$quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $details['quiz_id'], 'IsDelete' => 0))->first();
+				$student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $details['student_master_id'], 'IsDelete' => 0))->first();
+				$startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
+				$startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
+				$message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+				$MsgLink = $front_url . 'din/' . $details['invitation_link'];
+				$quizmessage = $message . ' ' . $MsgLink . ' to start the test';
+				$dataupdate = array(
+					'sms_sent' => 1,
+					'updated_at' => date('Y-m-d H:i:s'),
+				);
 
-                $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+				$mobileno = $student_details->contact_no;
+				$msg = str_replace(' ', '%20', $quizmessage);
 
-                $ch = curl_init();
-                curl_setopt( $ch, CURLOPT_URL, $url );
-                curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-                curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-                $curl_response = curl_exec( $ch );
-                curl_close( $ch );
-                $result = json_decode( $curl_response, true );
-                if ( isset( $result['status'] ) && $result['status'] == 1 ) {
-                    Quizinvitation::where( 'id', $value )->update( $dataupdate );
-                }
-            }
-            if ( isset( $result['status'] ) && $result['status'] == 1 ) {
-                echo json_encode( array( 'success' => true, 'message' => 'Message Sent Successfully', 'url' => url( 'invitation' ) ) );
-                exit;
-            } else {
-                echo json_encode( array( 'success' => false, 'url' => url( 'invitation' ), 'message' => 'Oops something went wrong! try again.' ) );
-                exit;
-            }
-        }
-    }
+				$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
 
-    public function invitation( Request $request, $id = null )
- {
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				$curl_response = curl_exec($ch);
+				curl_close($ch);
+				$result = json_decode($curl_response, true);
+				if (isset($result['status']) && $result['status'] == 1) {
+					Quizinvitation::where('id', $value)->update($dataupdate);
+				}
+			}
+			if (isset($result['status']) && $result['status'] == 1) {
+				echo json_encode(array('success' => true, 'message' => 'Message Sent Successfully', 'url' => url('invitation')));
+				exit;
+			} else {
+				echo json_encode(array('success' => false, 'url' => url('invitation'), 'message' => 'Oops something went wrong! try again.'));
+				exit;
+			}
+		}
+	}
 
-        if ( $request->isXmlHttpRequest() ) {
+	public function invitation(Request $request, $id = null) {
 
-            $post = $request->all();
-            if ( is_localhost() ) {
-                $front_url = 'http://localhost/pcskhalipur/';
-            } else {
-                $front_url = 'http://pcskhalispur.com/';
-            }
-            if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
-                $quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
-                foreach ($post['student_master_id'] as $value) {
+		if ($request->isXmlHttpRequest()) {
 
-                    if (isset($value) && $value <> '') {
-                        $quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
+			$post = $request->all();
+			if (is_localhost()) {
+				$front_url = 'http://localhost/pcskhalipur/';
+			} else {
+				$front_url = 'http://pcskhalispur.com/';
+			}
+			if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
+				$quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
+				foreach ($post['student_master_id'] as $value) {
 
-                        $student_details = Studentmaster::select( 'present_class', 'student_name', 'contact_no' )->where( array( 'id' => $value, 'IsDelete' => 0 ) )->first();
-                        $data = array(
-                            'quiz_id' => $post['quizid'],
-                            'student_master_id' => $value,
-                            'updated_at' => date( 'Y-m-d H:i:s' )
-                        );
-                        $random_no =  base_convert( rand( 100000, 999999 ), 10, 36 );
-                        $random_no2 =  base_convert( rand( 100000, 999999 ), 10, 36 );
-                        $invitelink =  $random_no.$random_no2;
-						
-                        $startDate = date( 'dS F', strtotime( $quiz_details->quiz_start_date ) );
-                        $startTime = date( 'h:i a', strtotime( $quiz_details->quiz_start_time ) );
-                        $message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
-                        $MsgLink = $front_url . 'din/' . $invitelink;
-                        $quizmessage = $message . ' ' . $MsgLink . ' to start the test';
-                        if ( !isset( $quiz_invitation_details->id ) ) {
-                            //Do not insert record if quiz already assigned
+					if (isset($value) && $value != '') {
+						$quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
 
-                            //$uniqueid =  strtolower( uniqid() );
-                            $randno = rand( 100, 999 );
+						$student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $value, 'IsDelete' => 0))->first();
+						$data = array(
+							'quiz_id' => $post['quizid'],
+							'student_master_id' => $value,
+							'updated_at' => date('Y-m-d H:i:s'),
+						);
+						$random_no = base_convert(rand(100000, 999999), 10, 36);
+						$random_no2 = base_convert(rand(100000, 999999), 10, 36);
+						$invitelink = $random_no . $random_no2;
 
-                            //$invitelink =  $uniqueid.$randno;
+						$startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
+						$startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
+						$message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+						$MsgLink = $front_url . 'din/' . $invitelink;
+						$quizmessage = $message . ' ' . $MsgLink . ' to start the test';
+						if (!isset($quiz_invitation_details->id)) {
+							//Do not insert record if quiz already assigned
 
-                            $otp = rand( 100000, 999999 );
+							//$uniqueid =  strtolower( uniqid() );
+							$randno = rand(100, 999);
 
-                            $data['invitation_link'] = $invitelink;
-                            $data['otp'] = $otp;
-                            $data['isVerified'] = 1;
-                            //default 1 for the time being
-                            $data['IsDelete'] = 0;
-                            $data['created_at'] = date( 'Y-m-d H:i:s' );
+							//$invitelink =  $uniqueid.$randno;
 
-                            $insert = Quizinvitation::insertGetId( $data );
-                            //echo $quizmessage;
-                            
-                            $mobileno = $student_details->contact_no;
-                            $msg = str_replace( ' ', '%20', $quizmessage );
+							$otp = rand(100000, 999999);
 
-                            $url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+							$data['invitation_link'] = $invitelink;
+							$data['otp'] = $otp;
+							$data['isVerified'] = 1;
+							//default 1 for the time being
+							$data['IsDelete'] = 0;
+							$data['created_at'] = date('Y-m-d H:i:s');
 
-                            $ch = curl_init();
-                            curl_setopt( $ch, CURLOPT_URL, $url );
-                            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, false );
-                            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
-                            $curl_response = curl_exec( $ch );
-                            curl_close( $ch );
-                            $result = json_decode( $curl_response, true );
-                            if ( isset( $result['status'] ) && $result['status'] == 1 ) {
-                                $dataupdate = array(
-                                    'sms_sent' => 1,
-                                    'updated_at' => date( 'Y-m-d H:i:s' )
-                                );
-                                Quizinvitation::where( 'id', $insert )->update( $dataupdate );
-                            }
-                        }
+							$insert = Quizinvitation::insertGetId($data);
+							//echo $quizmessage;
 
-                    }
-                }
-                //end foreach
+							$mobileno = $student_details->contact_no;
+							$msg = str_replace(' ', '%20', $quizmessage);
 
-                if ( isset( $insert ) ) {
-                    echo json_encode( array( 'success' => true, 'url' => url( 'invitation' ), 'message' => 'Saved Successfully.' ) );
-                    exit;
-                } else {
-                    echo json_encode( array( 'success' => false, 'url' => url( 'invitation' ), 'message' => 'Unable to save data.' ) );
-                    exit;
-                }
-            }
-            //endif
+							$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
 
-        }
+							$ch = curl_init();
+							curl_setopt($ch, CURLOPT_URL, $url);
+							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							$curl_response = curl_exec($ch);
+							curl_close($ch);
+							$result = json_decode($curl_response, true);
+							if (isset($result['status']) && $result['status'] == 1) {
+								$dataupdate = array(
+									'sms_sent' => 1,
+									'updated_at' => date('Y-m-d H:i:s'),
+								);
+								Quizinvitation::where('id', $insert)->update($dataupdate);
+							}
+						}
 
-        $QuizList = Quiz::getquiz();
-        $QuizinvitationList = Quizinvitation::getquizinvitation();
-        $StudentmasterList = Studentmaster::where( array( 'IsDelete' => 0 ) )->orderBy( 'student_name', 'ASC' )->get();
-        $details = Quizinvitation::where( array( 'id' => $id ) )->first();
+					}
+				}
+				//end foreach
 
-        $allClassList = Studentmaster::getAllClass();
+				if (isset($insert)) {
+					echo json_encode(array('success' => true, 'url' => url('invitation'), 'message' => 'Saved Successfully.'));
+					exit;
+				} else {
+					echo json_encode(array('success' => false, 'url' => url('invitation'), 'message' => 'Unable to save data.'));
+					exit;
+				}
+			}
+			//endif
 
-        
-        return view( 'quiz/invitation', compact( 'QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList' ) );
-    }
+		}
 
-    public function getfilteredstudents( Request $request )
- {
-        
-        if ( $request->isXmlHttpRequest() ) {
-            if ( $request->isMethod( 'post' ) ) {
-                $class_name = $request->student_class;
-                $students = Studentmaster::getfilteredstudents( $class_name );
+		$QuizList = Quiz::getquiz();
+		$QuizinvitationList = Quizinvitation::getquizinvitation();
+		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
+		$details = Quizinvitation::where(array('id' => $id))->first();
 
-                if ( $students ) {
-                    echo json_encode( array( 'success' => true, 'data' => $students, 'message' => 'successfully' ) );
-                    exit;
-                } else {
-                    echo json_encode( array( 'success' => false, 'data' => '', 'message' => 'Unable to load. please try again later!' ) );
-                    exit;
-                }
-            }
-        }
-    }
+		$allClassList = Studentmaster::getAllClass();
 
-    public function deleteinvitation( Request $request, $id = null )
- {
+		return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList'));
+	}
+	public function schedulessmsaction(Request $request, $id = null) {
 
-        if ( $request->isXmlHttpRequest() ) {
+		if ($request->isXmlHttpRequest()) {
 
-            $data = array(
-                'IsDelete' => 1,
-                'DeleteOn' => date( 'Y-m-d H:i:s' )
-            );
+			$post = $request->all();
+			if (is_localhost()) {
+				$front_url = 'http://localhost/pcskhalipur/';
+			} else {
+				$front_url = 'http://pcskhalispur.com/';
+			}
+			if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
+				$quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
+				foreach ($post['student_master_id'] as $value) {
 
-            $result = Quizinvitation::where( 'id', $id )->update( $data );
+					if (isset($value) && $value != '') {
+						$quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
 
-            if ( $result ) {
-                echo json_encode( array( 'success' => true, 'message' => 'Delete Successfully' ) );
-                exit;
-            } else {
-                echo json_encode( array( 'success' => false, 'message' => 'Oops unable to delete! try again.' ) );
-                exit;
-            }
-        } else {
-            die( 'Oops invalid request!!' );
-        }
-    }
-	
-	 public function answersheet( Request $request, $id = null )
- {
+						$student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $value, 'IsDelete' => 0))->first();
+						$data = array(
+							'quiz_id' => $post['quizid'],
+							'student_master_id' => $value,
+							'updated_at' => date('Y-m-d H:i:s'),
+						);
+						$random_no = base_convert(rand(100000, 999999), 10, 36);
+						$random_no2 = base_convert(rand(100000, 999999), 10, 36);
+						$invitelink = $random_no . $random_no2;
 
-        $details = Quizresult::where( array( 'result_id' => $id ) )->first();
+						$startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
+						$startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
+						$message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+						$MsgLink = $front_url . 'din/' . $invitelink;
+						$quizmessage = $message . ' ' . $MsgLink . ' to start the test';
+						if (!isset($quiz_invitation_details->id)) {
+							//Do not insert record if quiz already assigned
 
-        $result_data = Quizresult::get_result_data( $id );
+							//$uniqueid =  strtolower( uniqid() );
+							$randno = rand(100, 999);
 
-        $quizid = $details->quizid;
+							//$invitelink =  $uniqueid.$randno;
 
-        $quiz_details = Quiz::where( array( 'id' => $quizid ) )->first();
-		
+							$otp = rand(100000, 999999);
+
+							$data['invitation_link'] = $invitelink;
+							$data['otp'] = $otp;
+							$data['isVerified'] = 1;
+							//default 1 for the time being
+							$data['IsDelete'] = 0;
+							$data['created_at'] = date('Y-m-d H:i:s');
+
+							$insert = Quizinvitation::insertGetId($data);
+							//echo $quizmessage;
+
+							$mobileno = $student_details->contact_no;
+							$msg = str_replace(' ', '%20', $quizmessage);
+
+							$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
+
+							$ch = curl_init();
+							curl_setopt($ch, CURLOPT_URL, $url);
+							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+							$curl_response = curl_exec($ch);
+							curl_close($ch);
+							$result = json_decode($curl_response, true);
+							if (isset($result['status']) && $result['status'] == 1) {
+								$dataupdate = array(
+									'sms_sent' => 1,
+									'updated_at' => date('Y-m-d H:i:s'),
+								);
+								Quizinvitation::where('id', $insert)->update($dataupdate);
+							}
+						}
+
+					}
+				}
+				//end foreach
+
+				if (isset($insert)) {
+					echo json_encode(array('success' => true, 'url' => url('invitation'), 'message' => 'Saved Successfully.'));
+					exit;
+				} else {
+					echo json_encode(array('success' => false, 'url' => url('invitation'), 'message' => 'Unable to save data.'));
+					exit;
+				}
+			}
+			//endif
+
+		}
+
+		$QuizList = Quiz::getquiz();
+		$QuizinvitationList = Quizinvitation::getquizinvitation();
+		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
+		$details = Quizinvitation::where(array('id' => $id))->first();
+
+		$allClassList = Studentmaster::getAllClass();
+
+		return view('quiz/schedulessms', compact('QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList'));
+	}
+
+	public function getfilteredstudents(Request $request) {
+
+		if ($request->isXmlHttpRequest()) {
+			if ($request->isMethod('post')) {
+				$class_name = $request->student_class;
+				$students = Studentmaster::getfilteredstudents($class_name);
+
+				if ($students) {
+					echo json_encode(array('success' => true, 'data' => $students, 'message' => 'successfully'));
+					exit;
+				} else {
+					echo json_encode(array('success' => false, 'data' => '', 'message' => 'Unable to load. please try again later!'));
+					exit;
+				}
+			}
+		}
+	}
+
+	public function deleteinvitation(Request $request, $id = null) {
+
+		if ($request->isXmlHttpRequest()) {
+
+			$data = array(
+				'IsDelete' => 1,
+				'DeleteOn' => date('Y-m-d H:i:s'),
+			);
+
+			$result = Quizinvitation::where('id', $id)->update($data);
+
+			if ($result) {
+				echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
+				exit;
+			} else {
+				echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+				exit;
+			}
+		} else {
+			die('Oops invalid request!!');
+		}
+	}
+
+	public function answersheet(Request $request, $id = null) {
+
+		$details = Quizresult::where(array('result_id' => $id))->first();
+
+		$result_data = Quizresult::get_result_data($id);
+
+		$quizid = $details->quizid;
+
+		$quiz_details = Quiz::where(array('id' => $quizid))->first();
+
 		$QuizquestionsList = Question::getquizquestions($quizid);
 
 		//print_r($QuizquestionsList); exit;
-		
+
 		if ($result_data) {
-            foreach ($result_data as $value) {
-                $value = (array) $value;
+			foreach ($result_data as $value) {
+				$value = (array) $value;
 				$user_result_data_arr[$value['questionid']] = $value;
-            }
-        }
+			}
+		}
 		//print_r($user_result_data_arr); exit;
 
-        $quiz_total_question = Question::where(array('quizid' => $quizid,'IsDelete' => 0))->get()->count();
-		             
-        return view( 'result/answer-sheet', compact( 'id', 'details', 'quiz_details', 'QuizquestionsList', 'user_result_data_arr') );
-    }
-	
-	public function resultquizgroup( Request $request, $id = null )
-   {
+		$quiz_total_question = Question::where(array('quizid' => $quizid, 'IsDelete' => 0))->get()->count();
 
-        $QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray(); 
+		return view('result/answer-sheet', compact('id', 'details', 'quiz_details', 'QuizquestionsList', 'user_result_data_arr'));
+	}
 
-        return view( 'result/quiz-group-list', compact( 'QuizGroupList', 'id' ) );
-    }
-	public function resultlistbygroup( Request $request, $id = null )
-   {
+	public function resultquizgroup(Request $request, $id = null) {
 
-        $QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray();
-        $StudentmasterList = Studentmaster::where( array( 'IsDelete' => 0 ) )->orderBy( 'created_at', 'DESC' )->get()->toArray();
-		
-        return view( 'result/resultlist-by-group', compact( 'StudentmasterList', 'id' ) );
-    }
-   
-   public static function find_quiz_score($user_id,$quizgroup_id,$subject_id)
-   {
-	    
-		 $data = DB::table('quiz_result as qr')
-                        ->select('qr.result_id')
-                        ->join('quiz as q', 'qr.quizid', '=', 'q.id','LEFT')                        
-                        ->where('qr.userid', $user_id)     
-                        ->where('q.quizgroup_id', $quizgroup_id) 
-                        ->where('q.subject_id', $subject_id) 
-                        ->get()->toArray();
-				//print_r($data);exit;
-				
+		$QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray();
+
+		return view('result/quiz-group-list', compact('QuizGroupList', 'id'));
+	}
+	public function resultlistbygroup(Request $request, $id = null) {
+
+		$QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray();
+		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get()->toArray();
+
+		return view('result/resultlist-by-group', compact('StudentmasterList', 'id'));
+	}
+
+	public static function find_quiz_score($user_id, $quizgroup_id, $subject_id) {
+
+		$data = DB::table('quiz_result as qr')
+			->select('qr.result_id')
+			->join('quiz as q', 'qr.quizid', '=', 'q.id', 'LEFT')
+			->where('qr.userid', $user_id)
+			->where('q.quizgroup_id', $quizgroup_id)
+			->where('q.subject_id', $subject_id)
+			->get()->toArray();
+		//print_r($data);exit;
+
 		$user_score = 0;
-		
-		if(isset($data[0]->result_id)){			
-		
-		$result_id = $data[0]->result_id;
-		$result_data = Quizresult::get_result_data( $result_id );
-	
-	    
+
+		if (isset($data[0]->result_id)) {
+
+			$result_id = $data[0]->result_id;
+			$result_data = Quizresult::get_result_data($result_id);
+
 			if ($result_data) {
 				foreach ($result_data as $value) {
 					$value = (array) $value;
-					if(isset($value['optionchosen'])){
+					if (isset($value['optionchosen'])) {
 						if ($value['optionchosen'] == $value['correct_answer']) {
-							
+
 							$user_score += $value['score'];
 						}
-						
+
 					}
 				}
 			}
 		}
 		return $user_score;
-   }
-	
-	
+	}
+
 }
