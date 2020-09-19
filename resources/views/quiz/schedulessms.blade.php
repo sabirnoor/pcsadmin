@@ -81,6 +81,18 @@ if ($allClassList) {
 							</select>
 						</div>
 					</div>
+					
+					<div class="form-group">
+						<label class="col-sm-3 control-label no-padding-right" for="branchFilter"> Select Branch<br/><small>(Optional)</small> </label>
+						<div class="col-sm-9">
+							<select class="col-xs-10 col-sm-5" id="branchFilter" name="branchFilter" required>
+								<option value="">--Select Branch--</option>
+								<option value="PCS">PCS</option>
+								<option value="GYANDEEP">GYANDEEP</option>
+								
+							</select> 
+						</div>
+					</div>
 
 					<div class="form-group">
 					<label class="col-sm-3 control-label no-padding-right" for="student_master_id"> Select Student* </label>

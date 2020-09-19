@@ -1121,7 +1121,8 @@ class HomeController extends Controller {
 		if ($request->isXmlHttpRequest()) {
 			if ($request->isMethod('post')) {
 				$class_name = $request->student_class;
-				$students = Studentmaster::getfilteredstudents($class_name);
+				$branch = $request->branch;
+				$students = Studentmaster::getfilteredstudents($class_name,$branch);
 
 				if ($students) {
 					echo json_encode(array('success' => true, 'data' => $students, 'message' => 'successfully'));
