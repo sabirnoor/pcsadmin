@@ -48,7 +48,7 @@ namespace App\Http\Controllers;
 
                <div class="col-xs-12">
 
-                   <table id="dynamic-table" class="table table-striped table-bordered table-hover">
+                   <table id="groupresult-table" class="table table-striped table-bordered table-hover">
 
                         <thead>
 
@@ -78,6 +78,7 @@ namespace App\Http\Controllers;
 
                                 foreach ($StudentmasterList as $value) {                                 
 									$value = (array) $value;
+									
                             ?>
 
                             <tr id="<?=$value['id']?>">
