@@ -9,7 +9,7 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{url('/')}}">Dashboard</a>
             </li>
-            <li class="active">Add/Update Syllabus</li>
+            <li class="active">Add/Update schedule</li>
         </ul><!-- /.breadcrumb -->
 
 
@@ -35,21 +35,21 @@
                 <hr>
                 @endif
                 
-                <form class="form-horizontal" id="syllabus" enctype="multipart/form-data" method="post" role="form" action="{{url('syllabus/'.$id)}}">
+                <form class="form-horizontal" id="schedule" enctype="multipart/form-data" method="post" role="form" action="{{url('schedule/'.$id)}}">
                     {{csrf_field()}}
 					
 					<input type="hidden" name="edit" value="<?=isset($id)?$id:0?>">
 					
                     <div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="title"> Syllabus Class*</label>
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> Schedule Class*</label>
                         <div class="col-sm-9">
-							<select class="col-xs-10 col-sm-5" name="classsyllabus" required>
+							<select class="col-xs-10 col-sm-5" name="classschedule" required>
 							<option value="">Select</option>
 							<?php 
-							if($classsyllabus){
-								foreach($classsyllabus as $val){
+							if($classschedule){
+								foreach($classschedule as $val){
 							?>
-							<option value="<?=$val->id?>"<?=(isset($details->classsyllabus_id) && $details->classsyllabus_id==$val->id)?'selected':''?>><?=$val->name?></option>
+							<option value="<?=$val->id?>"<?=(isset($details->classschedule_id) && $details->classschedule_id==$val->id)?'selected':''?>><?=$val->name?></option>
 							<?php 
 								}
 							}
@@ -59,9 +59,9 @@
                         </div>
                     </div>
 					<div class="form-group">
-                        <label class="col-sm-3 control-label no-padding-right" for="title"> Syllabus Title* </label>
+                        <label class="col-sm-3 control-label no-padding-right" for="title"> Schedule Title* </label>
                         <div class="col-sm-9">
-                            <input type="text" id="title" name="title" value="<?=isset($details->name)?$details->name:''?>" placeholder="Syllabus Title" class="col-xs-10 col-sm-5" required>
+                            <input type="text" id="title" name="title" value="<?=isset($details->name)?$details->name:''?>" placeholder="Schedule Title" class="col-xs-10 col-sm-5" required>
                         </div>
                     </div>
                     <div class="form-group">
@@ -92,26 +92,26 @@
                    <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>Syllabus Class</th>
-                                <th>Syllabus  Title</th>
+                                <th>Schedule Class</th>
+                                <th>Schedule  Title</th>
                                 <th>Display Order</th>
                                 <th>Action</th>
                             </tr>
                              </thead>
                         <tbody>
                             <?php 
-                            if($Syllabusmasterlist){
-                                foreach ($Syllabusmasterlist as $value) {
+                            if(isset($Schedulemasterlist)){
+                                foreach ($Schedulemasterlist as $value) {
                                  
                             ?>
                             <tr id="{{$value->id}}">
                                 
-                                <td><?=$value->classsyllabus?> </td>
+                                <td><?=$value->classschedule?> </td>
                                 <td><?=$value->name?> </td>
                                 <td><?=$value->orders_by?></td>
                                 <td>
-                                    <a href="<?=url('syllabus/'.$value->id)?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
-                                    <a href="#" id="{{$value->id}}" title="Delete" class="deletesyllabus"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
+                                    <a href="<?=url('schedule/'.$value->id)?>"><i class="ace-icon fa fa-pencil-square-o fa-2x icon-only"></i></a> 
+                                    <a href="#" id="{{$value->id}}" title="Delete" class="deleteschedule"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a> 
                                 </td>
                         </tr>
                         <?php

@@ -12,6 +12,7 @@ use App\Noticeboard;
 use App\Birthday;
 use App\Newsevents;
 use App\Syllabusmaster;
+use App\Schedulemaster;
 use App\Uploadgallery;
 use Eventviva\ImageResize;
 use Validator;
@@ -637,6 +638,78 @@ class StaticController extends Controller
                 'DeleteOn' => date('Y-m-d H:i:s')
             );
             $result = Uploadflash::where('id', $id)->update($data);
+            if ($result) {
+                echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
+                exit;
+            } else {
+                echo json_encode(array('success' => false, 'message' => 'Oops unable to delete! try again.'));
+                exit;
+            }
+        } else {
+            die('Oops invalid request!!');
+        }
+    }
+	
+	public function schedule(Request $request, $id = null){
+        $Schedulemasterlist = Schedulemaster::SchedulemasterList();
+		$classschedule = Categories::where(array('entity_type' => 'classsyllabus','IsDelete' => 0))->get();
+        //echo '<pre>';print_r($classschedule);die;
+        if ($request->isMethod('post')){
+            $post = $request->all();
+            if ($request->has('filesname')) {
+                $rules = array(
+                    'filesname' => 'required | mimes:docx,doc,pdf,PDF | max:900000',
+                );
+                $validator = Validator::make($post, $rules);
+                if($validator->fails()) {
+                    return redirect('schedule')->with('msgerror', 'filesname file should be .docx,.doc,.pdf!');
+                }
+                if(!is_dir("public/upload/schedule/")) {
+                    mkdir("public/upload/schedule/", 0777, true);
+                }
+                $image = $request->file('filesname');
+                $imageName = $image->getClientOriginalName();
+				
+                $file = explode('.', $imageName);
+                $imageName = $file[0]. '_' . md5(microtime()) . '.' . end($file);
+				$imageName = str_replace(' ','_',$imageName);
+                if (!file_exists(upload_path() . 'schedule/'. $imageName)) {
+                    $path = upload_path() . 'schedule/';
+                    $image->move($path, $imageName);
+                }
+            }
+            $data = array(
+                'classschedule_id' => $post['classschedule'],
+                'name' => $post['title'],
+                'orders_by' => $post['orderby'],
+                'IsDelete' => 0,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            );
+            if(!empty($imageName)){
+                $data['filesname'] = $imageName;
+            }
+            //echo '<pre>';print_r($data);die;
+            if(empty($id)){
+                $insert = Schedulemaster::insert($data);
+                return redirect('schedule')->with('msgsuccess', 'Save successfully');
+            }else{
+               $insert = Schedulemaster::where('id', $id)->update($data);
+               return redirect('schedule')->with('msgsuccess', 'Update successfully');
+            }
+
+        }
+        $details = Schedulemaster::where(array('id' => $id))->first();
+        return view('dynamic/schedule', compact('Schedulemasterlist','id','details','classschedule'));
+    }
+	
+	public function scheduleDelete(Request $request, $id = null) {
+        if ($request->isXmlHttpRequest()) {
+            $data = array(
+                'IsDelete' => 1,
+                'DeleteOn' => date('Y-m-d H:i:s')
+            );
+            $result = Schedulemaster::where('id', $id)->update($data);
             if ($result) {
                 echo json_encode(array('success' => true, 'message' => 'Delete Successfully'));
                 exit;
