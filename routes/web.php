@@ -47,9 +47,10 @@ Route::match(['get', 'post'], '/academics', array('uses' => 'StaticController@ac
 Route::match(['get', 'post'], '/contact_us', array('uses' => 'StaticController@contact_us'));
 
 Route::match(['get', 'post'], '/syllabus/{id?}', array('uses' => 'StaticController@syllabus'));
-Route::match(['get', 'post'], '/schedule/{id?}', array('uses' => 'StaticController@schedule'));
-
 Route::match(['get', 'post'], '/syllabusDelete/{id?}', array('uses' => 'StaticController@syllabusDelete'));
+
+Route::match(['get', 'post'], '/schedule/{id?}', array('uses' => 'StaticController@schedule'));
+Route::match(['get', 'post'], '/scheduleDelete/{id?}', array('uses' => 'StaticController@scheduleDelete'));
 
 Route::match(['get', 'post'], '/noticeboardDelete/{id?}', array('uses' => 'StaticController@noticeboardDelete'));
 
