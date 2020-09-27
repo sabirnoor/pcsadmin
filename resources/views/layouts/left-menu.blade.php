@@ -415,6 +415,20 @@
                             <b class="arrow"></b>
 
                         </li>
+						
+						<li class="">
+
+                            <a href="{{url('schedule')}}">
+
+                                <i class="menu-icon fa fa-caret-right"></i>
+
+                                Schedule
+
+                            </a>
+
+                            <b class="arrow"></b>
+
+                        </li>
 
                         <li class="">
 
