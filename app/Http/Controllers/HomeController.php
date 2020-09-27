@@ -892,7 +892,8 @@ class HomeController extends Controller {
 					'sms_sent' => 1,
 					'updated_at' => date('Y-m-d H:i:s'),
 				);
-
+				pr($quizmessage);
+				die('ss');
 				$mobileno = $student_details->contact_no;
 				$msg = str_replace(' ', '%20', $quizmessage);
 
