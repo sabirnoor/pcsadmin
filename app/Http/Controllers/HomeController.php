@@ -9,6 +9,7 @@ use App\Quiz;
 use App\Quizgroup;
 use App\Quizinvitation;
 use App\Quizresult;
+use App\Quizschedule;
 use App\Staticcontent;
 use App\Studentmaster;
 use App\uploadgallery;
@@ -892,8 +893,8 @@ class HomeController extends Controller {
 					'sms_sent' => 1,
 					'updated_at' => date('Y-m-d H:i:s'),
 				);
-				pr($quizmessage);
-				die('ss');
+				//pr($quizmessage);
+				//die('ss');
 				$mobileno = $student_details->contact_no;
 				$msg = str_replace(' ', '%20', $quizmessage);
 
@@ -1021,100 +1022,57 @@ class HomeController extends Controller {
 	public function schedulessmsaction(Request $request, $id = null) {
 
 		if ($request->isXmlHttpRequest()) {
+			if ($request->isMethod('post')) {
+				$post = $request->all();
+				$scheduledate = DateFormates($post['scheduledate'], '-');
+				if (count($post['student_master_id']) > 0) {
+					$checkschedule = Quizschedule::select('*')
+						->whereIn('student_master_id', $post['student_master_id'])
+						->whereDate('scheduledate', '=', $scheduledate)
+						->where(array(
+							'quiz_id' => $post['quizid'],
+							'class' => $post['classFilter'],
+							'IsDelete' => 0))->delete();
+					foreach ($post['student_master_id'] as $value) {
 
-			$post = $request->all();
-			if (is_localhost()) {
-				$front_url = 'http://localhost/pcskhalipur/';
-			} else {
-				$front_url = 'http://pcskhalispur.com/';
-			}
-			if (isset($post['student_master_id']) && !empty($post['student_master_id'])) {
-				$quiz_details = Quiz::select('quiz_start_date', 'quiz_start_time')->where(array('id' => $post['quizid'], 'IsDelete' => 0))->first();
-				foreach ($post['student_master_id'] as $value) {
-
-					if (isset($value) && $value != '') {
-						$quiz_invitation_details = Quizinvitation::where(array('quiz_id' => $post['quizid'], 'student_master_id' => $value, 'IsDelete' => 0))->first();
-
-						$student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $value, 'IsDelete' => 0))->first();
 						$data = array(
 							'quiz_id' => $post['quizid'],
+							'scheduledate' => $scheduledate,
+							'class' => $post['classFilter'],
 							'student_master_id' => $value,
+							'IsDelete' => 0,
 							'updated_at' => date('Y-m-d H:i:s'),
+							'created_at' => date('Y-m-d H:i:s'),
 						);
-						$random_no = base_convert(rand(100000, 999999), 10, 36);
-						$random_no2 = base_convert(rand(100000, 999999), 10, 36);
-						$invitelink = $random_no . $random_no2;
-
-						$startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
-						$startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
-						$message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
-						$MsgLink = $front_url . 'din/' . $invitelink;
-						$quizmessage = $message . ' ' . $MsgLink . ' to start the test';
-						if (!isset($quiz_invitation_details->id)) {
-							//Do not insert record if quiz already assigned
-
-							//$uniqueid =  strtolower( uniqid() );
-							$randno = rand(100, 999);
-
-							//$invitelink =  $uniqueid.$randno;
-
-							$otp = rand(100000, 999999);
-
-							$data['invitation_link'] = $invitelink;
-							$data['otp'] = $otp;
-							$data['isVerified'] = 1;
-							//default 1 for the time being
-							$data['IsDelete'] = 0;
-							$data['created_at'] = date('Y-m-d H:i:s');
-
-							$insert = Quizinvitation::insertGetId($data);
-							//echo $quizmessage;
-
-							$mobileno = $student_details->contact_no;
-							$msg = str_replace(' ', '%20', $quizmessage);
-
-							$url = "http://shikshakiore.com/cpc/isssms.aspx?mobile=$mobileno&msgtxt=$msg&user=INPCSK&lang=english&name=1300";
-
-							$ch = curl_init();
-							curl_setopt($ch, CURLOPT_URL, $url);
-							curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-							curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-							$curl_response = curl_exec($ch);
-							curl_close($ch);
-							$result = json_decode($curl_response, true);
-							if (isset($result['status']) && $result['status'] == 1) {
-								$dataupdate = array(
-									'sms_sent' => 1,
-									'updated_at' => date('Y-m-d H:i:s'),
-								);
-								Quizinvitation::where('id', $insert)->update($dataupdate);
-							}
-						}
-
+						$insert = Quizschedule::insertGetId($data);
 					}
 				}
-				//end foreach
-
 				if (isset($insert)) {
-					echo json_encode(array('success' => true, 'url' => url('invitation'), 'message' => 'Saved Successfully.'));
+					echo json_encode(array('success' => true, 'url' => url('schedulessms'), 'message' => 'Saved Successfully.'));
 					exit;
 				} else {
-					echo json_encode(array('success' => false, 'url' => url('invitation'), 'message' => 'Unable to save data.'));
+					echo json_encode(array('success' => false, 'url' => url('schedulessms'), 'message' => 'Unable to save data.'));
 					exit;
 				}
 			}
-			//endif
-
 		}
 
 		$QuizList = Quiz::getquiz();
 		$QuizinvitationList = Quizinvitation::getquizinvitation();
 		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('student_name', 'ASC')->get();
-		$details = Quizinvitation::where(array('id' => $id))->first();
 
 		$allClassList = Studentmaster::getAllClass();
 
-		return view('quiz/schedulessms', compact('QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList'));
+		return view('quiz/schedulessms', compact('QuizinvitationList', 'id', 'QuizList', 'StudentmasterList', 'allClassList'));
+	}
+	public function schedulessmslist(Request $request, $id = null) {
+		$allScheduleList = DB::table('quiz_schedule as t1')->select('t1.*', 't2.quiz_title', 't3.student_name', 't3.branch')
+			->join('quiz as t2', 't2.id', '=', 't1.quiz_id')
+			->join('student_master as t3', 't3.id', '=', 't1.student_master_id')
+			->where('t1.IsDelete', 0)->paginate(10);
+		//$allScheduleList = Quizschedule::where('IsDelete', 0)->paginate(5);
+		//pr($allScheduleList);die;
+		return view('quiz/schedulessmslist', compact('allScheduleList'));
 	}
 
 	public function getfilteredstudents(Request $request) {
@@ -1123,7 +1081,7 @@ class HomeController extends Controller {
 			if ($request->isMethod('post')) {
 				$class_name = $request->student_class;
 				$branch = $request->branch;
-				$students = Studentmaster::getfilteredstudents($class_name,$branch);
+				$students = Studentmaster::getfilteredstudents($class_name, $branch);
 
 				if ($students) {
 					echo json_encode(array('success' => true, 'data' => $students, 'message' => 'successfully'));

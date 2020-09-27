@@ -112,6 +112,7 @@ Route::match(['get', 'post'], '/answersheet/{id?}', array('uses' => 'HomeControl
 Route::match(['get', 'post'], '/invitation/{id?}', array('uses' => 'HomeController@invitation'));
 Route::match(['get', 'post'], '/deleteinvitation/{id?}', array('uses' => 'HomeController@deleteinvitation'));
 Route::match(['get', 'post'], '/schedulessms/{id?}', array('uses' => 'HomeController@schedulessmsaction'));
+Route::match(['get', 'post'], '/schedulessmslist/{id?}', array('uses' => 'HomeController@schedulessmslist'));
 
 Route::match(['get', 'post'], '/get-filtered-students', array('uses' => 'HomeController@getfilteredstudents'));
 

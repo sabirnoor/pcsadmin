@@ -35,10 +35,16 @@
                 <hr>
                 @endif
 
-                <form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" id="invitation" method="post" role="form" id="inviteForm" action="">{{-- {{url('invitation/'.$id)}}--}}
+                <form class="form-horizontal" autocomplete="off" enctype="multipart/form-data" id="invitation" method="post" role="form" id="inviteForm" action="">
                     {{csrf_field()}}
 					<input type="hidden" name="edit" value="<?=isset($id) ? $id : 0?>">
 
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label no-padding-right" for="quizid"> Date* </label>
+                        <div class="col-sm-9">
+                            <input type="text" id="scheduledate" name="scheduledate"  placeholder="dd-mm-yy" value="" class="scheduledate col-xs-10 col-sm-5">
+                        </div>
+                    </div>
 
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="quizid"> Select Exam* </label>
@@ -51,7 +57,7 @@ if ($QuizList) {
 	foreach ($QuizList as $value) {
 		$value = (array) $value;
 		?>
-								<option value="<?=$value['id']?>" <?=(isset($details->quiz_id) && $details->quiz_id == $value['id']) ? 'selected="selected"' : ''?>><?=$value['quiz_title']?></option>
+								<option value="<?=$value['id']?>"><?=$value['quiz_title']?></option>
 								<?php
 }
 }
@@ -81,7 +87,7 @@ if ($allClassList) {
 							</select>
 						</div>
 					</div>
-					
+
 					<div class="form-group">
 						<label class="col-sm-3 control-label no-padding-right" for="branchFilter"> Select Branch<br/><small>(Optional)</small> </label>
 						<div class="col-sm-9">
@@ -89,8 +95,8 @@ if ($allClassList) {
 								<option value="">--Select Branch--</option>
 								<option value="PCS">PCS</option>
 								<option value="GYANDEEP">GYANDEEP</option>
-								
-							</select> 
+
+							</select>
 						</div>
 					</div>
 
@@ -123,7 +129,7 @@ if ($allClassList) {
                                 <i class="ace-icon fa fa-check bigger-110"></i>
                                 Submit
                             </button>-->
-							<button class="btn btn-info submitInvite">
+							<button class="btn btn-info submitSchedule">
                                 <i class="ace-icon"></i>
                                 Submit
                             </button>
@@ -136,59 +142,7 @@ if ($allClassList) {
 
 
 
-				<div class="col-xs-12">
-                    <button type="button" id="save_value" class="sendInvitation" style="display:none;">Send SMS</button>
-                   <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox" class="CheckAll" onchange="checkAll(this)" title="Check All"></th>
-                                <th>Exam</th>
-                                <th nowrap>Student Name</th>
-                                <th nowrap>Mobile</th>
-                                <th nowrap>Invitation Link</th>
-                                <th nowrap>OTP Verified</th>
-                                <th nowrap>SMS Sent</th>
-                                <th nowrap>Date</th>
-                                <th nowrap>Action</th>
-                            </tr>
-                             </thead>
-                        <tbody>
-                            <?php
 
-if (is_localhost()) {
-	$front_url = "http://localhost/pcskhalipur/";
-} else {
-	$front_url = "http://pcskhalispur.com/";
-}
-
-if ($QuizinvitationList) {
-	foreach ($QuizinvitationList as $value) {
-		$value = (array) $value;
-		?>
-                            <tr id="<?=$value['id']?>">
-
-                                <td nowrap><input type="checkbox" class="studentId" value="<?=$value['id']?>"> </td>
-                                <td nowrap><?=$value['quiz_title']?> </td>
-                                <td nowrap><?=$value['student_name']?> </td>
-                                <td nowrap><?=$value['contact_no']?> </td>
-                                <td nowrap><?=$front_url . 'din/' . $value['invitation_link']?> </td>
-                                <td nowrap><?=($value['isVerified'] == 1) ? 'Yes' : 'No';?> </td>
-                                <td nowrap><?=($value['sms_sent'] == 1) ? 'Yes' : 'No';?> </td>
-
-                                <td nowrap><?=date('d-M-Y', strtotime($value['invitation_created']))?></td>
-                                <td>
-
-                                    <a href="#" id="<?=$value['id']?>" title="Delete" class="deleteinvitation"> <i class="ace-icon fa fa-trash-o fa-2x icon-only"></i></a>
-                                </td>
-							</tr>
-                        <?php
-}
-}
-?>
-                        </tbody>
-
-                   </table>
-		</div>
 		<div class="hr hr32 hr-dotted"></div>
 
 

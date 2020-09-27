@@ -415,7 +415,7 @@
                             <b class="arrow"></b>
 
                         </li>
-						
+
 						<li class="">
 
                             <a href="{{url('schedule')}}">
@@ -581,6 +581,11 @@
                     <a href="{{url('schedulessms')}}">
                         <i class="menu-icon fa fa-caret-right"></i>
                         Schedule SMS
+                    </a>
+                    <b class="arrow"></b>
+                    <a href="{{url('schedulessmslist')}}">
+                        <i class="menu-icon fa fa-caret-right"></i>
+                        Schedule SMS List
                     </a>
                     <b class="arrow"></b>
                 </li>
