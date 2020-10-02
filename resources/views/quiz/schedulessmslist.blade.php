@@ -31,29 +31,23 @@
 							<tr>
 								<th>S.N.</th>
 								<th>Schedule Date</th>
-								<th>Class</th>
 								<th>Quiz Title</th>
-								<th>Student Name</th>
-								<th>Branch</th>
-								<th>Status</th>
+								<th>Total Student</th>
 							</tr>
 						</thead>
 
 						<tbody>
 							<?php
-$i = ($allScheduleList->currentpage() - 1) * $allScheduleList->perpage() + 1;
-if ($allScheduleList) {
-	foreach ($allScheduleList as $key => $value) {
+$i = ($allScheduleListCount->currentpage() - 1) * $allScheduleListCount->perpage() + 1;
+if ($allScheduleListCount) {
+	foreach ($allScheduleListCount as $key => $value) {
 
 		?>
 							<tr>
 								<td>{{$i++}}</td>
 								<td>{{date('d M Y',strtotime($value->scheduledate))}}</td>
-								<td>{{$value->class}}</td>
 								<td>{{$value->quiz_title}}</td>
-								<td>{{$value->student_name}}</td>
-								<td>{{$value->branch}}</td>
-								<td></td>
+								<td>{{$value->totalcunt}}</td>
 							</tr>
 							<?php
 }
@@ -61,7 +55,7 @@ if ($allScheduleList) {
 ?>
 						</tbody>
 					</table>
-					{{$allScheduleList->links()}}
+					{{$allScheduleListCount->links()}}
 				</div>
 
 			</div>

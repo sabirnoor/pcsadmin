@@ -1071,9 +1071,13 @@ class HomeController extends Controller {
 			->join('quiz as t2', 't2.id', '=', 't1.quiz_id')
 			->join('student_master as t3', 't3.id', '=', 't1.student_master_id')
 			->where('t1.IsDelete', 0)->paginate(10);
-		//$allScheduleList = Quizschedule::where('IsDelete', 0)->paginate(5);
-		//pr($allScheduleList);die;
-		return view('quiz/schedulessmslist', compact('allScheduleList'));
+
+		$allScheduleListCount = DB::table('quiz_schedule as t')
+			->select(DB::raw('count(t.scheduledate) as totalcunt'), 't.scheduledate', 't2.quiz_title')
+			->join('quiz as t2', 't2.id', '=', 't.quiz_id')
+			->where('t.IsDelete', 0)->groupBy('t.scheduledate', 't2.quiz_title')->paginate(10);
+		//pr($allScheduleListCount);die;
+		return view('quiz/schedulessmslist', compact('allScheduleList', 'allScheduleListCount'));
 	}
 
 	public function getfilteredstudents(Request $request) {
