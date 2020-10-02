@@ -907,6 +907,7 @@ class HomeController extends Controller {
 				$curl_response = curl_exec($ch);
 				curl_close($ch);
 				$result = json_decode($curl_response, true);
+				pr($result);die;
 				if (isset($result['status']) && $result['status'] == 1) {
 					Quizinvitation::where('id', $value)->update($dataupdate);
 				}
