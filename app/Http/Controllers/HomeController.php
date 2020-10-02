@@ -886,9 +886,9 @@ class HomeController extends Controller {
 				$student_details = Studentmaster::select('present_class', 'student_name', 'contact_no')->where(array('id' => $details['student_master_id'], 'IsDelete' => 0))->first();
 				$startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
 				$startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
-				$message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+				$message = 'Dear students analyse your skill with on line Term-1 exam going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
 				$MsgLink = $front_url . 'din/' . $details['invitation_link'];
-				$quizmessage = $message . ' ' . $MsgLink . ' to start the test';
+				$quizmessage = $message . ' ' . $MsgLink . ' to start the exam';
 				$dataupdate = array(
 					'sms_sent' => 1,
 					'updated_at' => date('Y-m-d H:i:s'),
@@ -907,7 +907,7 @@ class HomeController extends Controller {
 				$curl_response = curl_exec($ch);
 				curl_close($ch);
 				$result = json_decode($curl_response, true);
-				pr($result);die;
+				//pr($result);die;
 				if (isset($result['status']) && $result['status'] == 1) {
 					Quizinvitation::where('id', $value)->update($dataupdate);
 				}
