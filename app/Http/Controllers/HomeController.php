@@ -1017,7 +1017,7 @@ class HomeController extends Controller {
 		$details = Quizinvitation::where(array('id' => $id))->first();
 
 		$allClassList = Studentmaster::getAllClass();
-
+			//print_r($QuizinvitationList); exit;
 		return view('quiz/invitation', compact('QuizinvitationList', 'id', 'details', 'QuizList', 'StudentmasterList', 'allClassList'));
 	}
 	public function schedulessmsaction(Request $request, $id = null) {

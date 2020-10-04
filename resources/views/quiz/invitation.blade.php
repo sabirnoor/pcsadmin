@@ -149,7 +149,7 @@ if (is_localhost()) {
 	$front_url = "http://pcskhalispur.com/";
 }
 
-if ($QuizinvitationList) {
+if (isset($QuizinvitationList)) { 
 	foreach ($QuizinvitationList as $value) {
 		$value = (array) $value;
 		?>
