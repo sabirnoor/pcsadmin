@@ -17,7 +17,7 @@ class Quizinvitation extends Model {
 			->join('student_master as c3', 'c3.id', '=', 'c1.student_master_id', 'LEFT')
 			->where('c1.IsDelete', 0)
 			->where('c2.isArchived', 0)
-			->orderBy('c1.id', 'DESC')->paginate(25);
+			->orderBy('c1.id', 'DESC')->paginate(150);
 
 		return $data;
 	}
