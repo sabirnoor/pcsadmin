@@ -951,7 +951,7 @@ class HomeController extends Controller {
 
 						$startDate = date('dS F', strtotime($quiz_details->quiz_start_date));
 						$startTime = date('h:i a', strtotime($quiz_details->quiz_start_time));
-						$message = 'Dear students analyse your skill with on line Periodic Test-1 going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
+						$message = 'Dear students analyse your skill with on line Term-1 exam going to start from ' . $startDate . ' from ' . $startTime . '.just one click here ';
 						$MsgLink = $front_url . 'din/' . $invitelink;
 						$quizmessage = $message . ' ' . $MsgLink . ' to start the test';
 						if (!isset($quiz_invitation_details->id)) {
