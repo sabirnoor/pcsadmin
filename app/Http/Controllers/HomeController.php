@@ -1157,10 +1157,18 @@ class HomeController extends Controller {
 	}
 	public function resultlistbygroup(Request $request, $id = null) {
 
+		$post = $request->all();
+		
+		//print_r($post); exit; 
+		$classFilter = $post['classFilter'];
+		
+		$allClassList = Studentmaster::getAllClass();
+		
 		$QuizGroupList = Quizgroup::where(array('IsDelete' => 0))->get()->toArray();
-		$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get()->toArray();
+		//$StudentmasterList = Studentmaster::where(array('IsDelete' => 0))->orderBy('created_at', 'DESC')->get()->toArray();
+		$StudentmasterList = Studentmaster::getfilteredstudents($classFilter);
 
-		return view('result/resultlist-by-group', compact('StudentmasterList', 'id'));
+		return view('result/resultlist-by-group', compact('StudentmasterList', 'id', 'classFilter', 'allClassList'));
 	}
 
 	public static function find_quiz_score($user_id, $quizgroup_id, $subject_id) {
