@@ -8,7 +8,21 @@
 	height: 100px !important;           
 	padding-bottom: 1px;
 }
-
+h1{
+	font-size: 26px;
+	
+}
+h3{
+	font-size: 15px;
+	font-weight: bold;
+	margin-top:6px;
+	margin-bottom:0px;
+}
+h5{
+	font-size: 12px;
+	margin-top:1px;
+	margin-bottom:1px;
+}
 </style>
 <?php //echo '<pre>';print_r($UploadflashList);die; ?>
 
@@ -44,10 +58,14 @@
 					$value = (array) $value;
 			?>
 			<h3><?php echo $value['question_title']; ?></h3>
-			<h5>Option 1: <?=$value['option1']?></h5>
-			<h5>Option 2: <?=$value['option2']?></h5>
-			<h5>Option 3: <?=$value['option3']?></h5>
-			<h5>Option 4: <?=$value['option4']?></h5>
+			
+			<h5>
+			<b>i)</b> <?php echo strip_tags($value['option1']);?> 
+			<b>ii)</b> <?php echo strip_tags($value['option2']);?> 
+			<b>iii)</b> <?php echo strip_tags($value['option3']);?> 
+			<b>iv)</b> <?php echo strip_tags($value['option4']);?> 
+			
+			</h5>
 			
 			
 		<?php
