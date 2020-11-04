@@ -1160,7 +1160,10 @@ class HomeController extends Controller {
 		$post = $request->all();
 		
 		//print_r($post); exit; 
-		$classFilter = $post['classFilter'];
+		$classFilter = '';
+		if(isset($post['classFilter'])){
+			$classFilter = $post['classFilter'];
+		}
 		
 		$allClassList = Studentmaster::getAllClass();
 		
