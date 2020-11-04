@@ -781,9 +781,11 @@ class HomeController extends Controller {
 
 		$result_data = Quizresult::get_result_data($id);
 
-		$quizid = $details->quizid;
-
+		$quizid = $details->quizid;		
 		$quiz_details = Quiz::where(array('id' => $quizid))->first();
+		
+		$userid = $details->userid;		
+		$user_details = Studentmaster::where(array('id' => $userid))->first();
 
 		$correct_answer = 0;
 		$wrong_answer = 0;
@@ -831,7 +833,7 @@ class HomeController extends Controller {
 			'wrong_answer' => $wrong_answer,
 		);
 
-		return view('result/result', compact('id', 'details', 'result_params'));
+		return view('result/result', compact('id', 'details', 'user_details', 'result_params'));
 	}
 
 	public function resultlist(Request $request, $id = null) {

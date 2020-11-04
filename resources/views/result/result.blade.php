@@ -45,9 +45,14 @@
 							</thead>
 							<tbody>
 								<tr class="footableOdd">								
+									<td class="text-right">Name:</td>
+									<td><?php echo $user_details['student_name']; ?></td>
+								</tr>
+
+								<tr class="footableOdd">								
 									<td class="text-right">Result:</td>
 									<td><?php echo $result_params['final_status']; ?></td>
-								</tr>								
+								</tr>
 								
 								<tr class="footableOdd">								
 									<td class="text-right">Score:</td>

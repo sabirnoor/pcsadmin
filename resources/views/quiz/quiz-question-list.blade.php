@@ -8,6 +8,7 @@
 	height: 100px !important;           
 	padding-bottom: 1px;
 }
+
 </style>
 <?php //echo '<pre>';print_r($UploadflashList);die; ?>
 
@@ -48,7 +49,7 @@
 			<h5>Option 3: <?=$value['option3']?></h5>
 			<h5>Option 4: <?=$value['option4']?></h5>
 			
-			<h5 style="color:#17ca17">Correct Option : Option <?=$value['correct_answer']?></h5>
+			
 		<?php
 				}
 			}
@@ -59,7 +60,7 @@
 
         
 
-    </div><!-- /.page-content -->
+    </div><!-- /.page-content <!--<h5 style="color:#17ca17">Correct Option : Option <?/////=$value['correct_answer']?></h5>-->
 
 </div>
 
