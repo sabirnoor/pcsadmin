@@ -60,10 +60,10 @@ h5{
 			<h3><?php echo $value['question_title']; ?></h3>
 			
 			<h5>
-			<b>i)</b> <?php echo strip_tags($value['option1']);?> 
-			<b>ii)</b> <?php echo strip_tags($value['option2']);?> 
-			<b>iii)</b> <?php echo strip_tags($value['option3']);?> 
-			<b>iv)</b> <?php echo strip_tags($value['option4']);?> 
+			<b>(i)</b> <span style="padding: 0 20px 1px 0px;"><?php echo strip_tags($value['option1']);?> </span>
+			<b>(ii)</b> <span style="padding: 0 20px 1px 0px;"><?php echo strip_tags($value['option2']);?> </span>
+			<b>(iii)</b> <span style="padding: 0 20px 1px 0px;"><?php echo strip_tags($value['option3']);?> </span>
+			<b>(iv)</b> <span style="padding: 0 20px 1px 0px;"><?php echo strip_tags($value['option4']);?> </span>
 			
 			</h5>
 			
