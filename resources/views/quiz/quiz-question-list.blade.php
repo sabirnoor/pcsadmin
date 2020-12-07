@@ -67,6 +67,8 @@ h5{
 			
 			</h5>
 			
+			<h5 style="color:#17ca17">Correct Option : Option <?=$value['correct_answer']?></h5>
+			
 			
 		<?php
 				}
@@ -78,7 +80,8 @@ h5{
 
         
 
-    </div><!-- /.page-content <!--<h5 style="color:#17ca17">Correct Option : Option <?/////=$value['correct_answer']?></h5>-->
+    </div><!-- /.page-content -->
+	
 
 </div>
 
